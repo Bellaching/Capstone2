@@ -68,7 +68,7 @@ if ($order->num_rows > 0) {
                 </div>
                 <div class="col-md-6">
                     <label for="" class="text-muted">Date Ordered</label>
-                    <div class="ml-3"><b><?= isset($date_created) ? date("M d, Y h:i A", strtotime($date_created)) : "N/A" ?></b></div>
+                    <div class="ml-3"><b><?= isset($date_created) ? date("M d, Y h:i A", strtotime($date_created)) : "N/A" ?></b></
                 </div>
 =======
                
@@ -173,20 +173,6 @@ if ($order->num_rows > 0) {
                         }
                     }
 
-<<<<<<< Updated upstream
-                    echo '<b><p>Customer Address: </p></b>';
-                    echo '<span id="prov">' . $cityName . ', ' . $provinceName . '</span>';
-                    echo '<b><p>Customer Number: </p></b>';
-                    echo '<span id="contact">' . $contact . '</span>';
-                    if ($addressline1) {
-                        echo '<b><p>Address Line 1: </p></b>';
-                        echo '<span id="adr1">' . $addressline1 . '</span>';
-                    }
-                    if ($addressline2) {
-                        echo '<b><p>Address Line 2: </p></b>';
-                        echo '<span id="adr2">' . $addressline2 . '</span>';
-                    }
-=======
                            
                             echo '<label for="" class="text-muted">Client Address</label>';
                             echo '<div class="ml-3" id="prov"> ' ,'<b>'. $cityName . ', ' . $provinceName . '</b>','</div>';
@@ -204,12 +190,12 @@ if ($order->num_rows > 0) {
                                
                                 echo '<div class="ml-3" id="adr2">' . $addressline2 . '</div>';
                             }
->>>>>>> Stashed changes
 
 
                     ?>
 
                 </div>
+              
             </div>
             <div class="clear-fix my-2"></div>
             <div class="row">

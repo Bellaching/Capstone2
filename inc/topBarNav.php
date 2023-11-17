@@ -334,6 +334,7 @@
                                     echo '</div>';
                                     echo '</ul>';
                                 } else {
+                                    echo '<ul class="dropdown-menu notifications" role="menu" aria-labelledby="dLabel">';
                                     echo 'No notifications available.';
                                 }
                                 ?>

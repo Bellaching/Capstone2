@@ -163,9 +163,7 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
                     <h1 class="label-info"><strong>Contact</strong></h1>
                     <div class="form-group">
                         <input class="input" type="email" name="email" id="email" placeholder="yourmail@gmail.com" required value="<?= isset($email) ? $email : "" ?>">
-                        <input class="input" type="text" name="contact" id="contact" rows="3" class="contact" placeholder="Phone" value="<?= isset($contact) ? $contact : "" ?>"></input required>
-                       
-
+                        <input class="input" type="number" name="phone_number" id="phone_number" rows="3" class="phone_number" placeholder="Phone" value="<?= isset($contact) ? $contact : "" ?>"></input required>
                     </div>
                     <h1 class="label-info"><strong>Delivery</strong></h1>
                     <div class="form-group">
@@ -289,7 +287,7 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
                     <div class="product-sum h-100">
                         <?php
                         $total = 0;
-                        $cart = $conn->query("SELECT c.*, p.name, p.image_path, p.weight, b.name as brand, cc.category, v.*, v.variation_price as price FROM `cart_list` c
+                        $cart = $conn->query("SELECT c.*, p.name, p.price, p.image_path, p.weight, b.name as brand, cc.category, v.* FROM `cart_list` c
                                     INNER JOIN product_list p ON c.product_id = p.id
                                     INNER JOIN brand_list b ON p.brand_id = b.id
                                     INNER JOIN categories cc ON p.category_id = cc.id
@@ -330,7 +328,7 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
                                                 <span><?= $row['quantity'] ?></span>
                                             </td>
                                             <td>
-                                                <span><?= number_format($row['price'], 2) ?></span>
+                                                <span><?= $row['price'] ?></span>
                                             </td>
                                         </tr>
                                         <?php
