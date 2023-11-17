@@ -55,7 +55,7 @@ if($order->num_rows > 0){
                 </div>
                 <div class="col-md-6">
                     <label for="" class="text-muted">Date Ordered</label>
-                    <div class="ml-3"><b><?= isset($date_created) ? date("M d, Y h:i A", strtotime($date_created)) : "N/A" ?></b></div>
+                    <div class="ml-3"><b><?= isset($date_created) ? date("M d, Y h:i A", strtotime($date_created)) : "N/A" ?></b></
                 </div>
             </div>
             <div class="row">
@@ -139,6 +139,7 @@ if($order->num_rows > 0){
                         ?>
 
                 </div>
+              
             </div>
             <div class="clear-fix my-2"></div>
             <div class="row">
