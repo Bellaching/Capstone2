@@ -31,6 +31,13 @@ if ($order->num_rows > 0) {
         object-fit: scale-down;
         object-position: center center;
     }
+
+    .row{
+        display: flex;
+        flex-direction: column;
+    }
+
+ 
 </style>
 <div class="card card-outline card-dark shadow rounded0-0">
     <div class="card-header">
@@ -45,8 +52,14 @@ if ($order->num_rows > 0) {
 
     <div class="card-body">
         <div class="container-fluid">
-            <div class="row">
+        <div class="row">
+            <div class="info1 col-md-6">
+                <label for="" class="text-muted">Client Name</label>
+                <div class="ml-3"><b><?php echo $fullname?></b></div>
+            
+                <br>
 
+<<<<<<< Updated upstream
                 <p><b>Client Name: <?php echo $fullname ?></b></p><br>
 
                 <div class="col-md-6">
@@ -57,7 +70,20 @@ if ($order->num_rows > 0) {
                     <label for="" class="text-muted">Date Ordered</label>
                     <div class="ml-3"><b><?= isset($date_created) ? date("M d, Y h:i A", strtotime($date_created)) : "N/A" ?></b></div>
                 </div>
+=======
+               
+            
+                <label for="" class="text-muted">Reference Code</label>
+                <div class="ml-3"><b><?= isset($ref_code) ? $ref_code : "N/A" ?></b></div>
+            
+                <br>
+            
+                <label for="" class="text-muted">Date Ordered</label>
+                <div class="ml-3"><b><?= isset($date_created) ? date("M d, Y h:i A", strtotime($date_created)) : "N/A" ?></b></div>
+>>>>>>> Stashed changes
             </div>
+        </div>
+
             <div class="row">
                 <div class="col-md-6">
                     <label for="" class="text-muted">Status</label>
@@ -147,6 +173,7 @@ if ($order->num_rows > 0) {
                         }
                     }
 
+<<<<<<< Updated upstream
                     echo '<b><p>Customer Address: </p></b>';
                     echo '<span id="prov">' . $cityName . ', ' . $provinceName . '</span>';
                     echo '<b><p>Customer Number: </p></b>';
@@ -159,6 +186,25 @@ if ($order->num_rows > 0) {
                         echo '<b><p>Address Line 2: </p></b>';
                         echo '<span id="adr2">' . $addressline2 . '</span>';
                     }
+=======
+                           
+                            echo '<label for="" class="text-muted">Client Address</label>';
+                            echo '<div class="ml-3" id="prov"> ' ,'<b>'. $cityName . ', ' . $provinceName . '</b>','</div>';
+                          
+                            echo '<label for="" class="text-muted">Customer Number:</label>';
+                            echo '<div class="ml-3" id="contact">' . $contact . '</div>';
+                            if($addressline1){
+                              
+                                echo '<label for="" class="text-muted">Address Line 1</label>';
+                               
+                                echo '<div class="ml-3" id="adr1">'  ,'<b>'. $addressline1 . '</b>','</div>';
+                            }
+                            if($addressline2){
+                                echo '<label for="" class="text-muted">Address Line 2</label>';
+                               
+                                echo '<div class="ml-3" id="adr2">' . $addressline2 . '</div>';
+                            }
+>>>>>>> Stashed changes
 
 
                     ?>

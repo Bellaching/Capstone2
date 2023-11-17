@@ -163,7 +163,9 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
                     <h1 class="label-info"><strong>Contact</strong></h1>
                     <div class="form-group">
                         <input class="input" type="email" name="email" id="email" placeholder="yourmail@gmail.com" required value="<?= isset($email) ? $email : "" ?>">
-                        <input class="input" type="number" name="phone_number" id="phone_number" rows="3" class="phone_number" placeholder="Phone" value="<?= isset($contact) ? $contact : "" ?>"></input required>
+                        <input class="input" type="text" name="contact" id="contact" rows="3" class="contact" placeholder="Phone" value="<?= isset($contact) ? $contact : "" ?>"></input required>
+                       
+
                     </div>
                     <h1 class="label-info"><strong>Delivery</strong></h1>
                     <div class="form-group">
