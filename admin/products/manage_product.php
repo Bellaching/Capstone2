@@ -128,9 +128,11 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 									<div id="variationIndex-<?= $num ?>" class="variation-container d-flex mb-1 <?php if ($row['delete_flag'] == 1) : ?> border-left border-left-3 border-danger <?php endif; ?> ">
 										<input class="invisible w-0" value="<?= $row['id'] ?>" required type="hidden" name="variation_id[]">
 										<input class="invisible w-0" id="variation-<?= $num ?>" value="<?= $row['delete_flag'] ?>" required type="hidden" name="variation_delete_flag[]">
-										<input placeholder="Variation name" class="mr-2 <?php if ($row['delete_flag'] == 1) : ?> div-disabled bg-disabled <?php endif; ?> variations form-control rounded-0 mr-1" value="<?= $row['variation_name'] ?>" required type="text" name="variation_name[]">
-										<input placeholder="Variation price" class="mr-2 CurrencyInput <?php if ($row['delete_flag'] == 1) : ?> div-disabled bg-disabled <?php endif; ?> variations form-control rounded-0 mr-1" value="<?= $row['variation_price'] ?>" required type="text" name="variation_price[]">
-										<input placeholder="Stocks" class="<?php if ($row['delete_flag'] == 1) : ?> div-disabled bg-disabled <?php endif; ?> variations form-control rounded-0 w-25" value="<?= $row['variation_stock'] ?>" required min="0" type="number" name="variation_stock[]">
+										<input placeholder="Variation name" class="mr-2 <?php if ($row['delete_flag'] == 1) : ?> div-disabled bg-disabled <?php endif; ?> variations form-control rounded-0 mr-1" value="<?= $row['variation_name'] ?>" type="text" name="variation_name[]" required>
+				
+										<input placeholder="Variation price" class="mr-2 CurrencyInput <?php if ($row['delete_flag'] == 1) : ?> div-disabled bg-disabled <?php endif; ?> variations form-control rounded-0 mr-1" value="<?= $row['variation_price'] ?>" type="text" name="variation_price[]" required>
+
+										<input placeholder="Stocks" class="<?php if ($row['delete_flag'] == 1) : ?> div-disabled bg-disabled <?php endif; ?> variations form-control rounded-0 w-25" value="<?= $row['variation_stock'] ?>" min="0" type="number" name="variation_stock[]" required>
 										<button class="btn btn-link text-danger ml-1 <?php if ($delete_flag == 0) : ?> visible position-relative <?php else : ?> invisible position-absolute <?php endif; ?>" type="button" id="variation-remove-<?= $num ?>" onclick="removeVariation('variationIndex-<?= $num; ?>')">
 											<i class="fas fa-times"></i>
 										</button>
