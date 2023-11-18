@@ -110,3 +110,9 @@ body {
     font-size: 12px;
     margin-top: 2%;
   }
+
+  .alert.alert-danger.err-msg{
+    background-color: #ff1900;
+    padding: 1.5%;
+    color: #ffffff;
+  }
