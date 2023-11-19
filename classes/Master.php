@@ -724,9 +724,17 @@ class Master extends DBConnection
 				$other_address = $othermu;
 				break;
 		}
-		$sql1 = "INSERT INTO `order_list` (`ref_code`,`client_id`,`addressline1`, `province`, `city`, `zipcode`, `order_type`, `other_address`)
-			VALUES ('{$ref_code}','{$client_id}','{$addressline1}','{$province}','{$city}','{$zipcode}','{$order_type}', '{$other_address}')";
-		$save = $this->conn->query($sql1);
+		$save = '';
+		if($address_type == 1){
+			$sql1 = "INSERT INTO `order_list` (`ref_code`,`client_id`,`addressline1`,`addressline2`, `province`, `city`, `zipcode`, `order_type`, `other_address`)
+			VALUES ('{$ref_code}','{$client_id}','{$addressline1}','{$addressline2}','{$province}','{$city}','{$zipcode}','{$order_type}', '{$other_address}')";
+			$save = $this->conn->query($sql1);
+		}else{
+			$sql2 = "INSERT INTO `order_list` (`ref_code`,`client_id`,`addressline1`,`addressline2`, `province`, `city`, `zipcode`, `order_type`)
+			VALUES ('{$ref_code}','{$client_id}','{$different_addressline1}','{$different_addressline2}','{$province2}','{$city2}','{$different_zipcode}','{$order_type}')";
+			$save = $this->conn->query($sql2);
+		}
+
 		if ($save) {
 			$oid = $this->conn->insert_id;
 			$data = "";
