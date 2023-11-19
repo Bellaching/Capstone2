@@ -341,9 +341,6 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
             unavailableDiv.style.display = 'block';
             limitReached.style.display = 'block';
         }
-        update_cart_count(cart_count);
-
-        //document.getElementById('cart_count').textContent = cart_count;
     }
 
     function fetch() {
@@ -358,7 +355,6 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
                 availability = data.available;
                 cart_count = data.cart_count;
                 initialize();
-                update_cart_count(cart_count);
             },
             error: err => {
                 console.log(err);
