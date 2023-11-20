@@ -31,6 +31,47 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 	.bg-disabled {
 		background: #EEEE;
 	}
+	.gallery-image-container img {
+		/* width: 50%; */
+		height: 214px;
+		object-fit: cover;
+	}
+	.custom_gall {
+		border: 1px solid #d7d7d7;
+		padding: 5px;
+		border-radius: 5px;
+	}
+	.gallery-item {
+        margin: 10px;
+        cursor: pointer;
+    }
+
+    #lightbox {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99999;
+        background: rgba(0, 0, 0, 0.8);
+    }
+
+    #lightbox img {
+        display: block;
+        margin: 50px auto;
+        max-width: 90%;
+        max-height: 90%;
+    }
+
+    #lightbox .close {
+        color: #fff;
+        font-size: 30px;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        cursor: pointer;
+    }
 </style>
 <div class="card card-outline card-info rounded-0">
 	<div class="card-header">
@@ -81,7 +122,7 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 
 			<div class="form-group">
 				<label for="price" class="control-label">Price</label>
-				<input name="price" id="price" type="number" class="form-control rounded-0 text-left" value="<?php echo isset($price) ? $price : 0; ?>" required>
+				<input name="price" id="price" type="text" class="CurrencyInput form-control rounded-0 text-left" value="<?php echo isset($price) ? $price : 0; ?>" required>
 			</div>
 
 			<label for="weight" class="control-label">Weight</label>
@@ -104,12 +145,16 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 			</div>
 			<div class="form-group">
 				<div class="row">
-					<div class="col-md-6">
+					<div class="col-md-8">
 						<div class="form-group product-image-container">
-							<label for="" class="control-label">Product Image</label>
+							<label for="" class="control-label">Product Featured Image</label>
 							<div class="custom-file">
 								<input type="file" class="custom-file-input rounded-circle" id="customFile" name="img" onchange="displayImg(this,$(this))">
 								<label class="custom-file-label" for="customFile">Choose file</label>
+
+								<label for="gallery_images" class="control-label">Product Image Gallery</label>
+								<input type="file" class="custom_gall form-control-file" id="gallery_images" name="gallery_images[]" multiple accept="image/*">
+								
 							</div>
 						</div>
 						<div class="variation-list form-group">
@@ -125,26 +170,59 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 									$delete_flag = $row['delete_flag'];
 							?>
 									<?php $index++; ?>
-									<div id="variationIndex-<?php echo $num ?>" class="variation-container d-flex mb-1 <?php if ($row['delete_flag'] == 1) : ?> border-left border-left-3 border-danger <?php endif; ?> ">
-										<input class="invisible w-0" value="<?php echo $row['id'] ?>" required type="hidden" name="variation_id[]">
-										<input class="invisible w-0" id="variation-<?php echo $num ?>" value="<?php echo $row['delete_flag'] ?>" required type="hidden" name="variation_delete_flag[]">
-										<input placeholder="Variation name" class="<?php if ($row['delete_flag'] == 1) : ?> div-disabled bg-disabled <?php endif; ?> variations form-control rounded-0 mr-1" value="<?php echo $row['variation_name'] ?>" required type="text" name="variation_name[]">
-										<input placeholder="Stocks" class="<?php if ($row['delete_flag'] == 1) : ?> div-disabled bg-disabled <?php endif; ?> variations form-control rounded-0 w-25" value="<?php echo $row['variation_stock'] ?>" required min="0" type="number" name="variation_stock[]">
-										<button class="btn btn-link text-danger ml-1 <?php if ($delete_flag == 0) : ?> visible position-relative <?php else: ?> invisible position-absolute <?php endif; ?>" type="button" id="variation-remove-<?php echo $num ?>" onclick="removeVariation('variationIndex-<?php echo $num; ?>')">
+									<div id="variationIndex-<?= $num ?>" class="variation-container d-flex mb-1 <?php if ($row['delete_flag'] == 1) : ?> border-left border-left-3 border-danger <?php endif; ?> ">
+										<input class="invisible w-0" value="<?= $row['id'] ?>" required type="hidden" name="variation_id[]">
+										<input class="invisible w-0" id="variation-<?= $num ?>" value="<?= $row['delete_flag'] ?>" required type="hidden" name="variation_delete_flag[]">
+										<input placeholder="Variation name" class="mr-2 <?php if ($row['delete_flag'] == 1) : ?> div-disabled bg-disabled <?php endif; ?> variations form-control rounded-0 mr-1" value="<?= $row['variation_name'] ?>" type="text" name="variation_name[]" required>
+				
+										<input placeholder="Variation price" class="mr-2 CurrencyInput <?php if ($row['delete_flag'] == 1) : ?> div-disabled bg-disabled <?php endif; ?> variations form-control rounded-0 mr-1" value="<?= $row['variation_price'] ?>" type="text" name="variation_price[]" required>
+
+										<input placeholder="Stocks" class="<?php if ($row['delete_flag'] == 1) : ?> div-disabled bg-disabled <?php endif; ?> variations form-control rounded-0 w-25" value="<?= $row['variation_stock'] ?>" min="0" type="number" name="variation_stock[]" required>
+										<button class="btn btn-link text-danger ml-1 <?php if ($delete_flag == 0) : ?> visible position-relative <?php else : ?> invisible position-absolute <?php endif; ?>" type="button" id="variation-remove-<?= $num ?>" onclick="removeVariation('variationIndex-<?= $num; ?>')">
 											<i class="fas fa-times"></i>
 										</button>
-										<button class="btn btn-link text-info ml-1 <?php if ($delete_flag == 1) : ?> visible position-relative <?php else: ?> invisible position-absolute <?php endif; ?>" type="button" id="variation-res-<?php echo $num ?>" onclick="resVariation('variationIndex-<?php echo $num; ?>')">
+										<button class="btn btn-link text-info ml-1 <?php if ($delete_flag == 1) : ?> visible position-relative <?php else : ?> invisible position-absolute <?php endif; ?>" type="button" id="variation-res-<?= $num ?>" onclick="resVariation('variationIndex-<?= $num; ?>')">
 											<i class="fas fa-check"></i>
 										</button>
 									</div>
 									<?php $num++; ?>
 							<?php endwhile;
 							endif; ?>
+							
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<div class="d-flex justify-content-center">
 							<img src="<?php echo validate_image(isset($image_path) ? $image_path : "") ?>" alt="" id="cimg" class="img-fluid img-thumbnail">
+						</div>
+						<div class="d-flex justify-content-center gallery">
+						<?php
+							// Display existing gallery images
+							if (!empty($id)) {
+								$gallery_images_query = $conn->query("SELECT image_url FROM `product_image_gallery` WHERE `product_id` = '{$id}'");
+
+								$count = 0; // Initialize counter
+
+								while ($gallery_row = $gallery_images_query->fetch_assoc()) {
+									if ($count % 3 == 0) {
+										// Start a new row for every three images
+										echo '</div><div class="d-flex">';
+									}
+
+									echo '<div class="gallery-image-container gallery-item d-flex" data-image="../' . $gallery_row['image_url'] . '" >';
+									echo '<img src="../' . $gallery_row['image_url'] . '" alt="Gallery Image" class="img-thumbnail gallery-image">';
+									echo '</div>';
+
+									$count++;
+								}
+							}
+							?>
+							<div id="gallery-preview" style="overflow-x: auto; white-space: nowrap;">
+							
+						</div>
+						<div id="lightbox">
+							<span class="close">&times;</span>
+							<img id="lightbox-image" src="" alt="Lightbox Image">
 						</div>
 					</div>
 				</div>
@@ -173,8 +251,25 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 			_this.siblings('.custom-file-label').html("Choose file")
 		}
 	}
+	const currenctInput = document.getElementsByClassName('CurrencyInput');
+	for (let i = 0; i < currenctInput.length; i++) {
+		formatToCurrency(currenctInput[i], currenctInput[i].value);
+	}
 
+	function formatToCurrency(element, value) {
+		if (value) {
+			element.value = parseFloat(value).toLocaleString('en-US', {
+				style: 'decimal',
+				maximumFractionDigits: 2,
+				minimumFractionDigits: 2
+			});
+		}
+	}
 	$(document).ready(function() {
+		$('input.CurrencyInput').on('blur', function() {
+			const value = this.value.replace(/,/g, '');
+			formatToCurrency(this, value);
+		});
 		$('.select2').select2({
 			width: '100%',
 			placeholder: "Please Select Here"
@@ -186,10 +281,17 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 			var _this = $(this)
 			$('.err-msg').remove();
 			const formData = new FormData($(this)[0]);
+			// Display the values
+			var productPrice = formData.get('price');
+			var productVariations = formData.getAll('variation_price[]')
+			if (productVariations.indexOf(productPrice) < 0) {
+				alert_toast("Price didn't match any the variation price", 'error');
+				return;
+			}
 			start_loader();
 			$.ajax({
 				url: _base_url_ + "classes/Master.php?f=save_product",
-				data: new FormData($(this)[0]),
+				data: formData,
 				cache: false,
 				contentType: false,
 				processData: false,
@@ -238,6 +340,44 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 		})
 	})
 
+	//display uploaded images for gallery
+	function displayGalleryImages(input) {
+        var galleryPreview = $('#gallery-preview');
+        galleryPreview.empty(); // Clear previous preview
+
+        if (input.files && input.files.length > 0) {
+            for (var i = 0; i < input.files.length; i++) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    var image = $('<img>').attr('src', e.target.result).addClass('img-thumbnail').css('width', '27%').css('height', 'auto');
+                    galleryPreview.append(image);
+                };
+
+                reader.readAsDataURL(input.files[i]);
+            }
+        }
+    }
+
+    $('#gallery_images').on('change', function () {
+        displayGalleryImages(this);
+    });
+	//End
+
+	$(document).ready(function () {
+    // Open lightbox on image click
+    $('.gallery-item').on('click', function () {
+        var imagePath = $(this).data('image');
+        $('#lightbox-image').attr('src', imagePath);
+        $('#lightbox').fadeIn();
+    });
+
+    // Close lightbox on close button click or outside click
+    $('#lightbox, .close').on('click', function () {
+        $('#lightbox').fadeOut();
+		});
+	});
+
 	var resVariation = function(id) {
 		console.log("Res", id);
 		const variationIndex = document.getElementById(id);
@@ -281,7 +421,6 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 	var addVariation = function() {
 		const lastVariationIndex = document.querySelectorAll(".variation-container:last-child");
 		const lastIndex = lastVariationIndex && lastVariationIndex.length > 0 ? lastVariationIndex[0].id.slice(15) : 0;
-		console.log(lastIndex)
 		var parent = document.body;
 		// Get variation main container
 		var fieldgroup = document.querySelector("div.variation-list");
@@ -307,13 +446,25 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 		variationDeleteFlag.value = 0; // set value
 		// Add variation name input
 		var variationName = document.createElement("input");
-		variationName.className = "variations form-control rounded-0";
+		variationName.className = "mr-2 variations form-control rounded-0";
 		variationName.style = "display: block;";
 		variationName.type = "text";
 		variationName.required = true;
 		variationName.name = `variation_name[]`;
 		variationName.placeholder = "Variation name";
 		variationContainer.appendChild(variationName);
+		// Add variation price input
+		var variationPrice = document.createElement("input");
+		variationPrice.className = "mr-2 CurrencyInput variations form-control rounded-0";
+		variationPrice.style = "display: block;";
+		variationPrice.type = "text";
+		variationPrice.required = true;
+		variationPrice.name = `variation_price[]`;
+		variationPrice.placeholder = "Variation price";
+		variationPrice.onblur = function() {
+			formatToCurrency(this, this.value)
+		};
+		variationContainer.appendChild(variationPrice);
 		// Add variation stock input
 		var variationStock = document.createElement("input");
 		variationStock.className = "stocks form-control rounded-0 w-25";

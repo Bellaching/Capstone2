@@ -251,14 +251,55 @@ class Master extends DBConnection
 		}
 		return json_encode($resp);
 	}
+
+	function delete_image_gallery(){
+		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+			// Validate and sanitize input
+			$imageId = $_POST['imageId'];
+			
+			// Check for a valid database connection
+			if ($conn->connect_error) {
+				die("Connection failed: " . $conn->connect_error);
+			}
+			// Use prepared statement to update the is_delete column
+			$stmt = $conn->prepare("UPDATE product_image_gallery SET is_deleted = 1 WHERE image_id = ?");
+			$stmt->bind_param("i", $imageId); // Assuming image_id is an integer, adjust if necessary
+			$stmt->execute();
+			// Check if the update was successful
+			$updateSuccess = $stmt->affected_rows > 0;
+			// Close the prepared statement
+			$stmt->close();
+			// Close the database connection
+			$conn->close();
+			// Provide a response to the client
+			if ($updateSuccess) {
+				echo 'Image deleted successfully';
+			} else {
+				echo 'Error deleting image';
+			}
+		} else {
+			// Handle invalid requests (e.g., direct access to this script)
+			echo 'Invalid request';
+		}
+	}
 	function save_product()
 	{
 		$_POST['description'] = htmlentities($_POST['description']);
+		$_POST['price'] = (float)str_replace(',', '', $_POST['price']);
 		extract($_POST);
 		$data = "";
-		foreach ($_POST as $k => $v) {
+		/*foreach ($_POST as $k => $v) {
 			if (!in_array($k, array('id'))) {
 				if (!str_contains($k, 'variation')) {
+					$v = $this->conn->real_escape_string($v);
+					if (!empty($data)) $data .= ",";
+					$data .= " `{$k}`='{$v}' ";
+				}
+			}
+		}*/
+		foreach ($_POST as $k => $v) {
+			if (!in_array($k, array('id'))) {
+				if (strpos($k, 'variation') === false) {
 					$v = $this->conn->real_escape_string($v);
 					if (!empty($data)) $data .= ",";
 					$data .= " `{$k}`='{$v}' ";
@@ -274,28 +315,28 @@ class Master extends DBConnection
 			return json_encode($resp);
 			exit;
 		}
-
 		function processVariations($conn, $product_id)
 		{
 			if (isset($_POST['variation_name'])) {
 				$totalStocks = 0;
 				foreach ($_POST['variation_name'] as $row => $value) {
 					$variation_id = $_POST['variation_id'][$row];
+					$variation_price = (float)str_replace(',', '', $_POST['variation_price'][$row]);
 					$variation_name = $_POST['variation_name'][$row];
 					$variation_stock = $_POST['variation_stock'][$row];
 					$variation_delete_flag = $_POST['variation_delete_flag'][$row];
 					$totalStocks += $variation_stock;
 					if ($variation_id) {
-						$sqlProductVariationUpdate = "UPDATE `product_variations` set `delete_flag` = '{$variation_delete_flag}',  `variation_name` = '{$variation_name}', `variation_stock` = '{$variation_stock}' where `id` = '{$variation_id}' ";
+						$sqlProductVariationUpdate = "UPDATE `product_variations` set `delete_flag` = '{$variation_delete_flag}', `variation_name` = '{$variation_name}', `variation_price` = '{$variation_price}', `variation_stock` = '{$variation_stock}' where `id` = '{$variation_id}' ";
 						$conn->query($sqlProductVariationUpdate);
 					} else {
-						$sqlProductVariationInsert = "INSERT INTO `product_variations` (`product_id`, `variation_name`, `variation_stock`, `delete_flag`) VALUES ('{$product_id}', '{$variation_name}', '{$variation_stock}', '{$variation_delete_flag}') ";
+						$sqlProductVariationInsert = "INSERT INTO `product_variations` (`product_id`, `variation_name`, `variation_price`, `variation_stock`, `delete_flag`) VALUES ('{$product_id}', '{$variation_name}', '{$variation_price}', '{$variation_stock}', '{$variation_delete_flag}') ";
 						$conn->query($sqlProductVariationInsert);
 					}
 				}
 				return $totalStocks;
 			} else {
-				$sqlProductVariationInsert = "INSERT INTO `product_variations` (`product_id`, `variation_name`, `variation_stock`, `delete_flag`, `default_flag`) VALUES ('{$product_id}', 'default', 0, 0, 1) ";
+				$sqlProductVariationInsert = "INSERT INTO `product_variations` (`product_id`, `variation_name`, `variation_price`, `variation_stock`, `delete_flag`, `default_flag`) VALUES ('{$product_id}', 'default', '{$_POST['price']}', 0, 0, 1) ";
 				$conn->query($sqlProductVariationInsert);
 				return 0;
 			}
@@ -343,6 +384,34 @@ class Master extends DBConnection
 		if (isset($resp['msg']) && $resp['status'] == 'success') {
 			$this->settings->set_flashdata('success', $resp['msg']);
 		}
+
+		if (!empty($_FILES['gallery_images']['tmp_name'][0])) {
+			$gallery_images = $_FILES['gallery_images'];
+			$gallery_urls = array();
+	
+			// Loop through gallery images and move them to the desired directory
+			foreach ($gallery_images['tmp_name'] as $key => $tmp_name) {
+				$ext = pathinfo($gallery_images['name'][$key], PATHINFO_EXTENSION);
+				$gallery_name = $pid . '_' . uniqid() . '.' . $ext;
+				$gallery_dir = base_app . "uploads/product_gallery/";
+	
+				if (!is_dir($gallery_dir)) {
+					mkdir($gallery_dir);
+				}
+	
+				$gallery_path = $gallery_dir . $gallery_name;
+				move_uploaded_file($tmp_name, $gallery_path);
+				$gallery_urls[] = "uploads/product_gallery/$gallery_name";
+			}
+	
+			// Insert gallery images into product_image_gallery table
+			foreach ($gallery_urls as $gallery_url) {
+				$gallery_url = $this->conn->real_escape_string($gallery_url);
+				$gallery_insert_sql = "INSERT INTO `product_image_gallery` (`product_id`, `image_url`) VALUES ('{$pid}', '{$gallery_url}')";
+				$this->conn->query($gallery_insert_sql);
+			}
+		}
+
 		return json_encode($resp);
 	}
 	function delete_product()
@@ -611,11 +680,14 @@ class Master extends DBConnection
 		$_POST['client_id'] = $this->settings->userdata('id');
 		extract($_POST);
 
-		$check = $this->conn->query("SELECT * FROM `cart_list` where client_id = '{$client_id}' and product_id = '{$product_id}' and variation_id = '{$variation_id}'")->num_rows;
+		$check = $this->conn->query("SELECT * FROM `cart_list` where client_id = '{$client_id}'
+		and product_id = '{$product_id}' and variation_id = '{$variation_id}'")->num_rows;
 		if ($check > 0) {
-			$sql = "UPDATE `cart_list` set quantity = quantity + {$quantity}  where product_id = '{$product_id}' and client_id = '{$client_id}' and variation_id = '{$variation_id}''";
+			$sql = "UPDATE `cart_list` set quantity = quantity + {$quantity}  where product_id = '{$product_id}'
+			and client_id = '{$client_id}' and variation_id = '{$variation_id}'";
 		} else {
-			$sql = "INSERT INTO `cart_list` set quantity = quantity + {$quantity}, product_id = '{$product_id}', client_id = '{$client_id}', variation_id = '{$variation_id}'";
+			$sql = "INSERT INTO `cart_list` set quantity = quantity + {$quantity}, product_id = '{$product_id}',
+			client_id = '{$client_id}', variation_id = '{$variation_id}'";
 		}
 		$save = $this->conn->query($sql);
 		if ($save) {
@@ -720,17 +792,32 @@ class Master extends DBConnection
 				$other_address = $othermu;
 				break;
 		}
-		$sql1 = "INSERT INTO `order_list` (`ref_code`,`client_id`,`addressline1`, `province`, `city`, `zipcode`, `order_type`, `other_address`)
-			VALUES ('{$ref_code}','{$client_id}','{$addressline1}','{$province}','{$city}','{$zipcode}','{$order_type}', '{$other_address}')";
-		$save = $this->conn->query($sql1);
+		$save = '';
+		if($address_type == 1){
+			$sql1 = "INSERT INTO `order_list` (`ref_code`,`client_id`,`addressline1`,`addressline2`, `province`, `city`, `zipcode`, `order_type`, `other_address`)
+			VALUES ('{$ref_code}','{$client_id}','{$addressline1}','{$addressline2}','{$province}','{$city}','{$zipcode}','{$order_type}', '{$other_address}')";
+			$save = $this->conn->query($sql1);
+		}else{
+			$sql2 = "INSERT INTO `order_list` (`ref_code`,`client_id`,`addressline1`,`addressline2`, `province`, `city`, `zipcode`, `order_type`)
+			VALUES ('{$ref_code}','{$client_id}','{$different_addressline1}','{$different_addressline2}','{$province2}','{$city2}','{$different_zipcode}','{$order_type}')";
+			$save = $this->conn->query($sql2);
+		}
+
 		if ($save) {
 			$oid = $this->conn->insert_id;
 			$data = "";
 			$total_amount = 0;
 			if ($withShippingFee) {
-				$this->conn->query("INSERT INTO `shipping_fee`(`order_id`, `amount`) VALUES ('{$oid}', '{$shipping_amount}')");
+				$this->conn->query("INSERT INTO `shipping_fee` (`order_id`, `amount`) VALUES ('{$oid}', '{$shipping_amount}')");
 			}
-			$cart = $this->conn->query("SELECT c.*, p.price FROM cart_list c inner join product_list p on c.product_id = p.id where c.client_id = '{$client_id}'");
+			$cart = $this->conn->query(
+				"SELECT 
+					c.*,
+					pv.variation_price as price
+				FROM cart_list c 
+					inner join product_list p on c.product_id = p.id
+					inner join product_variations pv on pv.id = c.variation_id
+				where c.client_id = '{$client_id}'");
 			while ($row = $cart->fetch_assoc()) {
 				if (!empty($data)) $data .= ", ";
 				$data .= "('{$oid}','{$row['product_id']}','{$row['quantity']}', '{$row['variation_id']}')";
