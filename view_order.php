@@ -42,15 +42,12 @@ if ($order->num_rows > 0) {
       }
     }
 </style>
-<<<<<<< HEAD
+
 <div class="container-fluid">
-<<<<<<< HEAD
-=======
-=======
+
 <div class="container-fluid" id="orderDetailsContainer">
 
->>>>>>> f23a26e6234cdb19298c5e275c3492301c6fe8ee
->>>>>>> 91901f68c2506ea47be37209ec885336d1ad99ad
+
     <div class="row">
         <div class="col-md-6">
             <label for="" class="text-muted">Name</label>
@@ -71,19 +68,20 @@ if ($order->num_rows > 0) {
             <div class="ml-3">
                 <?php if (isset($status)) : ?>
                     <?php if ($status == 0) : ?>
-                        <span class="badge badge-secondary px-3 rounded-pill">Pending</span>
+                        <span class="badge badge-secondary px-3 rounded-pill" style="color: black;">Pending</span>
+
                     <?php elseif ($status == 1) : ?>
-                        <span class="badge badge-secondary px-3 rounded-pill">Confirm</span>
+                        <span class="badge badge-secondary px-3 rounded-pill " style="color: black;">Confirm</span>
                     <?php elseif ($status == 2) : ?>
-                        <span class="badge badge-primary px-3 rounded-pill">Packed</span>
+                        <span class="badge badge-primary px-3 rounded-pill" style="color: black;">Packed</span>
                     <?php elseif ($status == 3) : ?>
-                        <span class="badge badge-success px-3 rounded-pill">For Delivery</span>
+                        <span class="badge badge-success px-3 rounded-pill" style="color: black;">For Delivery</span>
                     <?php elseif ($status == 4) : ?>
-                        <span class="badge badge-warning px-3 rounded-pill">On the Way</span>
+                        <span class="badge badge-warning px-3 rounded-pill" style="color: black;">On the Way</span>
                     <?php elseif ($status == 5) : ?>
-                        <span class="badge badge-default bg-gradient-teal px-3 rounded-pill">Delivered</span>
+                        <span class="badge badge-default bg-gradient-teal px-3 rounded-pill" style="color: black;">Delivered</span>
                     <?php else : ?>
-                        <span class="badge badge-danger px-3 rounded-pill">Cancelled</span>
+                        <span class="badge badge-danger px-3 rounded-pill" style="color: black;">Cancelled</span>
                     <?php endif; ?>
                 <?php else : ?>
                     N/A
@@ -117,30 +115,10 @@ if ($order->num_rows > 0) {
                     while ($row = $order_item->fetch_assoc()) :
                         $total += ($row['quantity'] * $row['price']);
                 ?>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 91901f68c2506ea47be37209ec885336d1ad99ad
-                        <div class="d-flex align-items-center w-100 border cart-item" data-id="<?= $row['id'] ?>">
-                            <div class="col-auto flex-grow-1 flex-shrink-1 px-1 py-1">
-                                <div class="d-flex align-items-center w-100 ">
-                                    <div class="col-auto">
-                                        <img src="<?= validate_image($row['image_path']) ?>" alt="Product Image" class="img-thumbnail prod-cart-img">
-                                    </div>
-                                    <div class="col-auto flex-grow-1 flex-shrink-1">
-                                        <a href="./?p=products/view_product&id=<?= $row['product_id'] ?>" class="h4 text-muted" target="_blank">
-                                            <p class="text-truncate-1 m-0"><?= $row['name'] ?></p>
-                                        </a>
-                                        <small><?= $row['brand'] ?></small><br>
-                                        <small><?= $row['category'] ?></small><br>
-                                        <div class="d-flex align-items-center w-100 mb-1">
-                                            <span><?= number_format($row['quantity']) ?></span>
-                                            <span class="ml-2">X <?= number_format($row['price'], 2) ?></span>
-                                        </div>
-                                    </div>
-<<<<<<< HEAD
-=======
-=======
+
+
+                        
+
                 <div class="d-flex align-items-center w-100 border cart-item p-2" data-id="<?= $row['id'] ?>">
                     <div class="col-auto flex-grow-1 flex-shrink-1 px-1 py-1">
                         <div class="d-flex align-items-center w-100">
@@ -204,9 +182,8 @@ if ($order->num_rows > 0) {
             <button class="btn btn-danger btn-flat btn-sm" id="btn-cancel" type="button">Cancel Order</button>
 
             <?php endif; ?>
-            <button class="btn btn-dark btn-flat btn-sm print-btn" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-            <button onclick="printOrderDetails()" class="print-btn">Print Order Details</button>
-        </div>
+        <button class="btn btn-dark btn-flat btn-sm print-btn" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+          <!---<button onclick="printOrderDetails()" class="print-btn">Print Order Details</button>---->
     </div>
 </div>
 <script>

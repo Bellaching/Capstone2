@@ -116,7 +116,7 @@
     position: relative;
     background: rgb(0, 0, 0) !important;
     background: none !important;
-    height: 60vh; /* Set the height of the header */
+    height: 75vh; /* Set the height of the header */
 }
 
 #main-header:before {

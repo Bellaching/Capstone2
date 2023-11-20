@@ -32,13 +32,12 @@ if ($order->num_rows > 0) {
         object-position: center center;
     }
 
-    .row{
+    .row {
         display: flex;
         flex-direction: column;
     }
-
- 
 </style>
+
 <div class="card card-outline card-dark shadow rounded0-0">
     <div class="card-header">
         <h3 class="card-title"><b>Order Details</b></h3>
@@ -57,13 +56,12 @@ if ($order->num_rows > 0) {
                 <label for="" class="text-muted">Client Name</label>
                 <div class="ml-3"><b><?php echo $fullname?></b></div>
             
-                <br>
-<<<<<<< HEAD
 
-                <p><b>Client Name: <?php echo $fullname ?></b></p><br>
 
-=======
->>>>>>> 91901f68c2506ea47be37209ec885336d1ad99ad
+               
+
+
+
 
                 <div class="col-md-6">
                     <label for="" class="text-muted">Reference Code</label>
@@ -76,13 +74,7 @@ if ($order->num_rows > 0) {
 
                
             
-                <label for="" class="text-muted">Reference Code</label>
-                <div class="ml-3"><b><?= isset($ref_code) ? $ref_code : "N/A" ?></b></div>
-            
-                <br>
-            
-                <label for="" class="text-muted">Date Ordered</label>
-                <div class="ml-3"><b><?= isset($date_created) ? date("M d, Y h:i A", strtotime($date_created)) : "N/A" ?></b></div>
+                
 
             </div>
         </div>
@@ -273,15 +265,13 @@ if ($order->num_rows > 0) {
                                                 <h3><b><?= number_format($row['quantity'] * $row['price'], 2) ?></b></h3>
                                             </div>
                                         </div>
-
+                                
                                         <?php
-                                        if ($row['order_type'] == 1) {
-                                            $total_amount = $total + $row['amount'];
-                                        } else {
-                                            $total_amount = $total;
-                                        }
-                                        ?>
-                                <?php
+    if ($row['order_type'] == 1) {
+        $total_amount = $total + (isset($row['amount']) ? $row['amount'] : 0);
+    } else {
+        $total_amount = $total;
+    }
                             endwhile;
                         endif;
                                 ?>
