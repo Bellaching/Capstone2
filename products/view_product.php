@@ -156,8 +156,8 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
                     ₱<?php
                         $minVariation = $conn->query("SELECT MIN(variation_price) as lowestVariation FROM product_variations where product_id = $id")->fetch_assoc();
                         echo number_format($minVariation['lowestVariation'], 2);
-                        ?> -
-                    ₱<strong><?= isset($price) ? number_format($price, 2) : '' ?></strong>
+                        ?> 
+                   
                 </h3>
                 <h3 class="text-success" id="selectedVariation"></h3>
                 <div class="mt-3 border-bottom">
@@ -215,8 +215,8 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
                                         <div class="bd-highlights">
                                             <input type='radio' name='variations' id='variation_<?php echo $variation['id'] ?>' value='<?php echo $variation['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($variation['variation_price'], 2)  ?>')" />
                                             <span id='stock_<?php echo $variation['id'] ?>'>
-                                                <?php echo $variation['variation_name'] ?> -
-                                                <span class="text-price"> <?= number_format($variation['variation_price'], 2)  ?> php </span>
+                                                <?php echo $variation['variation_name'] ?> 
+                                               
                                         </div>
                                         <div class="bd-highlights">
                                             <small>
@@ -363,38 +363,5 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
         });
     }
 
-    function buyNow() {
-        if ("<?= $_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2 ?>" == 1) {
-            if ('<?= $available > 0 ?>' == 1) {
-                start_loader();
-                $.ajax({
-                    url: _base_url_ + "classes/Master.php?f=process_immediate_purchase", // Replace with the appropriate URL for immediate purchase
-                    method: 'POST',
-                    data: {
-                        product_id: '<?= isset($id) ? $id : "" ?>',
-                        quantity: 1
-                    },
-                    dataType: 'json',
-                    error: err => {
-                        console.error(err);
-                        alert_toast("An error occurred", "error");
-                        end_loader();
-                    },
-                    success: function(resp) {
-                        if (resp.status == 'success') {
-                            // Handle the success response for immediate purchase
-                            alert_toast("Product has been purchased.", 'success');
-                        } else if (!!resp.msg) {
-                            alert_toast(resp.msg, 'error');
-                        } else {
-                            alert_toast("An error occurred", "error");
-                        }
-                        end_loader();
-                    }
-                });
-            }
-        } else {
-            alert_toast("Please Login First!", 'warning');
-        }
-    }
+
 </script>
