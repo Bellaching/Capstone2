@@ -156,8 +156,7 @@ if ($order->num_rows > 0) {
                                 <div class="d-flex align-items-center w-100 mb-1">
                                     <span><?= number_format($row['quantity']) ?></span>
                                     <span class="ml-2">X <?= number_format($row['price'],2) ?></span>
->>>>>>> f23a26e6234cdb19298c5e275c3492301c6fe8ee
->>>>>>> 91901f68c2506ea47be37209ec885336d1ad99ad
+
                                 </div>
                             </div>
                             <div class="col-auto text-right">
@@ -177,25 +176,19 @@ if ($order->num_rows > 0) {
                 <?php endif; ?>
                 <div class="d-flex align-items-center w-100 border">
                     <div class="col-auto flex-grow-1 flex-shrink-1 px-1 py-1">
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 91901f68c2506ea47be37209ec885336d1ad99ad
+
                         <h3 class="text-center">TOTAL</h3>
                     </div>
                     <div class="col-auto text-right">
                         <h3>
                             <b><?= number_format($total, 2) ?></b>
                         </h3>
-<<<<<<< HEAD
-=======
-=======
+
                             <span>TOTAL</span>
                     </div>
                     <div class="col-auto text-right">
                         <span><b><?= number_format($total,2) ?></b></span>
->>>>>>> f23a26e6234cdb19298c5e275c3492301c6fe8ee
->>>>>>> 91901f68c2506ea47be37209ec885336d1ad99ad
+
                     </div>
                 </div>
             </div>
@@ -203,18 +196,13 @@ if ($order->num_rows > 0) {
     </div>
     <div class="clear-fix my-2"></div>
     <div class="row">
-<<<<<<< HEAD
-        <div class="col-12 text-right">
-            <?php if (isset($status)  && $status == 0) : ?>
-                <button class="btn btn-danger btn-flat btn-sm" id="btn-cancel" type="button">Cancel Order</button>
-<<<<<<< HEAD
-=======
-=======
+
+      
+
         <div class="col-12 text-right " id="disregardThisDiv">
             <?php if(isset($status)  && $status == 0): ?>
             <button class="btn btn-danger btn-flat btn-sm" id="btn-cancel" type="button">Cancel Order</button>
->>>>>>> f23a26e6234cdb19298c5e275c3492301c6fe8ee
->>>>>>> 91901f68c2506ea47be37209ec885336d1ad99ad
+
             <?php endif; ?>
             <button class="btn btn-dark btn-flat btn-sm print-btn" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
             <button onclick="printOrderDetails()" class="print-btn">Print Order Details</button>
@@ -222,16 +210,15 @@ if ($order->num_rows > 0) {
     </div>
 </div>
 <script>
-<<<<<<< HEAD
+
     $('#btn-cancel').click(function() {
         _conf("Are you sure to cancel this order?", "cancel_order", [])
     })
 
-=======
-<<<<<<< HEAD
+
     $('#btn-cancel').click(function() {
         _conf("Are you sure to cancel this order?", "cancel_order", [])
-=======
+    })
     function printOrderDetails() {
         // Specify the div to print using its ID
         var printContents = document.getElementById("orderDetailsContainer").innerHTML;
@@ -253,10 +240,10 @@ if ($order->num_rows > 0) {
     }
     $('#btn-cancel').click(function(){
         _conf("Are you sure to cancel this order?","cancel_order",[])
->>>>>>> f23a26e6234cdb19298c5e275c3492301c6fe8ee
+
     })
 
->>>>>>> 91901f68c2506ea47be37209ec885336d1ad99ad
+
     function cancel_order() {
         start_loader();
         $.ajax({
