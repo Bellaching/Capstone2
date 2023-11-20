@@ -58,9 +58,12 @@ if ($order->num_rows > 0) {
                 <div class="ml-3"><b><?php echo $fullname?></b></div>
             
                 <br>
+<<<<<<< HEAD
 
                 <p><b>Client Name: <?php echo $fullname ?></b></p><br>
 
+=======
+>>>>>>> 91901f68c2506ea47be37209ec885336d1ad99ad
 
                 <div class="col-md-6">
                     <label for="" class="text-muted">Reference Code</label>
@@ -172,6 +175,7 @@ if ($order->num_rows > 0) {
                             break;
                         }
                     }
+
 
                            
                             echo '<label for="" class="text-muted">Client Address</label>';
