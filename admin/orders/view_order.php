@@ -59,8 +59,8 @@ if ($order->num_rows > 0) {
             
                 <br>
 
-<<<<<<< Updated upstream
                 <p><b>Client Name: <?php echo $fullname ?></b></p><br>
+
 
                 <div class="col-md-6">
                     <label for="" class="text-muted">Reference Code</label>
@@ -70,7 +70,7 @@ if ($order->num_rows > 0) {
                     <label for="" class="text-muted">Date Ordered</label>
                     <div class="ml-3"><b><?= isset($date_created) ? date("M d, Y h:i A", strtotime($date_created)) : "N/A" ?></b></
                 </div>
-=======
+
                
             
                 <label for="" class="text-muted">Reference Code</label>
@@ -80,7 +80,7 @@ if ($order->num_rows > 0) {
             
                 <label for="" class="text-muted">Date Ordered</label>
                 <div class="ml-3"><b><?= isset($date_created) ? date("M d, Y h:i A", strtotime($date_created)) : "N/A" ?></b></div>
->>>>>>> Stashed changes
+
             </div>
         </div>
 

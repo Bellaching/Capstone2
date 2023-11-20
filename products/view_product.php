@@ -1,10 +1,13 @@
 <?php
 if (isset($_GET['id']) && $_GET['id'] > 0) {
+    $result = $conn->query("SELECT * from product_image_gallery where product_id = '".$_GET['id']."' AND is_deleted = 0");
+   
     $qry = $conn->query("SELECT p.*, b.name as brand, c.category from `product_list` p
         inner join brand_list b on p.brand_id = b.id
         inner join categories c on p.category_id = c.id
         -- left join product_variations v on p.id = v.product_id
         where p.id = '{$_GET['id']}'");
+
     if ($qry->num_rows > 0) {
         while ($row = $qry->fetch_assoc()) {
             foreach ($row as $k => $v) {
@@ -138,16 +141,78 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
     .text-price {
         color: firebrick;
     }
+    .gallery-item img {
+        height: 119px;
+        object-fit: cover;
+        width: 100%;
+    }
+    .gallery {
+        display: grid;
+        grid-auto-columns: auto;
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .gallery-item {
+        margin: 10px;
+        cursor: pointer;
+    }
+
+    #lightbox {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+        background: rgba(0, 0, 0, 0.8);
+    }
+
+    #lightbox img {
+        display: block;
+        margin: 50px auto;
+        max-width: 90%;
+        max-height: 90%;
+    }
+
+    #lightbox .close {
+        color: #fff;
+        font-size: 30px;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        cursor: pointer;
+    }
+
+    .left-container {
+    position: sticky;
+    top: 20px;
+    height: 80vh;
+    overflow-y: auto;
+}
+
 </style>
 <div class="content ">
     <div class="containerr">
-        <div class="d-flex">
-            <div class="left-container px-5">
+        <div class="row">
+            <div class="left-container px-5 col-md-4">
                 <div class="image text-center">
                     <img src="<?= validate_image(isset($image_path) ? $image_path : "") ?>" alt="Product Image <?= isset($name) ? $name : "" ?>" class="img-thumbnail product-img">
                 </div>
+                <div class="gallery">
+                    <?php
+                         while ($row = $result->fetch_assoc()) {
+                            echo '<div class="gallery-item" data-image="' . $row['image_url'] . '">
+                                      <img src="' . $row['image_url'] . '" alt="Gallery Image">
+                                  </div>';
+                        }
+                    ?>
+                </div>
+                <div id="lightbox">
+                    <span class="close">&times;</span>
+                    <img id="lightbox-image" src="" alt="Lightbox Image">
+                </div>
             </div>
-            <div class="right-container px-5 flex-grow-1">
+            <div class="right-container px-5 flex-grow-1 col-md-8">
                 <div class="info">
                     <h1 class="brand_name text-capitalize"><?= isset($name) ? $name : '' ?> </h1>
                     <?= isset($description) ? html_entity_decode($description) : '' ?>
@@ -156,8 +221,8 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
                     ₱<?php
                         $minVariation = $conn->query("SELECT MIN(variation_price) as lowestVariation FROM product_variations where product_id = $id")->fetch_assoc();
                         echo number_format($minVariation['lowestVariation'], 2);
-                        ?> 
-                   
+                        ?> -
+                    ₱<strong><?= isset($price) ? number_format($price, 2) : '' ?></strong>
                 </h3>
                 <h3 class="text-success" id="selectedVariation"></h3>
                 <div class="mt-3 border-bottom">
@@ -215,8 +280,8 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
                                         <div class="bd-highlights">
                                             <input type='radio' name='variations' id='variation_<?php echo $variation['id'] ?>' value='<?php echo $variation['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($variation['variation_price'], 2)  ?>')" />
                                             <span id='stock_<?php echo $variation['id'] ?>'>
-                                                <?php echo $variation['variation_name'] ?> 
-                                               
+                                                <?php echo $variation['variation_name'] ?> -
+                                                <span class="text-price"> <?= number_format($variation['variation_price'], 2)  ?> php </span>
                                         </div>
                                         <div class="bd-highlights">
                                             <small>
@@ -341,6 +406,9 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
             unavailableDiv.style.display = 'block';
             limitReached.style.display = 'block';
         }
+        update_cart_count(cart_count);
+
+        //document.getElementById('cart_count').textContent = cart_count;
     }
 
     function fetch() {
@@ -355,6 +423,7 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
                 availability = data.available;
                 cart_count = data.cart_count;
                 initialize();
+                update_cart_count(cart_count);
             },
             error: err => {
                 console.log(err);
@@ -363,5 +432,51 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
         });
     }
 
+    function buyNow() {
+        if ("<?= $_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2 ?>" == 1) {
+            if ('<?= $available > 0 ?>' == 1) {
+                start_loader();
+                $.ajax({
+                    url: _base_url_ + "classes/Master.php?f=process_immediate_purchase", // Replace with the appropriate URL for immediate purchase
+                    method: 'POST',
+                    data: {
+                        product_id: '<?= isset($id) ? $id : "" ?>',
+                        quantity: 1
+                    },
+                    dataType: 'json',
+                    error: err => {
+                        console.error(err);
+                        alert_toast("An error occurred", "error");
+                        end_loader();
+                    },
+                    success: function(resp) {
+                        if (resp.status == 'success') {
+                            // Handle the success response for immediate purchase
+                            alert_toast("Product has been purchased.", 'success');
+                        } else if (!!resp.msg) {
+                            alert_toast(resp.msg, 'error');
+                        } else {
+                            alert_toast("An error occurred", "error");
+                        }
+                        end_loader();
+                    }
+                });
+            }
+        } else {
+            alert_toast("Please Login First!", 'warning');
+        }
+    }
+    $(document).ready(function () {
+    // Open lightbox on image click
+    $('.gallery-item').on('click', function () {
+        var imagePath = $(this).data('image');
+        $('#lightbox-image').attr('src', imagePath);
+        $('#lightbox').fadeIn();
+    });
 
+    // Close lightbox on close button click or outside click
+    $('#lightbox, .close').on('click', function () {
+        $('#lightbox').fadeOut();
+    });
+});
 </script>
