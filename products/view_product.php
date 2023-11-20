@@ -109,7 +109,7 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 
     .containerr {
 
-        margin: 0 4%;
+        margin:  4%;
         width: 80%;
 
     }
@@ -190,6 +190,10 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
     overflow-y: auto;
 }
 
+.img-thumbnail{
+    box-shadow: 0 3px 10px rgba(3, 3, 3, 0.619);
+}
+
 </style>
 <div class="content ">
     <div class="containerr">
@@ -221,8 +225,7 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
                     ₱<?php
                         $minVariation = $conn->query("SELECT MIN(variation_price) as lowestVariation FROM product_variations where product_id = $id")->fetch_assoc();
                         echo number_format($minVariation['lowestVariation'], 2);
-                        ?> -
-                    ₱<strong><?= isset($price) ? number_format($price, 2) : '' ?></strong>
+                        ?> 
                 </h3>
                 <h3 class="text-success" id="selectedVariation"></h3>
                 <div class="mt-3 border-bottom">

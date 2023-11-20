@@ -255,13 +255,20 @@
     }
 
   
-
-.row {
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    .name {
+        text-align: center;
+        white-space: nowrap;
+        /* Prevent text from wrapping */
+        overflow: hidden;
+        /* Hide overflowing text */
+        text-overflow: ellipsis;
+        /* Show ellipsis (...) when text overflows */
+        max-width: 100%;
+        /* Limit the maximum width to prevent container resizing */
+        font-size: 20px;
+        cursor: pointer;
+        /* Change cursor to pointer on hover */
+    }
 
 .product-container{
     margin: 3% 0;
