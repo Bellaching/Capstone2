@@ -4,13 +4,13 @@
 <?php require_once('inc/header.php');  ?>
 
 <!-- Montserrat Font (800 weight) -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap">
 
 <!-- Julius Sans One Font -->
 <link href="https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap" rel="stylesheet">
 
 <!-- Montserrat Font (800 weight) and Poppins Font (200 weight) -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins:wght@200;200&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@200;200&display=swap">
 <link rel="stylesheet" href="./css/login.css">
 
 <body>
@@ -45,12 +45,15 @@
               <input type="password" name="password" placeholder="Enter your password" required>
             </div>
           </div>
+
           <div class="back_to_shop">
             <a href="<?php echo base_url ?>">Back to Shop</a>
           </div>
+
           <div id="login-btn">
             <button type="submit">Log in</button>
           </div>
+          
           <div id="no-account">No account?
             <a href="<?php echo base_url . 'register.php' ?>"> Signup here.</a>
           </div>

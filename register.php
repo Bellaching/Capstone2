@@ -94,45 +94,63 @@
     $('#register-frm').submit(function(e){
       e.preventDefault()
       var _this = $(this)
-			 $('.err-msg').remove();
-       var el = $('<div>')
-            el.hide()
+      $('.err-msg').remove();
+      var el = $('<div>')
+      el.hide()
       if($('#password').val() != $('#cpassword').val()){
         el.addClass('alert alert-danger err-msg').text('Password does not match.');
         _this.prepend(el)
         el.show('slow')
         return false;
       }
-			start_loader();
-			$.ajax({
-				url:_base_url_+"classes/Users.php?f=save_client",
-				data: new FormData($(this)[0]),
-                cache: false,
-                contentType: false,
-                processData: false,
-                method: 'POST',
-                type: 'POST',
-                dataType: 'json',
-				error:err=>{
-					console.log(err)
-					alert_toast("An error occured",'error');
-					end_loader();
-				},
-				success:function(resp){
-					if(typeof resp =='object' && resp.status == 'success'){
-						location.href = "./login.php";
-					}else if(resp.status == 'failed' && !!resp.msg){   
-              el.addClass("alert alert-danger err-msg").text(resp.msg)
-              _this.prepend(el)
-              el.show('slow')
-          }else{
-						alert_toast("An error occured",'error');
-						end_loader();
-                        console.log(resp)
-					}
+      var password = $('#password').val();
+
+    // Check if the password length is greater than 8
+    if (password.length <= 8) {
+      el.addClass('alert alert-danger err-msg').text('Password must be at least 8 characters long.');
+      _this.prepend(el);
+      el.show('fast');
+      return false;
+    }
+
+  if (!/[^a-zA-Z\s]/.test(firstname)&&!/[^a-zA-Z\s]/.test(lastname)) {
+    el.addClass('alert alert-danger err-msg').text('Letters only.');
+    _this.prepend(el);
+    el.show('fast');
+    return false;
+}
+
+      start_loader();
+      $.ajax({
+        url:_base_url_+"classes/Users.php?f=save_client",
+        data: new FormData($(this)[0]),
+        cache: false,
+        contentType: false,
+        processData: false,
+        method: 'POST',
+        type: 'POST',
+        dataType: 'json',
+        error:err=>{
+          console.log(err)
+          alert_toast("An error occurred",'error');
+          end_loader();
+        },
+        success:function(resp){
+          if(typeof resp =='object' && resp.status == 'success'){
+            var emailInput = $("#email").val(); // Get the email input value
+            location.href = "./verification.php?email=" + encodeURIComponent(emailInput);
+          } else if(resp.status == 'failed' && !!resp.msg){   
+            el.addClass("alert alert-danger err-msg").text(resp.msg)
+            _this.prepend(el)
+            el.show('slow')
+          } else {
+            alert_toast("An error occurred",'error');
+            end_loader();
+            console.log(resp)
+          }
           $('html, body').scrollTop(0)
-				}
-			})
+        }
+      })
     })
   })
 </script>

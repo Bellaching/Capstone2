@@ -1,10 +1,13 @@
 <?php
 if (isset($_GET['id']) && $_GET['id'] > 0) {
+    $result = $conn->query("SELECT * from product_image_gallery where product_id = '" . $_GET['id'] . "' AND is_deleted = 0");
+
     $qry = $conn->query("SELECT p.*, b.name as brand, c.category from `product_list` p
         inner join brand_list b on p.brand_id = b.id
         inner join categories c on p.category_id = c.id
         -- left join product_variations v on p.id = v.product_id
         where p.id = '{$_GET['id']}'");
+
     if ($qry->num_rows > 0) {
         while ($row = $qry->fetch_assoc()) {
             foreach ($row as $k => $v) {
@@ -106,16 +109,8 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 
     .containerr {
 
-        margin: 0 4%;
+        margin:  4%;
         width: 80%;
-
-    }
-
-    .content {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
 
     }
 
@@ -134,21 +129,127 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
         /* Change cursor to indicate non-interactivity */
         /* Optionally, you can add other styles like changing background color, text color, etc. */
     }
+
+    .text-price {
+        color: firebrick;
+    }
+
+    .gallery-item img {
+        height: 119px;
+        object-fit: cover;
+        width: 100%;
+    }
+
+    .gallery-container {
+        overflow: auto;
+        width: 100%;
+    }
+
+    .gallery {
+        position: relative;
+        white-space: nowrap;
+        height: 100%;
+    }
+
+    .gallery-item {
+        margin: 10px;
+        cursor: pointer;
+        display: inline-block;
+    }
+
+    #lightbox {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+        background: rgba(0, 0, 0, 0.8);
+    }
+
+    #lightbox img {
+        display: block;
+        margin: 50px auto;
+        max-width: 90%;
+        max-height: 90%;
+    }
+
+    #lightbox .close {
+        color: #fff;
+        font-size: 30px;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        cursor: pointer;
+    }
+
+    .product_title_description {
+        text-align: justify;
+    }
+
+    .checked {
+        color: #f7d72c;
+    }
+
+    .left-container {
+        max-width: 25vw;
+        min-width: 25vw;
+    }
+
+    .product-image img {
+        object-fit: cover;
+        width: 100%;
+    }
+
+    .review-section .review-details i:not(.checked) {
+        color: #a5a3a3;
+    }
+
+    .review-section .review-details .reviewer-comments {
+        font-size: 14px;
+        text-align: justify;
+    }
+    .img-thumbnail{
+    box-shadow: 0 3px 10px rgba(3, 3, 3, 0.619);
+}
 </style>
+
 <div class="content ">
-    <div class="containerr">
+    <div class="container">
         <div class="d-flex">
-            <div class="left-container px-5">
-                <div class="image text-center">
+            <div class="left-container">
+                <div class="image product-image text-center">
                     <img src="<?= validate_image(isset($image_path) ? $image_path : "") ?>" alt="Product Image <?= isset($name) ? $name : "" ?>" class="img-thumbnail product-img">
                 </div>
+                <div class="gallery-container">
+                    <div class="gallery">
+                        <?php
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<div class="gallery-item" data-image="' . $row['image_url'] . '">
+                                      <img src="' . $row['image_url'] . '" alt="Gallery Image">
+                                  </div>';
+                        }
+                        ?>
+                    </div>
+                </div>
+                <div id="lightbox">
+                    <span class="close">&times;</span>
+                    <img id="lightbox-image" src="" alt="Lightbox Image">
+                </div>
             </div>
-            <div class="right-container px-5 flex-grow-1">
+            <div class="right-container px-5">
                 <div class="info">
                     <h1 class="brand_name text-capitalize"><?= isset($name) ? $name : '' ?> </h1>
                     <?= isset($description) ? html_entity_decode($description) : '' ?>
                 </div>
-                <h3 class="text-success">₱<strong><?= isset($price) ? number_format($price, 2) : '' ?></strong></h3>
+                <h3 class="text-success" id="default">
+                    ₱<?php
+                        $minVariation = $conn->query("SELECT MIN(variation_price) as lowestVariation FROM product_variations where product_id = $id")->fetch_assoc();
+                        echo number_format($minVariation['lowestVariation'], 2);
+                        ?> 
+                </h3>
+                <h3 class="text-success" id="selectedVariation"></h3>
                 <div class="mt-3 border-bottom">
                     <h5>Details: </h3>
                 </div>
@@ -172,10 +273,12 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
                             $productQuantityQuery = $conn->query("SELECT * FROM stock_list where product_id = $id");
                             $productQuantity = $productQuantityQuery->fetch_assoc();
                             $orderItemStocks = $conn->query("SELECT SUM(quantity) as totalQuantity FROM order_items where product_id = '{$id}' and order_id in (SELECT id FROM order_list where `status` != 5)");
+                            $cartItemCount = $conn->query("SELECT SUM(quantity) as cartQuantity FROM cart_list where product_id = '{$id}'")->fetch_array()[0];
                             $productStockTotalQuantity = $productQuantity['quantity'];
                             if ($orderItemStocks->num_rows > 0) {
                                 $oiStocksQuantity = $orderItemStocks->fetch_assoc();
-                                $productStockTotalQuantity = $productQuantity['quantity'] - $oiStocksQuantity['totalQuantity'];
+                                $productStockQuantity = $productQuantity['quantity'] - $oiStocksQuantity['totalQuantity'];
+                                $productStockTotalQuantity = $productStockQuantity - $cartItemCount;
                             }
                             ?>
                             <span id="available_stock"><?= isset($productStockTotalQuantity) ? number_format($productStockTotalQuantity) : '' ?></span>
@@ -185,19 +288,32 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
                         <?php
                         $variations = $conn->query("SELECT * FROM product_variations where product_id = $id");
                         while ($variation = $variations->fetch_assoc()) :
-                            $orderItemWithSameVariation = $conn->query("SELECT SUM(quantity) FROM order_items where product_id = '{$id}' and variation_id = '{$variation['id']}' and order_id in (SELECT id FROM order_list where `status` != 5)");
+                            $orderItemWithSameVariation = $conn->query("SELECT SUM(quantity) FROM order_items where product_id = '{$id}'
+                                and variation_id = '{$variation['id']}' and order_id in (SELECT id FROM order_list where `status` != 5)");
                             $variationTotalQuantity = $variation['variation_stock'];
+                            $cartVarItemCount = $conn->query("SELECT SUM(quantity) as cartQuantity FROM cart_list where product_id = '{$id}'
+                                and variation_id = '{$variation['id']}'")->fetch_array()[0];
                             if ($orderItemWithSameVariation->num_rows > 0) {
                                 $oitQuantity = $orderItemWithSameVariation->fetch_array()[0];
-                                $variationTotalQuantity = $variation['variation_stock'] - $oitQuantity;
+                                $variationQuantity = $variation['variation_stock'] - $oitQuantity;
+                                $variationTotalQuantity = $variationQuantity - $cartVarItemCount;
                             }
                         ?>
                             <div class="d-block me-5">
-                                <label for='variation_<?php echo $variation['id'] ?>'>
-                                    <input type='radio' name='variations' id='variation_<?php echo $variation['id'] ?>' value='<?php echo $variation['id'] ?>' onclick='handleVariationSelect(this)' />
-                                    <span id='stock_<?php echo $variation['id'] ?>'><?php echo $variation['variation_name'] ?>
-                                        (Stock: <span id='variation_stock_<?php echo $variation['id'] ?>'> <?= $variationTotalQuantity ?></span>)
-                                    </span>
+                                <label class="w-100" for='variation_<?php echo $variation['id'] ?>'>
+                                    <div class="d-flex justify-content-between">
+                                        <div class="bd-highlights">
+                                            <input type='radio' name='variations' id='variation_<?php echo $variation['id'] ?>' value='<?php echo $variation['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($variation['variation_price'], 2)  ?>')" />
+                                            <span id='stock_<?php echo $variation['id'] ?>'>
+                                                <?php echo $variation['variation_name'] ?> -
+                                                <span class="text-price"> <?= number_format($variation['variation_price'], 2)  ?> php </span>
+                                        </div>
+                                        <div class="bd-highlights">
+                                            <small>
+                                                <span id='variation_stock_<?php echo $variation['id'] ?>' class="var_stock" data-id="<?php echo $variation['id'] ?>" data-total="<?= $variationTotalQuantity ?>"> <?= $variationTotalQuantity ?> qty.</span>
+                                            </small>
+                                        </div>
+                                    </div>
                                 </label>
                             </div>
                         <?php
@@ -216,6 +332,73 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
             </div>
         </div>
     </div>
+    <div class="container my-5">
+        <div class="product-review">
+            <?php
+            $productReviews = $conn->query(
+                "SELECT oi.rate_level, oi.rate_comments, oi.date_updated, cl.firstname, cl.lastname, pv.variation_name FROM `order_items` oi
+                    inner join `order_list` ol on ol.id = oi.order_id
+                    inner join `client_list` cl on cl.id = ol.client_id
+                    inner join `product_variations` pv on oi.variation_id = pv.id
+                where oi.product_id =  $id and oi.rated = 1 order by unix_timestamp(oi.date_updated) desc;
+                "
+            );
+            while ($review = $productReviews->fetch_assoc()) :
+            ?>
+                <div class="review-section mb-3 border rounded p-3">
+                    <figure class="mb-1">
+                        <blockquote class="blockquote">
+                            <p><?= ucfirst($review['lastname']), ', ', ucfirst($review['firstname']) ?></p>
+                        </blockquote>
+                        <figcaption class="blockquote-footer mb-1">
+                            <?= date("Y-m-d h:i:s A", strtotime($review['date_updated'])) ?> | Variation: <?= $review['variation_name'] ?>
+                        </figcaption>
+                    </figure>
+                    <div class="review-details">
+                        <?php switch (strval($review['rate_level'])):
+                            case "1": ?>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                            <?php break;
+                            case "2": ?>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                            <?php break;
+                            case "3": ?>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                            <?php break;
+                            case "4": ?>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star-o"></i>
+                            <?php break;
+                            case "5": ?>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star checked"></i>
+                            <?php break;
+                            default: ?>
+                        <?php endswitch; ?>
+                        <p class="reviewer-comments mt-3"><?= ucfirst($review['rate_comments']) ?></p>
+                    </div>
+                </div>
+            <?php endwhile; ?>
+        </div>
+    </div>
 </div>
 
 
@@ -228,11 +411,11 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
         let cart_count = 0;
     });
 
-    function handleVariationSelect(variation) {
+    function handleVariationSelect(variation, variation_price) {
         if (variation.checked) {
-            // Do something when the radio button is clicked and checked
-            console.log(`Selected value: ${variation.value}`);
             $('#add_to_cart').removeAttr("disabled");
+            $('#default').hide("slow");
+            $('#selectedVariation').html(`₱ ${variation_price}`);
 
         }
     }
@@ -243,8 +426,9 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
             availability--;
             let avail_stock = availability - cart_count;
             $('#available_stock').html(avail_stock);
-            console.log(variationId);
-
+            let var_item_stock = $('#variation_stock_' + variationId).data('total');
+            var_item_stock--;
+            $('#variation_stock_' + variationId).html(var_item_stock + " qty.");
             if (availability > 0) {
                 start_loader();
                 $.ajax({
@@ -263,9 +447,18 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
                     },
                     success: function(resp) {
                         if (resp.status == 'success') {
-                            // update_cart_count(resp.cart_count);
                             fetch();
                             alert_toast("Product has been added to cart.", 'success');
+                            update_cart_count(resp.cart_count);
+                            const cartCount = resp.cart_count;
+                            const cartCountSpan = $('#cart_count');
+
+                            if (cartCount !== 0) {
+                                cartCountSpan.text(cartCount).addClass('badge bg-danger cart-badge').removeClass('hidden');
+                            } else {
+                                cartCountSpan.text('').removeClass('badge bg-danger cart-badge').addClass('hidden');
+                            }
+
                         } else if (!!resp.msg) {
                             alert_toast(resp.msg, 'error');
                         } else {
@@ -282,7 +475,9 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
         }
     }
 
-
+    // function update_cart_count($count){
+    //     $('#cart_count').text($count)
+    // }
 
     function initialize() {
         console.log("available:", availability);
@@ -291,6 +486,7 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
         var availableDiv = document.getElementById('available');
         var unavailableDiv = document.getElementById('unavailable');
         var limitReached = document.getElementById('limit');
+        //var cartNum = document.getElementById('cart_count');
 
         if (isAvailable) {
             availableDiv.style.display = 'block';
@@ -301,6 +497,9 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
             unavailableDiv.style.display = 'block';
             limitReached.style.display = 'block';
         }
+        update_cart_count(cart_count);
+
+        //document.getElementById('cart_count').textContent = cart_count;
     }
 
     function fetch() {
@@ -315,13 +514,13 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
                 availability = data.available;
                 cart_count = data.cart_count;
                 initialize();
+                update_cart_count(cart_count);
             },
             error: err => {
                 console.log(err);
                 alert_toast("An error occurred", "error");
             },
         });
-
     }
 
     function buyNow() {
@@ -358,4 +557,17 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
             alert_toast("Please Login First!", 'warning');
         }
     }
+    $(document).ready(function() {
+        // Open lightbox on image click
+        $('.gallery-item').on('click', function() {
+            var imagePath = $(this).data('image');
+            $('#lightbox-image').attr('src', imagePath);
+            $('#lightbox').fadeIn();
+        });
+
+        // Close lightbox on close button click or outside click
+        $('#lightbox, .close').on('click', function() {
+            $('#lightbox').fadeOut();
+        });
+    });
 </script>
