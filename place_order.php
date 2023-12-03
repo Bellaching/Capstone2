@@ -1,7 +1,12 @@
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 <?php
 include 'sendemailporder.php';
-
+$total = 0;
+$api_url_province = 'https://ph-locations-api.buonzz.com/v1/provinces';
+$response1 = file_get_contents($api_url_province);
+$api_url_city = 'https://ph-locations-api.buonzz.com/v1/cities';
+$response2 = file_get_contents($api_url_city);
+$all_order_config = $conn->query("SELECT * from order_config where is_all = 1 limit 1")->fetch_assoc();
 if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
     $qry = $conn->query("SELECT * FROM `client_list` where id = '{$_settings->userdata('id')}'");
     if ($qry->num_rows > 0) {
@@ -41,7 +46,7 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
         margin: 0;
     }
 
-    .left,
+    /* .left,
     .right {
         width: 50%;
         background-color: #FFFFFF;
@@ -50,9 +55,8 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
     .right {
         position: sticky;
         top: 0;
-        background-color: #FFFFFF;
-        /* Set a height for the sticky container */
-    }
+        background-color: rgba(96, 154, 196, 0.7);
+    } */
 
     .place-order {
         margin: 4% 0;
@@ -110,6 +114,7 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
 
     .righth2 {
         font-size: 25px;
+        margin: unset !important;
     }
 
     .product-sum {
@@ -146,522 +151,595 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
         /* Adjust the margin as needed */
     }
 
-    .order-type {
-        margin: 5% 0;
-
+    input,
+    button,
+    select:focus {
+        box-shadow: unset !important;
     }
 
-    .ordertype {
-        margin: 2% 0;
+    .min-vh-5 {
+        min-height: 5vh;
     }
 
-    .left {
-        padding: 1%;
+    .min-vh-35 {
+        min-height: 35vh;
     }
 
-    @media (max-width: 950px) {
-        .info-summer-form {
-            flex-direction: column;
-        }
 
-        .left,
-        .right {
-            width: 100%;
-            margin: 0;
-        }
+    .ui-datepicker {
+        min-width: 300px;
+    }
 
-        .pick-up-holder,
-        .meet-up-holder,
-        .other-meet-up,
-        .diff-add {
-            display: none;
-        }
+    .ui-datepicker .ui-datepicker-calendar {
+        background: #fff;
+    }
 
-        /* Additional responsive styles for smaller screens */
-        .input-form-name {
-            flex-direction: column;
-        }
+    .ui-datepicker>table {
+        width: 100%;
+    }
 
-        .fname,
-        .lname,
-        .zip {
-            width: 100%;
-            margin: 0 0 1% 0;
-        }
 
-        .order-type,
-        .billing-address,
-        .pick-up-holder,
-        .meet-up-holder,
-        .other-meet-up {
-            margin: 4% 0;
-        }
+    .ui-datepicker>table td,
+    th {
+        border: 1px solid #1A547E;
+        padding: 5px;
+    }
 
-        .product-sum {
-            margin: 2% 0;
-        }
+    .ui-datepicker>table .ui-datepicker-unselectable {
+        background-color: #1A547E;
+        color: white;
+    }
 
-        .sum-info {
-            margin: 0 2%;
-        }
+    .ui-datepicker>table .ui-datepicker-unselectable .ui-state-default {
+        border: unset;
+    }
+
+    .ui-datepicker-header .ui-datepicker-prev {
+        position: absolute;
+        padding: 5px;
+        color: white;
+        left: 8px;
+        cursor: pointer;
+    }
+
+    .ui-datepicker-header .ui-datepicker-title {
+        width: 100%;
+        text-align: center;
+    }
+
+    .ui-datepicker-header .ui-datepicker-next {
+        position: absolute;
+        padding: 5px;
+        color: white;
+        right: 8px;
+        cursor: pointer;
+    }
+
+    .ui-datepicker-header {
+        display: flex;
+        align-items: center;
+        background: #1A547E;
+        min-height: 35px;
+        color: white;
+    }
+
+
+    .ui-state-default,
+    .ui-widget-content .ui-state-default,
+    .ui-widget-header .ui-state-default {
+        border: solid #FFF;
+        border-width: 1px 0 0 1px;
     }
 </style>
-
-
 <div class="content ">
     <div class="container">
         <div class="card-body">
-            <form action="" id="place_order" class="info-summer-form">
-                <div class="left mx-3">
-                    <h1 class="label-info"><strong>Contact</strong></h1>
-                    <div class="form-group">
-                        <input class="input" type="email" name="email" id="email" placeholder="yourmail@gmail.com" required value="<?= isset($email) ? $email : "" ?>">
-                        <input class="input" type="number" name="phone_number" id="phone_number" rows="3" class="phone_number" placeholder="Phone" value="<?= isset($contact) ? $contact : "" ?>"></input required>
-                    </div>
-                    <h1 class="label-info"><strong>Delivery</strong></h1>
-                    <div class="form-group">
-                        <div class="input-form-name">
-                            <div class="fname">
-                                <input class="input" type="text" name="firstname" id="firstname" placeholder="First Name" autofocus value="<?= isset($firstname) ? $firstname : "" ?>" required>
+            <form action="" id="place_order" class="info-summer-form d-flex flex-column">
+                <div class="d-flex flex-column w-100">
+                    <div class="mx-1">
+                        <div class="product-sum h-100">
+                            <?php
+                            $cart = $conn->query("SELECT c.*, p.name, p.image_path, p.weight, b.name as brand, cc.category, v.*, v.variation_price as price FROM `cart_list` c
+                                INNER JOIN product_list p ON c.product_id = p.id
+                                INNER JOIN brand_list b ON p.brand_id = b.id
+                                INNER JOIN categories cc ON p.category_id = cc.id
+                                INNER JOIN product_variations v ON c.variation_id = v.id
+                                WHERE c.client_id = '{$_settings->userdata('id')}' ORDER BY p.name ASC");
+                            ?>
+                            <div class="mx-3 py-3">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th width="25%" class="text-center">Image</th>
+                                            <th>Product Name</th>
+                                            <th>Variation</th>
+                                            <th>Weight</th>
+                                            <th>Quantity</th>
+                                            <th>Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $shipping = 0;
+                                        $totalItem = 0;
+                                        while ($row = $cart->fetch_assoc()) : ?>
+                                            <tr>
+                                                <td width="25%" class="text-center">
+                                                    <img src="<?= validate_image($row['image_path']) ?>" alt="Product Image" class="img-sum">
+                                                </td>
+                                                <td>
+                                                    <span><?= $row['name'] ?></span>
+                                                </td>
+                                                <td>
+                                                    <span><?= $row['variation_name'] ?></span>
+                                                </td>
+                                                <td>
+                                                    <span><?= $row['weight'] ?></span>
+                                                </td>
+                                                <td>
+                                                    <span><?= $row['quantity'] ?></span>
+                                                </td>
+                                                <td>
+                                                    <span><?= number_format($row['price'], 2) ?></span>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                            $totalItem += ($row['quantity'] * $row['price']);
+                                            switch ($row['weight']) {
+                                                case "500g and below":
+                                                    $shipping += 117;
+                                                    break;
+                                                case "500g – 1kg":
+                                                    $shipping += 200;
+                                                    break;
+                                                case "1kg – 3kg":
+                                                    $shipping += 300;
+                                                    break;
+                                                case "3kg – 4kg":
+                                                    $shipping += 400;
+                                                    break;
+                                                case "4kg – 5kg":
+                                                    $shipping += 500;
+                                                    break;
+                                                case "5kg – 6kg":
+                                                    $shipping += 600;
+                                                    break;
+                                                default:
+                                                    $shipping += 0;
+                                                    break;
+                                            }
+
+                                            $total = $totalItem + $shipping;
+                                            ?>
+                                        <?php endwhile; ?>
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="lname">
-                                <input class="input" type="text" name="lastname" id="lastname" placeholder="Last Name" required value="<?= isset($lastname) ? $lastname : "" ?>">
+                            <div class="mt-auto mx-3 text-end min-vh-5">
+                                <input name="shipping_amount" value="<?= $shipping ?>" type="hidden" />
+                                <h5 id="sf">Shipping Fee: <?= number_format($shipping, 2) ?> </h5>
+                                <h2 id="totalWithSf" class="righth2">Total Price: <?= number_format($total, 2) ?> </h2>
+                                <h2 id="totalWithoutSf" class="righth2" style="display: none;">Total Price: <?= number_format($totalItem, 2) ?> </h2>
                             </div>
                         </div>
                     </div>
-                    <div class="order-type">
-                        <h1 class="label-info"><strong>Order Type</strong></h1>
-                        <div class="ordertype">
-                            <input class="custom-control-input custom-control-input-primary" type="radio" id="customRadio1" name="order_type" value="1" checked>
-                            <label for="customRadio1" class="custom-label">JRS </label><br>
+                    <div class="mx-1">
+                        <h1 class="label-info mt-3"><strong>Contact</strong></h1>
+                        <div class="dropdown-divider my-3"></div>
+                        <div class="form-group">
+                            <input class="form-control mb-2" type="email" name="email" id="email" placeholder="yourmail@gmail.com" required value="<?= isset($email) ? $email : "" ?>">
+                            <input class="form-control mb-2" type="text" name="phone_number" id="phone_number" rows="3" class="phone_number" placeholder="Phone" value="<?= isset($contact) ? $contact : "" ?>"></input required>
                         </div>
-                        <div class="ordertype">
-                            <input class="custom-control-input custom-control-input-primary" type="radio" id="customRadio2" name="order_type" value="2">
-                            <label for="customRadio2" class="custom-label">Lalamove (Shipping fee care of buyer)</label><br>
-                        </div>
-                        <div class="ordertype">
-                            <input class="custom-control-input custom-control-input-primary" type="radio" id="customRadio3" name="order_type" value="3">
-                            <label for="customRadio3" class="custom-label">Pick up (No shipping fee)</label><br>
-                        </div>
-                        <div class="ordertype">
-                            <input class="custom-control-input custom-control-input-primary" type="radio" id="customRadio4" name="order_type" value="4">
-                            <label for="customRadio4" class="custom-label">Meet up (Shipping fee care of buyer)</label><br>
-                        </div>
-                    </div>
-
-                    <div class="billing-address">
-                        <h1 class="label-info"><strong>Billing Address</strong></h1>
-                        <div class="custom-control custom-radio addresstype">
-                            <input class="custom-control-input" type="radio" id="default" name="address_type" value="1" checked>
-                            <label class="custom-control-label" for="default"><strong>Same as shipping address</strong></label>
-                        </div>
-                        <div class="custom-control custom-radio addresstype">
-                            <input class="custom-control-input" type="radio" id="diff" name="address_type" value="2">
-                            <label class="custom-control-label" for="diff"><strong>Use a different billing address</strong></label>
-                        </div>
-                            <div class="default-add">
-                                <div class="province jnt-holder">
-                                    <span class="custom-control-input custom-control-input-primary">Province</span>
-                                    <!-- <select  id="province" name="province" placeholder="Please select your province"class="option select2" required>
-
-                                    <option type="varchar" value="bataan" <?= (isset($province) && $province === 'bataan') ? 'selected' : '' ?>>Bataan</option>
-                                    </select> -->
-                                    <?php
-                                    $api_url_province = 'https://ph-locations-api.buonzz.com/v1/provinces';
-                                    $response1 = file_get_contents($api_url_province);
-
-                                    // Handle JSON data
-                                    $provinces = json_decode($response1, true);
-                                    $selectedProvinceId = $province;
-
-                                    if ($provinces['data'] && is_array($provinces['data'])) {
-                                        echo '<select name="province" id="provinces" class="form-control">';
-                                        foreach ($provinces['data'] as $option) {
-                                            $optionId = $option['id'];
-                                            $optionName = $option['name'];
-
-                                            $selected1 = ($optionId === $selectedProvinceId) ? 'selected' : '';
-                                            echo '<option value="' . $optionId . '" ' . $selected1 . '>' . $optionName . '</option>';
-                                        }
-                                        echo '</select>';
-                                    } else {
-                                        echo 'Failed to fetch or decode data.';
-                                    }
-                                    /*** */
-                                    $api_url_city = 'https://ph-locations-api.buonzz.com/v1/cities';
-                                    $response2 = file_get_contents($api_url_city);
-                                    // Handle JSON data
-                                    $cities = json_decode($response2, true);
-                                    $selectedCityId = $city;
-
-                                    if ($cities['data'] && is_array($cities['data'])) {
-                                        echo '<select name="city" id="cities" class="form-control">';
-                                        foreach ($cities['data'] as $option) {
-                                            $optionId = $option['id'];
-                                            $optionName = $option['name'];
-
-                                            $selected2 = ($optionId === $selectedCityId) ? 'selected' : '';
-                                            echo '<option value="' . $optionId . '" ' . $selected2 . '>' . $optionName . '</option>';
-                                        }
-                                        echo '</select>';
-                                    } else {
-                                        echo 'Failed to fetch or decode data.';
-                                    }
-                                    ?>
-                                    <input name="addressline1" id="addressline1" rows="3" class="form-control rounded-0" placeholder="Address Line 1" value="<?= isset($addressline1) ? $addressline1 : "" ?>"></input>
-                                    <input name="addressline2" id="addressline2" rows="3" class="form-control rounded-0" placeholder="Address Line 2 (Apartment, suite, etc, (optional))" value="<?= isset($addressline2) ? $addressline2 : "" ?>"></input>
-                                    <input type="text" name="zipcode" id="zipcode" rows="3" class="form-control zipcode" placeholder="Zip Code" value="<?= isset($zipcode) ? $zipcode : "" ?>"></input>
-
-                                </div> 
+                        <h1 class="label-info mt-3"><strong>Delivery</strong></h1>
+                        <div class="dropdown-divider my-3"></div>
+                        <div class="form-group">
+                            <div class="input-form-name">
+                                <div class="fname">
+                                    <input class="form-control" type="text" name="firstname" id="firstname" placeholder="First Name" autofocus value="<?= isset($firstname) ? $firstname : "" ?>" required>
+                                </div>
+                                <div class="lname">
+                                    <input class="form-control" type="text" name="lastname" id="lastname" placeholder="Last Name" required value="<?= isset($lastname) ? $lastname : "" ?>">
+                                </div>
                             </div>
+                        </div>
+                        <div class="d-flex w-100 min-vh-35 mt-3">
+                            <div class="w-50 order-type-container">
+                                <h1 class="label-info mt-2"><strong>Order Type</strong></h1>
+                                <div class="dropdown-divider my-3"></div>
+                                <div class="order-type">
+                                    <div class="my-1">
+                                        <input class="custom-control-input custom-control-input-primary" type="radio" id="customRadio1" name="order_type" value="1" checked>
+                                        <label for="customRadio1" class="custom-label">JRS </label><br>
+                                    </div>
+                                    <div class="my-1">
+                                        <input class="custom-control-input custom-control-input-primary" type="radio" id="customRadio2" name="order_type" value="2">
+                                        <label for="customRadio2" class="custom-label">Lalamove (Shipping fee care of buyer)</label><br>
+                                    </div>
+                                    <div class="my-1">
+                                        <input class="custom-control-input custom-control-input-primary" type="radio" id="customRadio3" name="order_type" value="3">
+                                        <label for="customRadio3" class="custom-label">Pick up (No shipping fee)</label><br>
+                                    </div>
+                                    <div class="my-1">
+                                        <input class="custom-control-input custom-control-input-primary" type="radio" id="customRadio4" name="order_type" value="4">
+                                        <label for="customRadio4" class="custom-label">Meet up (Shipping fee care of buyer)</label><br>
+                                    </div>
+                                </div>
+                                <div class="place-order form-group text-right">
+                                    <?php if (isset($all_order_config)) : ?>
+                                        <?php if ((int)$total > (int)$all_order_config['value']) : ?>
+                                            <h1 id="warning-label" class="text-danger invinsible">Sorry! You've reached the order limit (<?= isset($all_order_config) ? number_format($all_order_config['value']) : '' ?> php)</h1>
+                                        <?php endif; ?>
+                                    <?php else : ?>
+                                        <button class="btn btn-flat btn-primary" type="submit" name="submit">
+                                            Place Order
+                                        </button>
+                                    <?php endif; ?>
 
-                            <div class="diff-add">
-                                <div class="province jnt-holder">
-                                    <span class="custom-control-input custom-control-input-primary">Province</span>
+                                </div>
+                            </div>
+                            <div class="w-50 billing-address-container">
+                                <div class="billing-address">
+                                    <h1 class="label-info mt-2"><strong>Billing Address</strong></h1>
+                                    <div class="dropdown-divider my-3"></div>
+                                    <div class="custom-control custom-radio addresstype">
+                                        <input class="custom-control-input" type="radio" id="default" name="address_type" value="1" checked>
+                                        <label class="custom-control-label" for="default"><strong>Same as shipping address</strong></label>
+                                    </div>
+                                    <div class="custom-control custom-radio addresstype">
+                                        <input class="custom-control-input" type="radio" id="diff" name="address_type" value="2">
+                                        <label class="custom-control-label" for="diff"><strong>Use a different billing address</strong></label>
+                                    </div>
+                                    <!-- this will show bu default -->
+                                    <div class="default-add">
+                                        <div class="province jnt-holder">
+                                            <span class="custom-control-input custom-control-input-primary">Province</span>
+                                            <?php
 
-                                    <?php
-                                    $api_url_province = 'https://ph-locations-api.buonzz.com/v1/provinces';
-                                    $response1 = file_get_contents($api_url_province);
+                                            // Handle JSON data
+                                            $provinces = json_decode($response1, true);
+                                            $selectedProvinceId = $province;
 
-                                    // Handle JSON data
-                                    $provinces = json_decode($response1, true);
-                                    //$selectedProvinceId = $province;
+                                            if ($provinces['data'] && is_array($provinces['data'])) {
+                                                echo '<select name="province" id="provinces" class="form-control mb-1">';
+                                                foreach ($provinces['data'] as $option) {
+                                                    $optionId = $option['id'];
+                                                    $optionName = $option['name'];
 
-                                    if ($provinces['data'] && is_array($provinces['data'])) {
-                                        echo '<select name="province2" id="provinces2" class="form-control">';
-                                        echo '<option value="0">-- Select Province --</option>';
-                                        foreach ($provinces['data'] as $option) {
-                                            $optionId = $option['id'];
-                                            $optionName = $option['name'];
+                                                    $selected1 = ($optionId === $selectedProvinceId) ? 'selected' : '';
+                                                    echo '<option value="' . $optionId . '" ' . $selected1 . '>' . $optionName . '</option>';
+                                                }
+                                                echo '</select>';
+                                            } else {
+                                                echo 'Failed to fetch or decode data.';
+                                            }
+                                            // Handle JSON data
+                                            $cities = json_decode($response2, true);
+                                            $selectedCityId = $city;
 
-                                            //$selected1 = ($optionId === $selectedProvinceId) ? 'selected' : '';
-                                            echo '<option value="' . $optionId . '">' . $optionName . '</option>';
-                                        }
-                                        echo '</select>';
-                                    } else {
-                                        echo 'Failed to fetch or decode data.';
-                                    }
-                                    ?>
+                                            if ($cities['data'] && is_array($cities['data'])) {
+                                                echo '<select name="city" id="cities" class="form-control mb-1">';
+                                                foreach ($cities['data'] as $option) {
+                                                    $optionId = $option['id'];
+                                                    $optionName = $option['name'];
 
-                                    <?php
-                                    $api_url_city = 'https://ph-locations-api.buonzz.com/v1/cities';
-                                    $response2 = file_get_contents($api_url_city);
-                                    // Handle JSON data
-                                    $cities = json_decode($response2, true);
-                                    //$selectedCityId = $city;
+                                                    $selected2 = ($optionId === $selectedCityId) ? 'selected' : '';
+                                                    echo '<option value="' . $optionId . '" ' . $selected2 . '>' . $optionName . '</option>';
+                                                }
+                                                echo '</select>';
+                                            } else {
+                                                echo 'Failed to fetch or decode data.';
+                                            }
+                                            ?>
+                                            <input name="addressline1" id="addressline1" rows="3" class="form-control mb-1 rounded-0" placeholder="Address Line 1" value="<?= isset($addressline1) ? $addressline1 : "" ?>"></input>
+                                            <input name="addressline2" id="addressline2" rows="3" class="form-control mb-1 rounded-0" placeholder="Address Line 2 (Apartment, suite, etc, (optional))" value="<?= isset($addressline2) ? $addressline2 : "" ?>"></input>
+                                            <input type="text" name="zipcode" id="zipcode" rows="3" class="form-control mb-1 zipcode" placeholder="Zip Code" value="<?= isset($zipcode) ? $zipcode : "" ?>"></input>
 
-                                    if ($cities['data'] && is_array($cities['data'])) {
-                                        echo '<select name="city2" id="cities2" class="form-control" disabled>';
-                                        echo '<option value="0">-- Select City --</option>';
-                                        foreach ($cities['data'] as $option) {
-                                            $optionId = $option['id'];
-                                            $optionName = $option['name'];
+                                        </div>
+                                    </div>
 
-                                            //$selected2 = ($optionId === $selectedCityId) ? 'selected' : '';
-                                            echo '<option value="' . $optionId . '">' . $optionName . '</option>';
-                                        }
-                                        echo '</select>';
-                                    } else {
-                                        echo 'Failed to fetch or decode data.';
-                                    }
-                                    ?>
+                                    <!-- this will show when user select "Use a different billing address" -->
+                                    <div class="diff-add" style="display: none;">
+                                        <div class="province jnt-holder">
+                                            <span class="custom-control-input custom-control-input-primary">Province</span>
 
-                                    <input name="different_addressline1" id="different_addressline1" rows="3" class="form-control rounded-0" placeholder="Address Line 1 (Different Address)" value=""></input>
-                                    <input name="different_addressline2" id="different_addressline2" rows="3" class="form-control rounded-0" placeholder="Address Line 2 (Different Address)" value=""></input>
-                                    <input type="text" name="different_zipcode" id="different_zipcode" rows="3" class="form-control zipcode" placeholder="Zip Code (Different Address)" value=""></input>
+                                            <?php
+                                            // Handle JSON data
+                                            $provinces = json_decode($response1, true);
+                                            //$selectedProvinceId = $province;
+
+                                            if ($provinces['data'] && is_array($provinces['data'])) {
+                                                echo '<select name="province2" id="provinces2" class="form-control">';
+                                                echo '<option value="0">-- Select Province --</option>';
+                                                foreach ($provinces['data'] as $option) {
+                                                    $optionId = $option['id'];
+                                                    $optionName = $option['name'];
+
+                                                    //$selected1 = ($optionId === $selectedProvinceId) ? 'selected' : '';
+                                                    echo '<option value="' . $optionId . '">' . $optionName . '</option>';
+                                                }
+                                                echo '</select>';
+                                            } else {
+                                                echo 'Failed to fetch or decode data.';
+                                            }
+                                            ?>
+
+                                            <?php
+                                            // Handle JSON data
+                                            $cities = json_decode($response2, true);
+                                            //$selectedCityId = $city;
+
+                                            if ($cities['data'] && is_array($cities['data'])) {
+                                                echo '<select name="city2" id="cities2" class="form-control" disabled>';
+                                                echo '<option value="0">-- Select City --</option>';
+                                                foreach ($cities['data'] as $option) {
+                                                    $optionId = $option['id'];
+                                                    $optionName = $option['name'];
+
+                                                    //$selected2 = ($optionId === $selectedCityId) ? 'selected' : '';
+                                                    echo '<option value="' . $optionId . '">' . $optionName . '</option>';
+                                                }
+                                                echo '</select>';
+                                            } else {
+                                                echo 'Failed to fetch or decode data.';
+                                            }
+                                            ?>
+
+                                            <input name="different_addressline1" id="different_addressline1" rows="3" class="form-control rounded-0" placeholder="Address Line 1 (Different Address)" value=""></input>
+                                            <input name="different_addressline2" id="different_addressline2" rows="3" class="form-control rounded-0" placeholder="Address Line 2 (Different Address)" value=""></input>
+                                            <input type="text" name="different_zipcode" id="different_zipcode" rows="3" class="form-control zipcode" placeholder="Zip Code (Different Address)" value=""></input>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- this will show when user select "Pick up" -->
+                                <div class="pick-up-holder" style="display: none;">
+                                    <h1 class="label-info mt-2"><strong>Pick-Up Address</strong></h1>
+                                    <div class="dropdown-divider my-3"></div>
+                                    <select name="pickup" id="puAddressDropdown" class="form-control mb-1">
+                                        <option value="BLK 7 LOT 22 PHASE 2 BRGY. BUROL 1, DASMARINAS CITY, CAVITE">BLK 7 LOT 22 PHASE 2 BRGY. BUROL 1, DASMARINAS CITY, CAVITE</option>
+                                        <option value="EVANGELISTA ST. COR ARGUELLES PETRON STATION MAKATI CITY">EVANGELISTA ST. COR ARGUELLES PETRON STATION MAKATI CITY</option>
+                                    </select>
                                 </div>
 
-                            </div>
-                    </div>
-
-                    <div class="pick-up-holder">
-                        <h1 class="label-info"><strong>Pick-Up Address</strong></h1>
-                        <select name="pickup" id="puAddressDropdown" class="form-control">
-                            <option value="BLK 7 LOT 22 PHASE 2 BRGY. BUROL 1, DASMARINAS CITY, CAVITE">BLK 7 LOT 22 PHASE 2 BRGY. BUROL 1, DASMARINAS CITY, CAVITE</option>
-                            <option value="EVANGELISTA ST. COR ARGUELLES PETRON STATION MAKATI CITY">EVANGELISTA ST. COR ARGUELLES PETRON STATION MAKATI CITY</option>
-                        </select>
-                    </div>
-
-                    <div class="meet-up-holder">
-                        <h1 class="label-info"><strong>Meet Up Address</strong></h1>
-                        <select name="meetup" id="muAddressDropdown" class="form-control">
-                            <?php
-                            $getMeetupAddresses = $conn->query("SELECT * FROM `meet_up_address` where active = 1");
-                            while ($rowAdd = $getMeetupAddresses->fetch_assoc()) :
-                            ?>
-                                <option value="<?= $rowAdd['text'] ?>" id="meetUpAddress-<?= $rowAdd['id'] ?>"><?= $rowAdd['text'] ?></option>
-                            <?php endwhile; ?>
-                            <option value="mu_other">OTHER</option>
-                        </select>
-                    </div>
-
-                    <div class="other-meet-up">
-                        <input type="text" class="form-control" placeholder="Enter Meeting Point" name="othermu" />
-                    </div>
-
-                    <div class="place-order form-group text-right">
-                        <button class="btn btn-flat btn-primary" type="submit" name="submit">Place Order</button>
-                    </div>
-
-                    <!-- TODO: saving of meet up address -->
-
-                </div>
-
-                <div class="right mx-3">
-                    <div class="product-sum h-100">
-                        <?php
-                        $total = 0;
-                        $cart = $conn->query("SELECT c.*, p.name, p.image_path, p.weight, b.name as brand, cc.category, v.*, v.variation_price as price FROM `cart_list` c
-                                    INNER JOIN product_list p ON c.product_id = p.id
-                                    INNER JOIN brand_list b ON p.brand_id = b.id
-                                    INNER JOIN categories cc ON p.category_id = cc.id
-                                    INNER JOIN product_variations v ON c.variation_id = v.id
-                                    WHERE c.client_id = '{$_settings->userdata('id')}' ORDER BY p.name ASC");
-                        ?>
-                        <div class="mx-3 py-3">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th width="25%" class="text-center">Image</th>
-                                        <th>Product Name</th>
-                                        <th>Variation</th>
-                                      
-                                        <th>Quantity</th>
-                                        <th>Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    $shipping = 0;
-                                    $totalItem = 0;
-                                    while ($row = $cart->fetch_assoc()) : ?>
-                                        <tr>
-                                            <td width="25%" class="text-center">
-                                                <img src="<?= validate_image($row['image_path']) ?>" alt="Product Image" class="img-sum">
-                                            </td>
-                                            <td>
-                                                <span><?= $row['name'] ?></span>
-                                            </td>
-                                            <td>
-                                                <span><?= $row['variation_name'] ?></span>
-                                            </td>
-                                           
-                                            <td>
-                                                <span><?= $row['quantity'] ?></span>
-                                            </td>
-                                            <td>
-                                                <span><?= number_format($row['price'], 2) ?></span>
-                                            </td>
-                                        </tr>
+                                <!-- this will show when user select "Meet up" -->
+                                <div class="meet-up-holder" style="display: none;">
+                                    <h1 class="label-info mt-2"><strong>Meet Up Address</strong></h1>
+                                    <div class="dropdown-divider my-3"></div>
+                                    <select name="meetup" id="muAddressDropdown" class="form-control mb-1">
                                         <?php
-                                        $totalItem += ($row['quantity'] * $row['price']);
-                                        switch ($row['weight']) {
-                                            case "500g and below":
-                                                $shipping += 117;
-                                                break;
-                                            case "500g – 1kg":
-                                                $shipping += 200;
-                                                break;
-                                            case "1kg – 3kg":
-                                                $shipping += 300;
-                                                break;
-                                            case "3kg – 4kg":
-                                                $shipping += 400;
-                                                break;
-                                            case "4kg – 5kg":
-                                                $shipping += 500;
-                                                break;
-                                            case "5kg – 6kg":
-                                                $shipping += 600;
-                                                break;
-                                            default:
-                                                $shipping += 0;
-                                                break;
-                                        }
-
-                                        $total = $totalItem + $shipping;
+                                        $getMeetupAddresses = $conn->query("SELECT * FROM `meet_up_address` where active = 1");
+                                        while ($rowAdd = $getMeetupAddresses->fetch_assoc()) :
                                         ?>
-                                    <?php endwhile; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="">
-                            <input name="shipping_amount" value="<?= $shipping ?>" type="hidden" />
-                            <h5 id="sf">Shipping Fee: <?= number_format($shipping, 2) ?> </h5>
-                            <h2 id="totalWithSf" class="righth2">Total Price: <?= number_format($total, 2) ?> </h2>
-                            <h2 id="totalWithoutSf" class="righth2">Total Price: <?= number_format($totalItem, 2) ?> </h2>
+                                            <option value="<?= $rowAdd['text'] ?>" id="meetUpAddress-<?= $rowAdd['id'] ?>"><?= $rowAdd['text'] ?></option>
+                                        <?php endwhile; ?>
+                                        <option value="mu_other">OTHER</option>
+                                    </select>
+                                    <!-- this will show when user select "Meet up -> Others" -->
+                                    <div class="other-meet-up">
+                                        <input type="text" class="form-control mb-1" placeholder="Enter Meeting Point" name="othermu" />
+                                    </div>
+                                </div>
+                                <div class="date_picker" style="display: none;">
+                                    <div class="d-flex">
+                                        <input name="meetup_date" id="meetup_datepicker" class="form-control mb-1" placeholder="Select a date">
+                                        <select name="meetup_time" class="form-control mb-1">
+                                            <?php
+                                            $times = $conn->query("SELECT * FROM `time_availability`");
+                                            while ($time = $times->fetch_assoc()) :
+                                            ?>
+                                                <option value="<?= $time['value'] ?>" id="time-<?= $time['id'] ?>"><?= $time['value'] ?></option>
+                                            <?php endwhile; ?>
+                                        </select>
+                                    </div>
+                                    <button type="button" onclick="showAvailability()" class="btn btn-link text-decoration-none px-0 text-primary">Check Calendar</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-
+                </div>
             </form>
-
         </div>
     </div>
-    <script>
-        $(function() {
-            let addressTypeVal = 1;
-            $('.pick-up-holder').hide('slow');
-            $('.meet-up-holder').hide('slow');
-            $('.other-meet-up').hide('slow');
-            $('.diff-add').hide('slow');
-            $('#totalWithoutSf').hide('slow');
-            $('.billing-address').show('slow');
-            fetchCities();
-            setOtherMeetup();
 
-            function fetchCities() {
-                document.getElementById('provinces2').addEventListener('change', function() {
-                    let dropdown = this;
-                    var selectedProvinceCode = this.value;
-                    selectedProvince = dropdown.options[dropdown.selectedIndex].text;
-                    console.log(selectedProvince);
+    <div class="modal fade" id="calendar_modal" role='dialog'>
+        <div class="modal-dialog modal-lg modal-dialog-end" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="calendar_div">
+                        <?php
+                        include_once('./calendar.php');
+                        echo getCalendar();
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-                    // Fetch provinces based on the selected region
-                    start_loader();
-                    fetch('https://ph-locations-api.buonzz.com/v1/cities')
-                        .then(response => response.json())
-                        .then(data => {
-                            var citiesDropdown = document.getElementById('cities2');
-                            citiesDropdown.innerHTML = ''; // Clear previous options
-                            citiesDropdown.removeAttribute('disabled');
+<script>
+    function showAvailability() {
+        $('#calendar_modal').modal('show');
+    }
+    $("#meetup_datepicker").datepicker({
+        todayHighlight: true,
+        minDate: 3,
+        dateFormat: 'yy-mm-dd',
+        beforeShowDay: function(date) {
 
-                            let filteredCities = data['data'].filter(city => city.province_code === selectedProvinceCode);
-                            console.log(filteredCities);
+            var day = date.getDay();
+            return [(day != -1), ''];
 
-                            if (filteredCities && Array.isArray(filteredCities)) {
-                                filteredCities.forEach(function(city) {
-                                    var option = document.createElement('option');
-                                    option.value = city['id'];
-                                    option.text = city['name'];
-                                    citiesDropdown.appendChild(option);
-                                    //fetchSelectedCity();
-                                });
-                            } else {
-                                var option = document.createElement('option');
-                                option.text = 'No cities found';
-                                citiesDropdown.appendChild(option);
-                            }
-                            end_loader();
-                        })
-                        .catch(error => {
-                            console.error('Error fetching cities:', error);
-                        });
-                });
-            }
+        }
+    });
+    $(function() {
 
-            function setOtherMeetup() {
-                document.getElementById('muAddressDropdown').addEventListener('change', function() {
-                    let selectedValue = this.value;
-                    console.log(selectedValue);
+        let addressTypeVal = 1;
+        $('.pick-up-holder').hide('slow');
+        $('.meet-up-holder').hide('slow');
+        $('.date_picker').hide('slow');
+        $('.other-meet-up').hide('slow');
+        $('.diff-add').hide('slow');
+        $('#totalWithoutSf').hide('slow');
+        $('.billing-address').show('slow');
+        // fetchCities();
+        setOtherMeetup();
 
-                    if (selectedValue === 'mu_other') {
-                        $('.other-meet-up').show('slow');
-                    } else {
-                        $('.other-meet-up').hide('slow');
-                    }
-                });
-            }
-            $('[name="order_type"]').change(function() {
-                if ($(this).val() == 1) {
-                    $('.jnt-holder').show('slow');
-                    $('.pick-up-holder').hide('slow');
-                    $('.meet-up-holder').hide('slow');
-                    $('#totalWithSf').show('slow');
-                    $('#totalWithoutSf').hide('slow');
-                    $('#sf').show('slow');
-                    $('.billing-address').show('slow');
-                } else if ($(this).val() == 2) {
-                    $('.jnt-holder').hide('slow');
-                    $('.pick-up-holder').hide('slow');
-                    $('.meet-up-holder').hide('slow');
-                    $('#totalWithSf').hide('slow');
-                    $('#totalWithoutSf').show('slow');
-                    $('.billing-address').hide('slow');
-                    $('#sf').hide('slow');
-                } else if ($(this).val() == 3) {
-                    $('.jnt-holder').hide('slow');
-                    $('.pick-up-holder').show('slow');
-                    $('.meet-up-holder').hide('slow');
-                    $('.other-up-holder').hide('slow');
-                    $('#totalWithSf').hide('slow');
-                    $('#totalWithoutSf').show('slow');
-                    $('#sf').hide('slow');
-                    $('.billing-address').hide('slow');
-                } else if ($(this).val() == 4) {
-                    $('.jnt-holder').hide('slow');
-                    $('.pick-up-holder').hide('slow');
-                    $('.meet-up-holder').show('slow');
-                    $('#totalWithSf').hide('slow');
-                    $('#totalWithoutSf').show('slow');
-                    $('#sf').hide('slow');
-                    $('.billing-address').hide('slow');
-                } else {
-                    $('.jnt-holder').show('slow');
-                    $('.pick-up-holder').hide('slow');
-                    $('.meet-up-holder').hide('slow');
-                    $('#totalWithSf').hide('slow');
-                    $('#totalWithoutSf').show('slow');
-                    $('#sf').hide('slow');
-                    $('.billing-address').show('slow');
-                }
-            });
+        function fetchCities() {
+            document.getElementById('provinces2').addEventListener('change', function() {
+                let dropdown = this;
+                var selectedProvinceCode = this.value;
+                selectedProvince = dropdown.options[dropdown.selectedIndex].text;
+                console.log(selectedProvince);
 
-            $('[name="address_type"]').change(function() {
-                if ($(this).val() == 1) {
-                    addressTypeVal = 1;
-                    $('.default-add').show('slow');
-                    $('.diff-add').hide('slow');
-                }else{
-                    addressTypeVal = 2;
-                    $('.default-add').hide('slow');
-                    $('.diff-add').show('slow');
-                }
-
-            });
-
-            $('#place_order').submit(function(e) {
-                e.preventDefault();
-                var _this = $(this);
-                var formData = new FormData($(this)[0]);
-
-                formData.append('address_type', addressTypeVal);
-                $('.err-msg').remove();
+                // Fetch provinces based on the selected region
                 start_loader();
-                $.ajax({
-                    url: _base_url_ + "classes/Master.php?f=place_order",
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    method: 'POST',
-                    type: 'POST',
-                    dataType: 'json',
-                    error: err => {
-                        console.log(err)
+                fetch('https://ph-locations-api.buonzz.com/v1/cities')
+                    .then(response => response.json())
+                    .then(data => {
+                        var citiesDropdown = document.getElementById('cities2');
+                        citiesDropdown.innerHTML = ''; // Clear previous options
+                        citiesDropdown.removeAttribute('disabled');
+
+                        let filteredCities = data['data'].filter(city => city.province_code === selectedProvinceCode);
+                        console.log(filteredCities);
+
+                        if (filteredCities && Array.isArray(filteredCities)) {
+                            filteredCities.forEach(function(city) {
+                                var option = document.createElement('option');
+                                option.value = city['id'];
+                                option.text = city['name'];
+                                citiesDropdown.appendChild(option);
+                                //fetchSelectedCity();
+                            });
+                        } else {
+                            var option = document.createElement('option');
+                            option.text = 'No cities found';
+                            citiesDropdown.appendChild(option);
+                        }
+                        end_loader();
+                    })
+                    .catch(error => {
+                        console.error('Error fetching cities:', error);
+                    });
+            });
+        }
+
+        function setOtherMeetup() {
+            document.getElementById('muAddressDropdown').addEventListener('change', function() {
+                let selectedValue = this.value;
+                if (selectedValue === 'mu_other') {
+                    $('.other-meet-up').show('slow');
+                } else {
+                    $('.other-meet-up').hide('slow');
+                }
+            });
+        }
+        $('[name="order_type"]').change(function() {
+            console.log("in")
+            if ($(this).val() == 1) {
+                $('.jnt-holder').show('slow');
+                $('.pick-up-holder').hide('slow');
+                $('.meet-up-holder').hide('slow');
+                $('.date_picker').hide('slow');
+                $('#totalWithSf').show('slow');
+                $('#totalWithoutSf').hide('slow');
+                $('#sf').show('slow');
+                $('.billing-address').show('slow');
+            } else if ($(this).val() == 2) {
+                $('.jnt-holder').hide('slow');
+                $('.pick-up-holder').hide('slow');
+                $('.meet-up-holder').hide('slow');
+                $('.date_picker').hide('slow');
+                $('#totalWithSf').hide('slow');
+                $('#totalWithoutSf').show('slow');
+                $('.billing-address').hide('slow');
+                $('#sf').hide('slow');
+            } else if ($(this).val() == 3) {
+                $('.jnt-holder').hide('slow');
+                $('.pick-up-holder').show('slow');
+                $('.date_picker').show('slow');
+                $('.meet-up-holder').hide('slow');
+                $('.other-up-holder').hide('slow');
+                $('#totalWithSf').hide('slow');
+                $('#totalWithoutSf').show('slow');
+                $('#sf').hide('slow');
+                $('.billing-address').hide('slow');
+            } else if ($(this).val() == 4) {
+                $('.jnt-holder').hide('slow');
+                $('.pick-up-holder').hide('slow');
+                $('.meet-up-holder').show('slow');
+                $('.date_picker').show('slow');
+                $('#totalWithSf').hide('slow');
+                $('#totalWithoutSf').show('slow');
+                $('#sf').hide('slow');
+                $('.billing-address').hide('slow');
+            } else {
+                $('.jnt-holder').show('slow');
+                $('.pick-up-holder').hide('slow');
+                $('.meet-up-holder').hide('slow');
+                $('.date_picker').hide('slow');
+                $('#totalWithSf').hide('slow');
+                $('#totalWithoutSf').show('slow');
+                $('#sf').hide('slow');
+                $('.billing-address').show('slow');
+            }
+        });
+
+        $('[name="address_type"]').change(function() {
+            if ($(this).val() == 1) {
+                addressTypeVal = 1;
+                $('.default-add').show('slow');
+                $('.diff-add').hide('slow');
+            } else {
+                addressTypeVal = 2;
+                $('.default-add').hide('slow');
+                $('.diff-add').show('slow');
+            }
+        });
+
+        $('#place_order').submit(function(e) {
+            e.preventDefault();
+            var _this = $(this);
+            var formData = new FormData($(this)[0]);
+
+            formData.append('address_type', addressTypeVal);
+            $('.err-msg').remove();
+            start_loader();
+            $.ajax({
+                url: _base_url_ + "classes/Master.php?f=place_order",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                dataType: 'json',
+                error: err => {
+                    console.log(err)
+                    alert_toast("An error occured", 'error');
+                    end_loader();
+                },
+                success: function(resp) {
+                    if (typeof resp == 'object' && resp.status == 'success') {
+                        location.replace('./?p=my_orders');
+                    } else if (resp.status == 'failed' && !!resp.msg) {
+                        var el = $('<div>')
+                        el.addClass("alert alert-danger err-msg").text(resp.msg)
+                        _this.prepend(el)
+                        el.show('slow')
+                        $("html, body").animate({
+                            scrollTop: _this.closest('.card').offset().top
+                        }, "fast");
+                        end_loader()
+                    } else {
                         alert_toast("An error occured", 'error');
                         end_loader();
-                    },
-                    success: function(resp) {
-                        if (typeof resp == 'object' && resp.status == 'success') {
-                            location.replace('./?p=my_orders');
-                        } else if (resp.status == 'failed' && !!resp.msg) {
-                            var el = $('<div>')
-                            el.addClass("alert alert-danger err-msg").text(resp.msg)
-                            _this.prepend(el)
-                            el.show('slow')
-                            $("html, body").animate({
-                                scrollTop: _this.closest('.card').offset().top
-                            }, "fast");
-                            end_loader()
-                        } else {
-                            alert_toast("An error occured", 'error');
-                            end_loader();
-                            console.log(resp)
-                        }
-                        
+                        console.log(resp)
                     }
-                })
+
+                }
             })
         })
-    </script>
+    })
+</script>
