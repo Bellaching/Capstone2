@@ -181,7 +181,7 @@ class Users extends DBConnection
 					$mail->addAddress($_POST['email']);
 					$mail->Subject = 'Welcome to Arnold TV Motoshop';
 					$mail->Body = 'Thank you for registering with our system. Please use this otp to validate your account:
-						https://atvmotoshop.online/verification.php?token='.$otp.' ';
+					http://localhost/Capstone2/verification.php?token='.$otp.' ';
 		
 					$mail->send();
 				} catch (Exception $e) {
