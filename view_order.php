@@ -127,6 +127,8 @@ if ($order->num_rows > 0) {
             <label for="" class="text-muted">Reference Code</label>
             <div class="ml-3"><b><?= isset($ref_code) ? $ref_code : "N/A" ?></b></div>
             <div class="ml-3">
+            <?php if (isset($status)  && $status == 2) : ?>
+              
                 <form action="" id="proof_form" enctype="multipart/form-data" method="POST">
                     <div class="proof_payment_container">
                         <label for="proof_payment" class="text-muted">Upload Proof of Payment</label>
@@ -137,6 +139,8 @@ if ($order->num_rows > 0) {
                         <button class="btn btn-flat btn-primary" form="proof_form" id="uploadButton">Upload</button>
                     </div>
                     <form>
+                   
+            <?php endif; ?>
             </div>
         </div>
         <div class="col-md-6">
