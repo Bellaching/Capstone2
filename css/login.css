@@ -11,11 +11,11 @@ body {
 .login-container {
   display: flex;
   flex-direction: row;
-  background-color: #ffffff;
+
 }
 
 .left-login {
-  background-color: #ffffff;
+ 
   width: 50%;
   height: 60vh;
 }

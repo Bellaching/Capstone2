@@ -11,11 +11,12 @@ body {
 .signin-container {
   display: flex;
   flex-direction: row;
+ 
   background-color: #ffffff;
 }
 
 .left-signin {
-  background-color: #ffffff;
+ 
   width: 50%;
   height: 60vh;
 }
@@ -117,14 +118,20 @@ label {
 
 
 @media screen and (max-width: 1000px) {
+  body {
+    background-color: #ffffff;
+  }
+
   .signin-container {
     flex-direction: column;
+    background-color: #ffffff;
   }
 
   .left-signin,
   .right-signin {
     width: 100%;
     float: none;
+    background-color: #ffffff;
   }
 
   /* Hide the right-login on screens below 1000px */
@@ -138,9 +145,13 @@ label {
 }
 
 @media screen and (max-width: 550px) {
-  
-  .left-signinh1 {
+  .signin-container {
+    flex-direction: column;
+    background-color: #ffffff; /* Adjust the background color as needed */
+    width: 100%;
+  }
+
+  .left-signin h1 {
     font-size: 30px; /* Adjust the font size as needed */
-   
   }
 }
