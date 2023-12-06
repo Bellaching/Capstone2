@@ -1,7 +1,8 @@
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Website Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <!-- Add your other meta tags, stylesheets, and scripts here -->
     <script src="https://kit.fontawesome.com/8714a42433.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap">
@@ -342,11 +343,9 @@
                 <?php echo $_settings->info('sys_shortname') ?>
             </a>
 
-            <!--  <button id="navbarToggler">
-                <span class="navbar-toggler-icon"></span>
-            </button>-->
+           
 
-            <div id="navbarSupportedContent">
+            <div id="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="nav">
                     <li><a class="nav-link nav-item <?= isset($page) && $page == 'homes' ? "active" : '' ?>" aria-current="page" href="./">Home</a></li>
                     <li><a class="nav-link nav-item <?= isset($page) && $page == 'products' ? "active" : '' ?>" href="./?p=products">Products</a></li>
@@ -491,7 +490,9 @@
             </div>
         </div>
     </nav>
-
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <!-- Your content goes here -->
     <script>
     $(document).ready(function() {
