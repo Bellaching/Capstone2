@@ -153,7 +153,7 @@
     function remove_from_cart($id) {
         start_loader();
         $.ajax({
-            url: _base_url_ + 'classes/master.php?f=remove_from_cart',
+            url: _base_url_ + 'classes/Master.php?f=remove_from_cart',
             data: {
                 cart_id: $id
             },
