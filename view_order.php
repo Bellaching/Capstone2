@@ -299,7 +299,7 @@ if ($order->num_rows > 0) {
                 if ($row = $order_result->fetch_assoc()) {
             ?>
                     <!-- Start Return/Refund -->
-                    <?php if ($status == 5) : ?>
+                    <?php if ($status == 2) : ?>
                         <div class="accordion" id="accordionExample-<?= $row['id'] ?>">
                             <div class="card">
                                 <div class="card-header" id="returnContent">
