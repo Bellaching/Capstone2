@@ -106,7 +106,7 @@
     window.update_quantity = function($cart_id = 0, $variation_id, $quantity = "") {
         start_loader();
         $.ajax({
-            url: _base_url_ + 'classes/master.php?f=update_cart_quantity',
+            url: _base_url_ + 'classes/Master.php?f=update_cart_quantity',
             data: {
                 cart_id: $cart_id,
                 quantity: $quantity,
