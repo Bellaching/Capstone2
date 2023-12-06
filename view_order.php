@@ -98,7 +98,30 @@ if ($order->num_rows > 0) {
         <div class="col-md-6">
             <label for="" class="text-muted">Name</label>
             <div class="ml-3"><b><?= isset($fullname) ? $fullname : "N/A" ?></b></div>
-          
+            <label for="" class="text-muted">Appointment Date</label>
+            <div class="ml-3"><b><?= isset($dates) && isset($hours) ? $dates . ' ' . $hours : "-- --" ?></b></div>
+            <?php if (isset($appointment_status)) : ?>
+                <label for="" class="text-muted">Appointment Status</label>
+                <div class="ml-3">
+                    <?php switch (strval($appointment_status)):
+                        case 0: ?>
+                            <span class="badge badge-secondary px-3 rounded-pill p-2 bg-secondary">Pending</span>
+                        <?php break;
+                        case 1: ?>
+                            <span class="badge badge-secondary px-3 rounded-pill p-2 bg-info">Confirmed</span>
+                        <?php break;
+                        case 2: ?>
+                            <span class="badge badge-secondary px-3 rounded-pill p-2 bg-warning">Cancelled</span>
+                        <?php break;
+                        case 3: ?>
+                            <span class="badge badge-secondary px-3 rounded-pill p-2 bg-warning">Rejected</span>
+                        <?php break;
+                        default: ?>
+                            <span class="badge badge-secondary px-3 rounded-pill p-2 bg-secondary">Pending</span>
+                            <?php break; ?>
+                    <?php endswitch; ?>
+                </div>
+            <?php endif; ?>
         </div>
         <div class="col-md-6">
             <label for="" class="text-muted">Reference Code</label>
