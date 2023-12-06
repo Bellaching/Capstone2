@@ -142,6 +142,9 @@ label {
 }
 
 @media screen and (max-width: 550px) {
+  html{
+    background-color: #ffff;
+  }
   
   .left-login h1 {
     font-size: 30px; /* Adjust the font size as needed */
