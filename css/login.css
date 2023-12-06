@@ -11,7 +11,7 @@ body {
 .login-container {
   display: flex;
   flex-direction: row;
-
+background-color: #ffff;
 }
 
 .left-login {
