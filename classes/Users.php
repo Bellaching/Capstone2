@@ -255,7 +255,7 @@ switch ($action) {
 	case 'delete_client':
 		echo $users->delete_client();
 		break;
-		break;
+
 	default:
 		// echo $sysset->index();
 		break;
