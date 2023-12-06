@@ -27,7 +27,7 @@
 
   <div class="login-container">
     <div class="left-login">
-      <h1>FIND YOUR PEECT FIT</h1>
+      <h1>FIND YOUR PERFECT FIT</h1>
 
       <form id="clogin-frm" action="" method="post">
         <div class="login-textfield-container">
