@@ -375,6 +375,7 @@ if ($order->num_rows > 0) {
     })
 
     function submitReview(form, formId) {
+        console.log('submitReview function is being called.');
         var elements = document.getElementById(`${form}-${formId}`).elements;
         var obj = {};
         for (var i = 0; i < elements.length; i++) {
