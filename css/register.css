@@ -8,6 +8,10 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
+html{
+  background-color: #ffff;
+}
+
 .signin-container {
   display: flex;
   flex-direction: row;
@@ -148,6 +152,9 @@ label {
 }
 
 @media screen and (max-width: 550px) {
+  html{
+    background-color: #ffff;
+  }
   .signin-container {
     flex-direction: column;
    
