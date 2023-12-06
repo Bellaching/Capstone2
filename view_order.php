@@ -470,7 +470,7 @@ if ($order->num_rows > 0) {
     function cancel_order() {
         start_loader();
         $.ajax({
-            url: _base_url_ + 'classes/master.php?f=cancel_order',
+            url: _base_url_ + 'classes/Master.php?f=cancel_order',
             data: {
                 id: "<?= isset($id) ? $id : '' ?>"
             },
