@@ -230,7 +230,7 @@ if ($order->num_rows > 0) {
                                     </div>
                                 </div>
 
-                                <?php if (!$row['rated'] && $status == 5) : ?>
+                                <?php if (!$row['rated'] && $status == 2) : ?>
                                     <div class="accordion" id="accordionExample-<?= $row['id'] ?>">
                                         <div class="card">
                                             <div class="card-header" id="reviewContent">
