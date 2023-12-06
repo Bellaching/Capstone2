@@ -149,14 +149,19 @@ if ($order->num_rows > 0) {
             <label for="" class="text-muted">Status</label>
             <div class="ml-3">
                 <?php if (isset($status)) : ?>
-                    
                     <?php if ($status == 0) : ?>
-                        <span class="badge badge-secondary px-3 rounded-pill p-2 bg-info">Confirmed</span>
+                        <span class="badge badge-secondary px-3 rounded-pill p-2 bg-secondary">Pending</span>
                     <?php elseif ($status == 1) : ?>
-                        <span class="badge badge-secondary px-3 rounded-pill p-2 bg-success">Shipped</span>
+                        <span class="badge badge-secondary px-3 rounded-pill p-2 bg-info">Confirmed</span>
                     <?php elseif ($status == 2) : ?>
-                        <span class="badge badge-secondary px-3 rounded-pill p-2 bg-success">Delivered</span>
+                        <span class="badge badge-secondary px-3 rounded-pill p-2 bg-primary">Packed</span>
                     <?php elseif ($status == 3) : ?>
+                        <span class="badge badge-secondary px-3 rounded-pill p-2 bg-primary">For Delivery</span>
+                    <?php elseif ($status == 4) : ?>
+                        <span class="badge badge-secondary px-3 rounded-pill" style="color: black;">On the Way</span>
+                    <?php elseif ($status == 5) : ?>
+                        <span class="badge badge-secondary px-3 rounded-pill p-2 bg-success">Delivered</span>
+                    <?php elseif ($status == 6) : ?>
                         <span class="badge badge-secondary px-3 rounded-pill p-2 bg-warning">Cancelled</span>
                     <?php else : ?>
                         <span class="badge badge-secondary px-3 rounded-pill p-2 bg-warning">For Return/Refund</span>
@@ -225,7 +230,7 @@ if ($order->num_rows > 0) {
                                     </div>
                                 </div>
 
-                                <?php if (!$row['rated'] && $status == 2) : ?>
+                                <?php if (!$row['rated'] && $status == 5) : ?>
                                     <div class="accordion" id="accordionExample-<?= $row['id'] ?>">
                                         <div class="card">
                                             <div class="card-header" id="reviewContent">
