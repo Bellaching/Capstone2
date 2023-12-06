@@ -113,3 +113,33 @@ label {
   padding: 1.5%;
   color: #ffffff;
 }
+
+
+@media screen and (max-width: 1000px) {
+  .signin-container {
+    flex-direction: column;
+  }
+
+  .left-signin,
+  .right-signin {
+    width: 100%;
+    float: none;
+  }
+
+  /* Hide the right-login on screens below 1000px */
+  .right-signin {
+    display: none;
+  }
+
+  .left-signin h1 {
+    font-size: 40px; /* Adjust the font size as needed */
+  }
+}
+
+@media screen and (max-width: 550px) {
+  
+  .left-signinh1 {
+    font-size: 30px; /* Adjust the font size as needed */
+   
+  }
+}
