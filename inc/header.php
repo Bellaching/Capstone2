@@ -143,33 +143,29 @@
   <script src="<?php echo base_url ?>dist/js/script.js"></script>
   <script src="<?php echo base_url ?>assets/js/scripts.js"></script>
   <style>
-     html
-    body {
-      height: 100%;
-      width: 100%;
-      font-family: 'Poppins', sans-serif;
-      text-decoration: none;
-      background-color: #F4F5FA;
-      overflow-x: hidden;
-      margin: 0;
-      font-weight: 600;
-    }
+html, body {
+    height: 100%;
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+    background-color: #F4F5FA;
+    overflow-x: hidden;
+    margin: 0;
+    font-weight: 600;
+}
 
-    #main-header {
-      position: relative;
-      background: rgb(0, 0, 0) !important;
-      background: none !important;
-      height: 60vh;
-      /* Set the height of the header */
-    }
+#main-header {
+    position: relative;
+    background: rgb(0, 0, 0) !important;
+    background: none !important;
+}
 
-    #main-header:before {
+#main-header:before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 60vh; /* You can adjust this as needed */
     max-height: 600px; /* Set a maximum height for smaller screens */
     background-image: url(<?php echo base_url . $_settings->info('cover') ?>);
     background-repeat: no-repeat;
@@ -178,6 +174,16 @@
     filter: drop-shadow(0 0 49px 0 #879090); /* Fix typo: 49px instead of 49x */
     z-index: -1;
 }
+
+/* Media query for smaller screens */
+@media (max-width: 767px) {
+    #main-header:before {
+        height: 60vh; /* Adjust this value as needed */
+        max-height: none; /* Remove the maximum height for smaller screens */
+    }
+}
+
+
 
   </style>
 </head>

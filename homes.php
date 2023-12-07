@@ -121,6 +121,13 @@
             .banner_fw .banner_fw_container {
                 height: 100%;
             }
+
+            .banner_content{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+            }
             .header_product_home {
                 display: flex;
                 justify-content: center;
@@ -134,6 +141,7 @@
             }
             .banner_content h1 {
                 font-size: 65px;
+                text-align: center;
             }
             .banner_content p {
                 font-size: 20px;
@@ -142,6 +150,13 @@
 
         /* Styles for medium screens */
         @media (max-width: 991px) {
+
+            .banner_content{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+            }
             .banner_fw_container {
                 height: 60vh;
             }
@@ -160,6 +175,7 @@
             .banner_content h1 {
                 font-size: 50px;
                 overflow-wrap: break-word;
+                text-align: center;
             }
             .banner_content p {
                 font-size: 18px;
@@ -169,6 +185,12 @@
 
         /* Styles for small screens */
         @media (max-width: 767px) {
+            .banner_content{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+            }
             .banner_fw_container {
                 height: 40vh;
             }
@@ -188,6 +210,7 @@
             .banner_content h1 {
                 font-size: 40px;
                 overflow-wrap: break-word;
+                text-align: center;
             }
             .banner_content p {
                 font-size: 16px;
