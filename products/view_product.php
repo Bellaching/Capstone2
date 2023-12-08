@@ -248,8 +248,11 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 </style>
 
 <?php
+$SingleVariation = null; // Initialize $SingleVariation
+
 $variations = $conn->query("SELECT * FROM product_variations where product_id = $id");
 $copyVariationResult = array();
+
 function MakeCopy($result, &$c1)
 {
     while ($row = $result->fetch_assoc()) {
@@ -258,9 +261,12 @@ function MakeCopy($result, &$c1)
         }
     }
 }
+
 if ($variations->num_rows === 1) {
     MakeCopy($variations, $copyVariationResult);
+    $SingleVariation = $copyVariationResult; // Assign value to $SingleVariation
 }
+
 ?>
 <div class="content my-3">
     <div class="container">
@@ -291,7 +297,8 @@ if ($variations->num_rows === 1) {
             </div>
             <div class="right-container px-5">
                 <div class="info">
-                    <h1 class="brand_name text-capitalize"><?= isset($name) ? $name : '' ?> <?= $variations->num_rows === 1 ? ' - ' . $singleVariation['variation_name'] : '' ?></h1>
+                <h1 class="brand_name text-capitalize"><?= isset($name) ? $name : '' ?> <?= $variations->num_rows === 1 ? ' - ' . $SingleVariation['variation_name'] : '' ?></h1>
+
                    
                 </div>
                 <h3 class="text-success" id="default">
