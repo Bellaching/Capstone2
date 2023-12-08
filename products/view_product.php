@@ -322,7 +322,7 @@ $singleVariation = $variations->fetch_array();
                                     $variationTotalQuantity = $variationQuantity - $cartVarItemCount;
                                 }
                             ?>
-                                <?php if ($variationTotalQuantity > 0) : ?>
+                              <?php if ($variationTotalQuantity > 0) : ?>
                                     <div class="d-block me-5">
                                         <label class="w-100" for='variation_<?php echo $variation['id'] ?>'>
                                             <div class="d-flex justify-content-between">
@@ -358,7 +358,6 @@ $singleVariation = $variations->fetch_array();
                                 <input type='radio' name='variations' class="invisible" id='variation_<?php echo $copyVariationResult['id'] ?>' data-max='<?= $productStockTotalQuantity ?>' data-price='<?= $copyVariationResult['variation_price'] ?>' data-name='<?= $copyVariationResult['variation_name'] ?>' value='<?php echo $copyVariationResult['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($copyVariationResult['variation_price'], 2)  ?>')" />
                             <?php endif; ?>
                         <?php endif; ?>
-
                     </div>
                     <span id="limit" style="font-size: 0.8rem; color: #dc3545;">You have reached the maximum limit for this item</span>
                 </div>
@@ -479,9 +478,9 @@ $singleVariation = $variations->fetch_array();
             </div>
             <div class="modal-footer">
                 <?php if (isset($product_order_config)) : ?>
-                    <span id="warning-label" class="text-danger invinsible"><small>You've reached the maximum order limit <?= number_format($product_order_config['value']) ?> </small></span>
+                    <span id="warning-label" class="text-danger invinsible"><small>You've reached the maximum order limit (<?= number_format($product_order_config['value']) ?> php)</small></span>
                 <?php elseif (isset($all_order_config)) : ?>
-                    <span id="warning-label" class="text-danger invinsible"><small>You've reached the maximum order limit <?= number_format($all_order_config['value']) ?> </small></span>
+                    <span id="warning-label" class="text-danger invinsible"><small>You've reached the maximum order limit (<?= number_format($all_order_config['value']) ?> php)</small></span>
                 <?php endif; ?>
                 <button type="button" class="btn text-white" style="background: #004399" id="confirm" onclick="saveToCart()">Add to Cart</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
