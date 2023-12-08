@@ -349,16 +349,17 @@ $singleVariation = $variations->fetch_array();
                                 <?php endif; ?>
                             <?php
                             endwhile; ?>
-                        <?php else : ?>
-                            <?php if (isset($product_order_config)) : ?>
-                                <input type='radio' name='variations' class="invisible" id='variation_<?php echo $copyVariationResult['id'] ?>' data-maxprice='<?= $product_order_config['value'] ?>' data-max='<?= $productStockTotalQuantity ?>' data-price='<?= $copyVariationResult['variation_price'] ?>' data-name='<?= $copyVariationResult['variation_name'] ?>' value='<?php echo $copyVariationResult['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($copyVariationResult['variation_price'], 2)  ?>')" />
-                            <?php elseif (isset($all_order_config)) : ?>
-                                <input type='radio' name='variations' class="invisible" id='variation_<?php echo $copyVariationResult['id'] ?>' data-maxprice='<?= $all_order_config['value'] ?>' data-max='<?= $productStockTotalQuantity ?>' data-price='<?= $copyVariationResult['variation_price'] ?>' data-name='<?= $copyVariationResult['variation_name'] ?>' value='<?php echo $copyVariationResult['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($copyVariationResult['variation_price'], 2)  ?>')" />
-                            <?php else : ?>
-                                <input type='radio' name='variations' class="invisible" id='variation_<?php echo $copyVariationResult['id'] ?>' data-max='<?= $productStockTotalQuantity ?>' data-price='<?= $copyVariationResult['variation_price'] ?>' data-name='<?= $copyVariationResult['variation_name'] ?>' value='<?php echo $copyVariationResult['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($copyVariationResult['variation_price'], 2)  ?>')" />
-                            <?php endif; ?>
-                        <?php endif; ?>
-
+                      <?php else : ?>
+    <?php if (isset($copyVariationResult)) : ?>
+        <?php if (isset($product_order_config)) : ?>
+            <input type='radio' name='variations' class="invisible" id='variation_<?php echo $copyVariationResult['id'] ?>' data-maxprice='<?= $product_order_config['value'] ?>' data-max='<?= $productStockTotalQuantity ?>' data-price='<?= $copyVariationResult['variation_price'] ?>' data-name='<?= $copyVariationResult['variation_name'] ?>' value='<?php echo $copyVariationResult['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($copyVariationResult['variation_price'], 2)  ?>')" />
+        <?php elseif (isset($all_order_config)) : ?>
+            <input type='radio' name='variations' class="invisible" id='variation_<?php echo $copyVariationResult['id'] ?>' data-maxprice='<?= $all_order_config['value'] ?>' data-max='<?= $productStockTotalQuantity ?>' data-price='<?= $copyVariationResult['variation_price'] ?>' data-name='<?= $copyVariationResult['variation_name'] ?>' value='<?php echo $copyVariationResult['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($copyVariationResult['variation_price'], 2)  ?>')" />
+        <?php else : ?>
+            <input type='radio' name='variations' class="invisible" id='variation_<?php echo $copyVariationResult['id'] ?>' data-max='<?= $productStockTotalQuantity ?>' data-price='<?= $copyVariationResult['variation_price'] ?>' data-name='<?= $copyVariationResult['variation_name'] ?>' value='<?php echo $copyVariationResult['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($copyVariationResult['variation_price'], 2)  ?>')" />
+        <?php endif; ?>
+    <?php endif; ?>
+<?php endif; ?>
                     </div>
                     <span id="limit" style="font-size: 0.8rem; color: #dc3545;">You have reached the maximum limit for this item</span>
                 </div>
