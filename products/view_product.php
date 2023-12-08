@@ -22,11 +22,11 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
             $available1 = $stocks - $out;
             $available = $available1 - $cart_item_count;
 
-            // $variations = $conn->query("SELECT * FROM product_variations where product_id = '$id' and variation_stock > 0");
-            // while ($variation = $variations->fetch_array()) {
-            //     echo "<script>console.log('" . $variation['variation_name'] . "');</script>";
-            //     echo "<script>console.log('" . $variation['id'] . "');</script>";
-            // }
+            $variations = $conn->query("SELECT * FROM product_variations where product_id = '$id' and variation_stock > 0");
+            while ($variation = $variations->fetch_array()) {
+                echo "<script>console.log('" . $variation['variation_name'] . "');</script>";
+                echo "<script>console.log('" . $variation['id'] . "');</script>";
+            }
         }
     } else {
         echo "<script> alert('Unknown Product ID!'); location.replace('./?page=products');</script>";
@@ -37,6 +37,7 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 ?>
 
 <style>
+
     .product-img {
         max-width: 450px;
         object-fit: scale-down;
@@ -227,44 +228,15 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
     .invinsible {
         visibility: hidden;
     }
-    .details{
-       margin: 2% 0;
-        padding: 2%;
-        background-color: #ffff;
-    }
-    .productt{
-        background-color: #ffff;
-        padding: 2%;
-    }
-
-    .review-section {
-          background-color: #ffff;
-    }
-
-    .descript>h5{
-        background-color: #1A547E;
-    }
-
 </style>
 
 <?php
 $variations = $conn->query("SELECT * FROM product_variations where product_id = $id");
-$copyVariationResult = array();
-function MakeCopy($result, &$c1)
-{
-    while ($row = $result->fetch_assoc()) {
-        foreach ($row as $key => $value) {
-            $c1[$key] = $value;
-        }
-    }
-}
-if ($variations->num_rows === 1) {
-    MakeCopy($variations, $copyVariationResult);
-}
+$singleVariation = $variations->fetch_array();
 ?>
 <div class="content my-3">
     <div class="container">
-        <div class="productt d-flex">
+        <div class="d-flex">
             <div class="left-container">
                 <div class="image product-image text-center">
                     <img src="<?= validate_image(isset($image_path) ? $image_path : "") ?>" alt="Product Image <?= isset($name) ? $name : "" ?>" class="img-thumbnail product-img">
@@ -292,7 +264,7 @@ if ($variations->num_rows === 1) {
             <div class="right-container px-5">
                 <div class="info">
                     <h1 class="brand_name text-capitalize"><?= isset($name) ? $name : '' ?> <?= $variations->num_rows === 1 ? ' - ' . $singleVariation['variation_name'] : '' ?></h1>
-                   
+                    <?= isset($description) ? html_entity_decode($description) : '' ?>
                 </div>
                 <h3 class="text-success" id="default">
                     ₱<?php
@@ -301,7 +273,18 @@ if ($variations->num_rows === 1) {
                         ?>
                 </h3>
                 <h3 class="text-success" id="selectedVariation"></h3>
-                
+                <div class="mt-3 border-bottom">
+                    <h5>Details: </h3>
+                </div>
+                <div class="info">
+                    <small>Compatible Models: <?= isset($models) ? $models : '' ?></small>
+                </div>
+                <div class="info">
+                    <small>Category: <strong><?= isset($category) ? $category : '' ?></strong></small>
+                </div>
+                <div class="info">
+                    <small> Brand: <strong><?= isset($brand) ? $brand : '' ?></strong></small>
+                </div>
                 <div class="mt-3 border-bottom">
                     <h5>Variation: </h3>
                 </div>
@@ -366,13 +349,13 @@ if ($variations->num_rows === 1) {
                                 <?php endif; ?>
                             <?php
                             endwhile; ?>
-                        <?php elseif ($variations->num_rows === 1) : ?>
+                        <?php else : ?>
                             <?php if (isset($product_order_config)) : ?>
-                                <input type='radio' name='variations' class="invisible" id='variation_<?php echo $copyVariationResult['id'] ?>' data-maxprice='<?= $product_order_config['value'] ?>' data-max='<?= $copyVariationResult['variation_stock'] ?>' data-price='<?= $copyVariationResult['variation_price'] ?>' data-name='<?= $copyVariationResult['variation_name'] ?>' value='<?php echo $copyVariationResult['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($copyVariationResult['variation_price'], 2)  ?>')" />
+                                <input type='radio' name='variations' class="invisible" id='variation_<?php echo $singleVariation['id'] ?>' data-maxprice='<?= $product_order_config['value'] ?>' data-max='<?= $singleVariation['variation_stock'] ?>' data-price='<?= $singleVariation['variation_price'] ?>' data-name='<?= $singleVariation['variation_name'] ?>' value='<?php echo $singleVariation['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($singleVariation['variation_price'], 2)  ?>')" />
                             <?php elseif (isset($all_order_config)) : ?>
-                                <input type='radio' name='variations' class="invisible" id='variation_<?php echo $copyVariationResult['id'] ?>' data-maxprice='<?= $all_order_config['value'] ?>' data-max='<?= $copyVariationResult['variation_stock'] ?>' data-price='<?= $copyVariationResult['variation_price'] ?>' data-name='<?= $copyVariationResult['variation_name'] ?>' value='<?php echo $copyVariationResult['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($copyVariationResult['variation_price'], 2)  ?>')" />
+                                <input type='radio' name='variations' class="invisible" id='variation_<?php echo $singleVariation['id'] ?>' data-maxprice='<?= $all_order_config['value'] ?>' data-max='<?= $singleVariation['variation_stock'] ?>' data-price='<?= $singleVariation['variation_price'] ?>' data-name='<?= $singleVariation['variation_name'] ?>' value='<?php echo $singleVariation['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($singleVariation['variation_price'], 2)  ?>')" />
                             <?php else : ?>
-                                <input type='radio' name='variations' class="invisible" id='variation_<?php echo $copyVariationResult['id'] ?>' data-max='<?= $copyVariationResult['variation_stock'] ?>' data-price='<?= $copyVariationResult['variation_price'] ?>' data-name='<?= $copyVariationResult['variation_name'] ?>' value='<?php echo $copyVariationResult['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($copyVariationResult['variation_price'], 2)  ?>')" />
+                                <input type='radio' name='variations' class="invisible" id='variation_<?php echo $singleVariation['id'] ?>' data-max='<?= $singleVariation['variation_stock'] ?>' data-price='<?= $singleVariation['variation_price'] ?>' data-name='<?= $singleVariation['variation_name'] ?>' value='<?php echo $singleVariation['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($singleVariation['variation_price'], 2)  ?>')" />
                             <?php endif; ?>
                         <?php endif; ?>
 
@@ -387,45 +370,10 @@ if ($variations->num_rows === 1) {
                     <div class="out-of-stock" id="unavailable">
                         <button class="btn btn-danger">Add to cart</button>
                     </div>
-
                 </div>
             </div>
         </div>
-              <div class="details">
-
-        
-        <div class="spec">
-        <div class="mt-3 border-bottom">
-                    <h5>Product Specifications</h3>
-                </div>
-                <div class="info">
-                    <small class="text-muted">Compatible Models:</small >
-                    <small > <?= isset($models) ? $models : '' ?></small>
-                    
-                </div>
-                <div class="info">
-                    
-
-                    <small class="text-muted">Category:</small>
-                    <small><?= isset($category) ? $category : '' ?></small>
-                </div>
-                <div class="info">
-                    <small class="text-muted"> Brand: </small>
-                    <small> Brand: <?= isset($brand) ? $brand : '' ?></small>
-                </div>
-                    </div>
-                    <br>
-        <div class="descript">
-        <div class="mt-3 border-bottom">
-                    <h5>Description</h3>
-                </div>
-                   
-                    <?= isset($description) ? html_entity_decode($description) : '' ?>
-                </div>
-
-                </div>
-    
-    
+    </div>
     <div class="container my-5">
         <div class="product-review">
             <?php
@@ -491,7 +439,6 @@ if ($variations->num_rows === 1) {
             <?php endwhile; ?>
         </div>
     </div>
-</div>
 </div>
 
 <div class="modal fade" id="cart_modal" role='dialog'>
