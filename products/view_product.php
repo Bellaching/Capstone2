@@ -441,7 +441,7 @@ $singleVariation = $variations->fetch_array();
     </div>
 </div>
 
-<div class="modal fade" id="cart_modal" role='dialog'>
+<<div class="modal fade" id="cart_modal" role='dialog'>
     <div class="modal-dialog modal-lg modal-dialog-end" role="document">
         <div class="modal-content">
             <div class="modal-body">
@@ -451,7 +451,7 @@ $singleVariation = $variations->fetch_array();
                         <div class="flex-grow-1 mx-3">
                             <div class="d-flex flex-column h-100">
                                 <h2 class="text-secondary">
-                                    <?= $name ?>
+                                    <?= isset($name) ? $name : "" ?>
                                     <span id="item-price" class="invisible"></span>
                                     <span id="item-max-price" class="invisible"></span>
                                 </h2>
@@ -479,9 +479,9 @@ $singleVariation = $variations->fetch_array();
             </div>
             <div class="modal-footer">
                 <?php if (isset($product_order_config)) : ?>
-                    <span id="warning-label" class="text-danger invinsible"><small>You've reached the maximum order limit (<?= number_format($product_order_config['value']) ?> php)</small></span>
+                    <span id="warning-label" class="text-danger invisible"><small>You've reached the maximum order limit (<?= number_format($product_order_config['value']) ?> php)</small></span>
                 <?php elseif (isset($all_order_config)) : ?>
-                    <span id="warning-label" class="text-danger invinsible"><small>You've reached the maximum order limit (<?= number_format($all_order_config['value']) ?> php)</small></span>
+                    <span id="warning-label" class="text-danger invisible"><small>You've reached the maximum order limit (<?= number_format($all_order_config['value']) ?> php)</small></span>
                 <?php endif; ?>
                 <button type="button" class="btn text-white" style="background: #004399" id="confirm" onclick="saveToCart()">Add to Cart</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -489,7 +489,6 @@ $singleVariation = $variations->fetch_array();
         </div>
     </div>
 </div>
-
 
 <script>
     $(document).ready(function() {
