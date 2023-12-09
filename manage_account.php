@@ -178,7 +178,8 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2){
     .input-form-contact input,
     .input-form-add1 input,
     .input-form-add2 input,
-    .input-form-zip input
+    .input-form-zip input,
+    .input-form
     {
         outline: none;
         border: none;
@@ -203,7 +204,9 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2){
     .input-form-zip small,
     .input-form-province small,
     .input-form-city small,
-    .input-form-region small
+    .input-form-region small,
+    .input-form small
+
     {
         display: block;
         font-size: 12px;
@@ -237,6 +240,13 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2){
 .ad{
     color: #004399;
 }
+
+small.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
 
 
 @media only screen and (max-width: 900px) {
@@ -343,13 +353,15 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2){
                             <div class="input-form-email">
                                 <small class="label">Email:</small>
                                 <input type="email" name="email" id="email" placeholder="arnoldtvmotoshop@gmail.com" required value="<?= isset($email) ? $email : "" ?>">
+                                <small id="gmailError" class="error-message"></small>
                             </div>
 
                             <!-- Contact input -->
                             <div class="input-form-contact">
-                                <small class="label">Contact:</small>
-                                <input type="text" name="contact" id="contact" placeholder="Contact Number" value="<?= isset($contact) ? $contact : "" ?>" onkeydown="return allowOnlyNumbers(event)" required>
-                            </div>
+    <small class="label">Contact:</small>
+    <input type="text" name="contact" id="contact" placeholder="Contact Number" value="<?= isset($contact) ? $contact : "" ?>" onkeydown="return allowOnlyNumbers(event)" maxlength="11" required>
+    <small id="contactError" class="error-message"></small>
+</div>
                         </div>
                         <br>
                         <h4 style="font-weight: bold; font-size: 20px; margin: 0 3%;">Default Address</h4>
@@ -490,9 +502,10 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2){
                         </div>
 
                         <div class="input-form-zip">
-                            <small>Zip Code</small>
-                            <input type="varchar" name="zipcode" id="zipcode" placeholder="Zip Code" value="<?= isset($zipcode) ? $zipcode : "" ?>" onkeydown="return allowOnlyNumbers(event)" required>
-                        </div>
+    <small>Zip Code</small>
+    <input type="varchar" name="zipcode" id="zipcode" placeholder="Zip Code" value="<?= isset($zipcode) ? $zipcode : "" ?>" onkeydown="return allowOnlyNumbers(event)" maxlength="4" required>
+    <small id="zipCodeError" class="error-message"></small>
+</div>
                            
                         
 
@@ -567,6 +580,54 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2){
         return false; // Prevent the key press
     }
 }
+
+function validateForm() {
+
+    $zipcode = isset($_POST['zipcode']) ? trim($_POST['zipcode']) : '';
+if (!preg_match('/^\d{4}$/', $zipcode)) {
+    $errors[] = "Please enter a valid 4-digit zip code.";
+}
+
+// Validate Contact Number
+$contact = isset($_POST['contact']) ? trim($_POST['contact']) : '';
+if (strlen($contact) != 11 || !preg_match('/^09/', $contact)) {
+    $errors[] = "Please enter a valid 11-digit contact number starting with 09.";
+}
+
+    // Validate Zip Code
+    var zipCode = document.getElementById('zipcode').value;
+    var zipCodeError = document.getElementById('zipCodeError');
+    if (!/^\d{4}$/.test(zipCode)) {
+        zipCodeError.innerText = 'Please enter a valid 4-digit zip code.';
+        return false;
+    } else {
+        zipCodeError.innerText = ''; // Clear the error message if valid
+    }
+
+    // Validate Contact Number
+    var contactNumber = document.getElementById('contact').value;
+    var contactError = document.getElementById('contactError');
+    if (contactNumber.length < 11 || !contactNumber.startsWith('09')) {
+        contactError.innerText = 'Please enter a valid 11-digit contact number starting with 09.';
+        return false;
+    } else {
+        contactError.innerText = ''; // Clear the error message if valid
+    }
+
+    // Validate Gmail Address
+    var gmailAddress = document.getElementById('gmail').value;
+    var gmailError = document.getElementById('gmailError');
+    if (!/^[a-zA-Z0-9._-]+@gmail\.com$/.test(gmailAddress)) {
+        gmailError.innerText = 'Please enter a valid Gmail address.';
+        return false;
+    } else {
+        gmailError.innerText = ''; // Clear the error message if valid
+    }
+
+    return true;
+}
+
+
 $(function(){
     $('#edit_address').click(function(){
         uni_modal("Edit Address", "edit_address.php","mid-large");
@@ -678,48 +739,64 @@ $(function(){
             }
         })
         $('#register-frm').submit(function(e){
-            e.preventDefault()
-            var _this = $(this)
-            $('.err-msg').remove();
-            var el = $('<div>')
-            el.hide()
-            if($('#password').val() != $('#cpassword').val()){
-                el.addClass('alert alert-danger err-msg').text('Password does not match.');
-                _this.prepend(el)
-                el.show('slow')
-                return false;
-            }
-            start_loader();
-            $.ajax({
-                url:_base_url_+"classes/Users.php?f=save_client",
-                data: new FormData($(this)[0]),
-                cache: false,
-                contentType: false,
-                processData: false,
-                method: 'POST',
-                type: 'POST',
-                dataType: 'json',
-                error:err=>{
-                    console.log(err)
-                    alert_toast("An error occurred",'error');
+        e.preventDefault();
+
+        // Validation
+        var isValid = validateForm();
+        if (!isValid) {
+            return; // If validation fails, do not proceed
+        }
+
+        var _this = $(this);
+        $('.err-msg').remove();
+        var el = $('<div>');
+        el.hide();
+
+        // Password matching validation
+        if ($('#password').val() != $('#cpassword').val()) {
+            el.addClass('alert alert-danger err-msg').text('Password does not match.');
+            _this.prepend(el);
+            el.show('slow');
+
+            // Scroll to the first error message
+            $('html, body').animate({
+                scrollTop: el.offset().top
+            }, 1000);
+
+            return false;
+        }
+
+        start_loader();
+        $.ajax({
+            url: _base_url_ + "classes/Users.php?f=save_client",
+            data: new FormData($(this)[0]),
+            cache: false,
+            contentType: false,
+            processData: false,
+            method: 'POST',
+            type: 'POST',
+            dataType: 'json',
+            error: err => {
+                console.log(err);
+                alert_toast("An error occurred", 'error');
+                end_loader();
+            },
+            success: function(resp) {
+                if (typeof resp == 'object' && resp.status == 'success') {
+                    location.reload();
+                } else if (resp.status == 'failed' && !!resp.msg) {
+                    el.addClass("alert alert-danger err-msg").text(resp.msg);
+                    _this.prepend(el);
+                    el.show('slow');
+                } else {
+                    alert_toast("An error occurred", 'error');
                     end_loader();
-                },
-                success:function(resp){
-                    if(typeof resp =='object' && resp.status == 'success'){
-                        location.reload();
-                    } else if(resp.status == 'failed' && !!resp.msg){   
-                        el.addClass("alert alert-danger err-msg").text(resp.msg)
-                        _this.prepend(el)
-                        el.show('slow')
-                    } else {
-                        alert_toast("An error occurred",'error');
-                        end_loader();
-                        console.log(resp)
-                    }
-                    end_loader();
-                    $('html, body').scrollTop(0)
+                    console.log(resp);
                 }
-            })
-        })
+                end_loader();
+                $('html, body').scrollTop(0);
+            }
+        });
+    });
     })
 </script>
