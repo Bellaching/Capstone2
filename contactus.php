@@ -222,6 +222,9 @@ include 'sendemail.php';
     }
 </script>
 
+
+</body>
+
 <script>
 function allowOnlyLetters(event) {
         // Check if the key pressed is a letter
@@ -232,7 +235,6 @@ function allowOnlyLetters(event) {
         }
     }
 </script>
-</body>
 
 
     
