@@ -1,5 +1,7 @@
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 <?php
+$selectedValue = ""; 
+
 include 'sendemailporder.php';
 $total = 0;
 $api_url_province = 'https://ph-locations-api.buonzz.com/v1/provinces';
