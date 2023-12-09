@@ -49,6 +49,7 @@
             background: none;
             box-shadow: none !important;
             border: 1px solid white;
+            color:white;
             font-family: 'Montserrat', sans-serif;
         }
 
@@ -172,10 +173,12 @@ section.new_arrivals {
     margin: 0 10px 15px; /* Adjust margin for spacing between items */
 }
 
-.brand-img-holder {
-    overflow: hidden;
-    position: relative;
-    border-radius: 10px;
+.brand-img-holder img {
+    width: 155px; /* Set a fixed width */
+    height: 155px; /* Set a fixed height */
+    object-fit: cover;
+    object-position: center;
+    border-radius: 10px; /* Match the border-radius of the parent container */
 }
 
 .brand-img-holder img {
@@ -345,7 +348,7 @@ section.new_arrivals {
     <?php endwhile; ?>
 </div>
 
-
+</section>
 
     <section class="new_arrivals py-5">
         <div class="container">
