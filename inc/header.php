@@ -144,12 +144,19 @@
   <script src="<?php echo base_url ?>assets/js/scripts.js"></script>
   <style>
      html
+   {
+  
+      background-color: #ffff;
+     
+    }
+
+    html
     body {
       height: 100%;
       width: 100%;
       font-family: 'Poppins', sans-serif;
       text-decoration: none;
-      background-color: #F4F5FA;
+      
       overflow-x: hidden;
       margin: 0;
       font-weight: 600;
