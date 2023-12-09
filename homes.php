@@ -113,6 +113,12 @@
             height: 100%;
         }
 
+        .new_arrivals{
+            background-color: #ffff;
+        }
+
+
+
         /* Styles for large screens */
         @media (min-width: 992px) {
             .banner_fw_container {
