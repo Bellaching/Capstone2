@@ -256,7 +256,9 @@ class Master extends DBConnection
 	function delete_brand()
 	{
 		extract($_POST);
-		$del = $this->conn->query("UPDATE `brand_list` set `delete_flag` = 1  where id = '{$id}'");
+
+		$del = $this->conn->query("DELETE FROM `brand_list` WHERE id = '{$id}'");
+		
 		if ($del) {
 			$resp['status'] = 'success';
 			$this->settings->set_flashdata('success', "Brand successfully deleted.");
