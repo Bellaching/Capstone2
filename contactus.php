@@ -203,7 +203,7 @@ include 'sendemail.php';
     <div class="contact-form">
       
         <form class="contact" action="" method="post">
-            <input type="varchar" id="name" name="name" class="text-box" placeholder="Your Name" required>
+            <input type="varchar" id="name" name="name" class="text-box" placeholder="Your Name" ronkeydown="return allowOnlyLetters(event)" required>>
             <input type="email" id="email" name="email" class="text-box" placeholder="Your Email" required>
             <textarea type="text" name="message" id="message" rows="5" placeholder="Message" required></textarea>
             <input type="submit" name="submit" class="send-btn" value="Send">
@@ -222,7 +222,16 @@ include 'sendemail.php';
     }
 </script>
 
-
+<script>
+function allowOnlyLetters(event) {
+        // Check if the key pressed is a letter
+        if (event.key.match(/[A-Za-z]/)) {
+            return true;  // Allow the key press
+        } else {
+            return false; // Prevent the key press
+        }
+    }
+</script>
 </body>
 
 
