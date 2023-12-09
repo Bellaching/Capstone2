@@ -178,8 +178,7 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2){
     .input-form-contact input,
     .input-form-add1 input,
     .input-form-add2 input,
-    .input-form-zip input,
-    .input-form
+    .input-form-zip input
     {
         outline: none;
         border: none;
@@ -204,9 +203,7 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2){
     .input-form-zip small,
     .input-form-province small,
     .input-form-city small,
-    .input-form-region small,
-    .input-form small
-
+    .input-form-region small
     {
         display: block;
         font-size: 12px;
@@ -241,10 +238,10 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2){
     color: #004399;
 }
 
-small.error-message {
+.error-message {
     color: red;
     font-size: 12px;
-    margin-top: 2px;
+    margin-top: 2px 4%;
 }
 
 
@@ -325,7 +322,7 @@ small.error-message {
                 <h4>Manage Account Details/Credentials</h4>
             </div>
 
-            <form id="register-frm" class="register-frm" action="" method="post">
+            <form id="register-frm" class="register-frm" action="" method="post" onsubmit="return validateForm()">
                 <input type="hidden" name="id" value="<?= isset($id) ? $id : "" ?>">
 
                 <div class="input-container">
@@ -353,15 +350,16 @@ small.error-message {
                             <div class="input-form-email">
                                 <small class="label">Email:</small>
                                 <input type="email" name="email" id="email" placeholder="arnoldtvmotoshop@gmail.com" required value="<?= isset($email) ? $email : "" ?>">
-                                <small id="gmailError" class="error-message"></small>
                             </div>
 
                             <!-- Contact input -->
                             <div class="input-form-contact">
-    <small class="label">Contact:</small>
-    <input type="text" name="contact" id="contact" placeholder="Contact Number" value="<?= isset($contact) ? $contact : "" ?>" onkeydown="return allowOnlyNumbers(event)" maxlength="11" required>
-    <small id="contactError" class="error-message"></small>
-</div>
+                                <small class="label">Contact:</small>
+                                <input type="text" name="contact" id="contact" placeholder="Contact Number" value="<?= isset($contact) ? $contact : "" ?>" onkeydown="return allowOnlyNumbers(event)" required>
+                               
+                            </div>
+                            <br>
+                            <small id="contactError" class="error-message"></small>
                         </div>
                         <br>
                         <h4 style="font-weight: bold; font-size: 20px; margin: 0 3%;">Default Address</h4>
@@ -502,10 +500,11 @@ small.error-message {
                         </div>
 
                         <div class="input-form-zip">
-    <small>Zip Code</small>
-    <input type="varchar" name="zipcode" id="zipcode" placeholder="Zip Code" value="<?= isset($zipcode) ? $zipcode : "" ?>" onkeydown="return allowOnlyNumbers(event)" maxlength="4" required>
-    <small id="zipCodeError" class="error-message"></small>
-</div>
+                            <small>Zip Code</small>
+                            <input type="varchar" name="zipcode" id="zipcode" placeholder="Zip Code" value="<?= isset($zipcode) ? $zipcode : "" ?>" onkeydown="return allowOnlyNumbers(event)" required>
+                            
+                        </div><br>
+                        <small id="zipCodeError" class="error-message"></small>
                            
                         
 
@@ -562,38 +561,24 @@ small.error-message {
 
 
 <script>
-    function allowOnlyLetters(event) {
-        // Check if the key pressed is a letter
-        if (event.key.match(/[A-Za-z]/)) {
-            return true;  // Allow the key press
-        } else {
-            return false; // Prevent the key press
-        }
-    }
 
 
-    function allowOnlyNumbers(event) {
-    // Check if the key pressed is a number or the backspace key
-    if (event.key.match(/[0-9]/) || event.keyCode === 8 /* Backspace */) {
-        return true;  // Allow the key press
-    } else {
-        return false; // Prevent the key press
+  document.getElementById('zipcode').addEventListener('input', function() {
+    var zipCode = this.value;
+    if (zipCode.length > 4) {
+        this.value = zipCode.slice(0, 4);
     }
-}
+});
+
+// Add event listener for contact number input
+document.getElementById('contact').addEventListener('input', function() {
+    var contactNumber = this.value;
+    if (contactNumber.length > 11) {
+        this.value = contactNumber.slice(0, 11);
+    }
+});
 
 function validateForm() {
-
-    $zipcode = isset($_POST['zipcode']) ? trim($_POST['zipcode']) : '';
-if (!preg_match('/^\d{4}$/', $zipcode)) {
-    $errors[] = "Please enter a valid 4-digit zip code.";
-}
-
-// Validate Contact Number
-$contact = isset($_POST['contact']) ? trim($_POST['contact']) : '';
-if (strlen($contact) != 11 || !preg_match('/^09/', $contact)) {
-    $errors[] = "Please enter a valid 11-digit contact number starting with 09.";
-}
-
     // Validate Zip Code
     var zipCode = document.getElementById('zipcode').value;
     var zipCodeError = document.getElementById('zipCodeError');
@@ -614,20 +599,33 @@ if (strlen($contact) != 11 || !preg_match('/^09/', $contact)) {
         contactError.innerText = ''; // Clear the error message if valid
     }
 
-    // Validate Gmail Address
-    var gmailAddress = document.getElementById('gmail').value;
-    var gmailError = document.getElementById('gmailError');
-    if (!/^[a-zA-Z0-9._-]+@gmail\.com$/.test(gmailAddress)) {
-        gmailError.innerText = 'Please enter a valid Gmail address.';
+    // Check if there are any error messages
+    if (zipCodeError.innerText !== '' || contactError.innerText !== '') {
         return false;
-    } else {
-        gmailError.innerText = ''; // Clear the error message if valid
     }
 
     return true;
 }
 
 
+    function allowOnlyLetters(event) {
+        // Check if the key pressed is a letter
+        if (event.key.match(/[A-Za-z]/)) {
+            return true;  // Allow the key press
+        } else {
+            return false; // Prevent the key press
+        }
+    }
+
+
+    function allowOnlyNumbers(event) {
+    // Check if the key pressed is a number or the backspace key
+    if (event.key.match(/[0-9]/) || event.keyCode === 8 /* Backspace */) {
+        return true;  // Allow the key press
+    } else {
+        return false; // Prevent the key press
+    }
+}
 $(function(){
     $('#edit_address').click(function(){
         uni_modal("Edit Address", "edit_address.php","mid-large");
@@ -730,7 +728,7 @@ $(function(){
                 $(this).attr('data-type','text')
                 $(this).closest('input-group').find('input').attr('type',"text")
                 $(this).removeClass("fa-eye-slash")
-                $(this).addClass("fa-eye")
+                $(this).addClass("fa-eye")v
             } else {
                 $(this).attr('data-type','password')
                 $(this).closest('input-group').find('input').attr('type',"password")
@@ -738,7 +736,8 @@ $(function(){
                 $(this).addClass("fa-eye-slash")
             }
         })
-        $('#register-frm').submit(function(e){
+        $(function(){
+    $('#register-frm').submit(function(e){
         e.preventDefault();
 
         // Validation
@@ -753,19 +752,14 @@ $(function(){
         el.hide();
 
         // Password matching validation
-        if ($('#password').val() != $('#cpassword').val()) {
+         if ($('#password').val() != $('#cpassword').val()) {
             el.addClass('alert alert-danger err-msg').text('Password does not match.');
             _this.prepend(el);
             el.show('slow');
 
-            // Scroll to the first error message
-            $('html, body').animate({
-                scrollTop: el.offset().top
-            }, 1000);
-
+           
             return false;
         }
-
         start_loader();
         $.ajax({
             url: _base_url_ + "classes/Users.php?f=save_client",
@@ -798,5 +792,6 @@ $(function(){
             }
         });
     });
+});
     })
 </script>
