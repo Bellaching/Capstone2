@@ -232,8 +232,6 @@
             method: 'GET',
             success: function(response) {
             const newCount = parseInt(response);
-            console.log("new Count: ", newCount);
-            console.log("previousCount: ", previousCount);
             if (newCount > previousCount) {
                 var audio = document.getElementById('audio_' + notificationID);
                 audio.play();
@@ -248,6 +246,30 @@
             }
         });
     }
+
+    function notificationReminder(){
+        var hasOrder = $('#hasOrder').val();
+        if (hasOrder) {
+            function insertNotification() {
+                $.ajax({
+                    url: 'insert_notification.php',
+                    method: 'POST',
+                    data: {
+                        notificationType: 'You still have pending orders.' // Adjust as needed
+                    },
+                    success: function (response) {
+                        console.log("Notification inserted:", response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error inserting notification:", error);
+                    }
+                });
+            }
+
+            insertNotification();
+        }
+    }
+
     $(document).ready(function() {
         $('#dLabel').on('click', function(e) {
             $('.notifications').toggleClass('show');
@@ -264,8 +286,10 @@
                 });
             }
         });
+        notificationReminder();
         fetchNotifications();
 
+        setInterval(notificationReminder, 30 * 60 * 1000);
         setInterval(fetchNotifications, 15000);
         setInterval(fetchNotificationCount, 15000);
     });
