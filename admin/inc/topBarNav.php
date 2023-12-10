@@ -59,7 +59,7 @@
 
     }
 
-    .notification-item {
+.notification-item {
         padding: 10px;
        
         background: #F4F5FA;
@@ -118,7 +118,7 @@
         <ul class="navbar-nav ml-auto align-items-center">
           <li class="notif dropdown">
           <?php
-              echo '<a id="dLabel" role="button" data-toggle="dropdown" data-target="#">';
+              echo '<a id="dLabel" role="button" data-toggle="dropdown" data-target="#"> href="/page.html">';
               echo '<i class="fas fa-bell"></i>';
 
               $countQuery = "SELECT COUNT(id) AS order_list FROM notifications WHERE `type` = 2 AND `is_read` = 0" ;
