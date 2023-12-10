@@ -24,9 +24,9 @@ if (isset($_GET['readytoship'])) {
 
 
 <style>
-    .text-center {
-        color: #004399;
-    }
+   .nav-link {
+    color: #004399; /* Set the default text color */
+}
     .row{
     display: flex;
     flex-direction: column;
@@ -37,18 +37,17 @@ if (isset($_GET['readytoship'])) {
         justify-content: space-around;
         align-items: center;
         width: 100%;
-        background-color: white;
+        color:blue;
         
     }
 
     
 
     .nav-link.active {
-        background-color: #0062CC; /* Set your desired background color */
-        color: white !important; /* Set the text color */
-        padding: 1% 3%;
-    }
-
+    background-color: #0062CC; /* Set your desired background color */
+    color: white !important; /* Set the text color */
+    padding: 1% 3%;
+}
   
 </style>
 <div class="content py-5 mt-3">
