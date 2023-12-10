@@ -98,13 +98,7 @@
                                 <p>Contact Us</p>
                             </a>
                         </li>
-                        <li class="navs nav-item">
-                            <a href="<?php echo base_url ?>admin/?page=content_management/aboutus" class=" nav-links nav-link nav-content_management_aboutus">
-                                <i class="nav-icon fas fa-info-circle"></i>
-                                <p>About Us</p>
-                            </a>
-                        </li>
-
+                       
                         <li class="navs nav-item">
                             <a href="<?php echo base_url ?>admin/?page=content_management/logo" class=" nav-links nav-link nav-content_management_logo">
                                 <i class="nav-icon fas fa-envelope"></i>
