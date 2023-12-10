@@ -177,15 +177,16 @@ section.new_arrivals {
     overflow: hidden;
     position: relative;
     border-radius: 10px;
+    height: 200px; /* Set a fixed height for the image holder */
 }
 
 .brand-img-holder img {
     width: 100%;
-    height: 100%;
     object-fit: cover;
     object-position: center;
     border-radius: 10px; /* Match the border-radius of the parent container */
 }
+
 
 
 
