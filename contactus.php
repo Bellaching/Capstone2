@@ -185,7 +185,9 @@ include 'sendemail.php';
      </div>
 
 
-
+     <?php if (!empty($alert)) : ?>
+    <div class="alert"><?php echo $alert; ?></div>
+<?php endif; ?>
         <div class="connect-with-us">
        <h2>Connect with us!</h2>
 
@@ -212,9 +214,7 @@ include 'sendemail.php';
     </div>
    
 </div>
-<?php if (!empty($alert)) : ?>
-    <div class="alert"><?php echo $alert; ?></div>
-<?php endif; ?>
+
 
 <script type="text/javascript">
     if (window.history.replaceState) {
