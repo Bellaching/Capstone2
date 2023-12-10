@@ -1194,7 +1194,7 @@ class Master extends DBConnection
 		$configType = $_POST['configType'];
 		$configPrice = $_POST['configPrice'];
 		$configQuantity = $_POST['configQuantity'];
-		$isAll = false;
+		$isAll = true; //set to true because per product is removed
 		if ($configType === 'All') {
 			$configType = null;
 			$isAll = true;
