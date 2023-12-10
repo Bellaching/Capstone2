@@ -61,13 +61,14 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
-
+                <?php if ($_settings->userdata('type') == 1) : ?>
                 <li class="navs nav-item">
                     <a href="<?php echo base_url ?>admin/?page=shop_config" class="nav-links nav-link">
                         <i class="nav-icon fas fa-cog"></i>
                         <p>Shop Configuration</p>
                     </a>
                 </li>
+                <?php endif; ?>
 
                
                 <li class="navs nav-item">
@@ -151,6 +152,7 @@
                         <i class="right fas fa-angle-left"></i>
                     </a>
                     <ul class="nav nav-treeview">
+                    <?php if ($_settings->userdata('type') == 1) : ?>
                         <li class="navs nav-item">
                             <a href="<?php echo base_url ?>admin/?page=shop_calendar" class="nav-links nav-link nav-clients">
                                 <i class="nav-icon fas fa-calendar"></i>
@@ -172,6 +174,8 @@
                                 <p>Registered Clients</p>
                             </a>
                         </li>
+
+                        <?php endif; ?>
 
                         <li class="navs nav-item">
                             <a href="<?php echo base_url ?>admin/?page=clients/inquiries" class="nav-links nav-link nav-clients_inquiries">
