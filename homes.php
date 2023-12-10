@@ -184,11 +184,11 @@ section.new_arrivals {
 }
 
 .brand-img-holder img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    max-width: 100%;
+    height: auto; /* Maintain aspect ratio */
     border-radius: 10px; /* Match the border-radius of the parent container */
 }
+
 
 
 
