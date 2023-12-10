@@ -34,7 +34,7 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
         <div class="form-group">
             <label for="" class="control-label">Brand Logo</label>
             <div class="custom-file">
-                <input type="file" class="custom-file-input rounded-circle" id="customFile" name="img" onchange="displayImg(this,$(this))">
+                <input type="file" class="custom-file-input rounded-circle" id="customFile" name="img">
                 <label class="custom-file-label" for="customFile">Choose file</label>
             </div>
         </div>
