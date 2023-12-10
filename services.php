@@ -37,7 +37,7 @@
     background-color: #004399;
     height: 40px;
     width: 100%;
-    height:300px;
+    height:200px;
   }
 
   .service-h1 h1{
@@ -80,6 +80,7 @@
     margin: 5px 0;
   }
 
+ 
     </style>
 
     <body class="Services">
@@ -87,25 +88,19 @@
     <!--Start-of-Sevices-------------------------------------------------------------------------------->
     <div class="service-container">
         <div class="service-h1">
-        <h1>Our Services</h1>
-        <p>Our service page offers efficient delivery service and handles customer inquiries with ease.</p>
+        <h1> <?php echo $_settings->info('servicetitle') ?></h1>
+        <p> <?php echo $_settings->info('servicep') ?></p>
+        
         </div> 
 
         <div class="service-info">
-            <a href="#">
-            <div class="delivery-services">
-                <img src="images/delivery_services.png" alt="Phone">
-                <h1>Delivery Services</h1>         
+           
+            <div class="service-desc">
+            <p><?php echo $_settings->info('service_description')  ?>  </p>
+                   
             </div>
-        </a>
-        <a href="#">
-            <div class="customer-inquiries">
-                
-                <img src="images/customer_inquiries.png" alt="Address">
-                <h1>Customer Inquiries</h1>
-              
-            </div>
-        </a>
+        
+            
         
 
         </div>
