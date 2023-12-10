@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label for="" class="control-label">System Logo</label>
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input rounded-circle" id="cimg" name="img" onchange="displayImg(this,$(this))">
+                        <input type="file" class="custom-file-input rounded-circle" id="cimg" name="img">
                         <label class="custom-file-label" for="cimg">Choose file</label>
                     </div>
                 </div>
