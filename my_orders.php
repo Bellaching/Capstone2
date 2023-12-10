@@ -43,7 +43,7 @@ if (isset($_GET['readytoship'])) {
 
     
 
-    .nav-link.active {
+    .nav-linkss.active {
     background-color: #0062CC; /* Set your desired background color */
     color: white !important; /* Set the text color */
     padding: 1% 3%;
