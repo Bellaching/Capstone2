@@ -72,21 +72,21 @@
 
 
     $(document).ready(function() {
-        var summernoteInstance = $('.summernote').summernote({
+        $('.summernote').summernote({
+            height: 100,
             toolbar: [
                 ['style', ['style']],
-
+                ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
                 ['fontname', ['fontname']],
-                ['fontsize', ['fontsize']], // Include the font size dropdown
+                ['fontSizes', ['fontsize']], // Include the font size dropdown
                 ['color', ['color']],
-
-
+                ['para', ['ol', 'ul', 'paragraph', 'height']],
+                ['table', ['table']],
                 ['view', ['undo', 'redo', 'fullscreen', 'codeview', 'help']]
             ],
-            fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '24', '36', '48', '64', '82', '150'],
-            fontNames: ['Arial', 'Times New Roman', 'Courier New', 'Custom Font', 'Montserrat'],
+            fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36', '48', '64', '82', '150'],
+            fontNames: ['Arial', 'Times New Roman', 'Courier New', 'Custom Font', 'Montserrat']
         });
-
 
 
     });
