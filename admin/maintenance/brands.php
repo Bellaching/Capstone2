@@ -27,7 +27,7 @@
 					<col width="20%">
 					<col width="15%">
 					<col width="20%">
-					<col width="15%">
+					
 					<col width="20%">
 					<col width="15%">
 				</colgroup>
@@ -37,7 +37,7 @@
 						<th>Date Created</th>
 						<th>Logo</th>
 						<th>Brand</th>
-						<th>Category</th>
+						
 						<th>Status</th>
 						<th>Action</th>
 					</tr>
