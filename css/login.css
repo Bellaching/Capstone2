@@ -85,6 +85,13 @@ label {
   text-align: left;
   font-size: 12px;
   text-decoration: none;
+  margin: 5px;
+}
+
+
+.back_to_shop {
+
+  margin: 5px;
 }
 
 #login-btn,

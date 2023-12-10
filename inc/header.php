@@ -187,5 +187,18 @@
     filter: drop-shadow(0 0 49px 0 #879090); /* Fix typo: 49px instead of 49x */
     z-index: -1;
 }
+
+.back_to_shop a {
+  text-align: left;
+  font-size: 12px;
+  text-decoration: none;
+  margin: 5px;
+}
+
+
+.back_to_shop {
+
+  margin: 5px;
+}
   </style>
 </head>
