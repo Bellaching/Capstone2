@@ -24,7 +24,7 @@ if (isset($_GET['readytoship'])) {
 
 
 <style>
-   .nav-link {
+   .nav-linkss {
     color: #004399; /* Set the default text color */
 }
     .row{
@@ -57,13 +57,13 @@ if (isset($_GET['readytoship'])) {
         <div class="row">
             <div class="navy">
                 <div class="nav flex-row " id="v-pills-tab" role="tablist" aria-orientation="horizontal">
-                <a class="nav-link <?= ($currentStatus === 'pending') ? 'active' : ''; ?>" id="v-pills-pending-tab" data-toggle="pill" href="#v-pills-pending" role="tab" aria-controls="v-pills-pending" aria-selected="<?= ($currentStatus === 'pending') ? 'true' : 'false'; ?>">Pending</a>
-                <a class="nav-link <?= ($currentStatus === 'readytoship') ? 'active' : ''; ?>" id="v-pills-readytoship-tab" data-toggle="pill" href="#v-pills-readytoship" role="tab" aria-controls="v-pills-readytoship" aria-selected="<?= ($currentStatus === 'readytoship') ? 'true' : 'false'; ?>">Ready to ship</a>
+                <a class="nav-linkss <?= ($currentStatus === 'pending') ? 'active' : ''; ?>" id="v-pills-pending-tab" data-toggle="pill" href="#v-pills-pending" role="tab" aria-controls="v-pills-pending" aria-selected="<?= ($currentStatus === 'pending') ? 'true' : 'false'; ?>">Pending</a>
+                <a class="nav-linkss <?= ($currentStatus === 'readytoship') ? 'active' : ''; ?>" id="v-pills-readytoship-tab" data-toggle="pill" href="#v-pills-readytoship" role="tab" aria-controls="v-pills-readytoship" aria-selected="<?= ($currentStatus === 'readytoship') ? 'true' : 'false'; ?>">Ready to ship</a>
 
               
-                <a class="nav-link <?= ($currentStatus === 'delivered') ? 'active' : ''; ?>" id="v-pills-delivered-tab" data-toggle="pill" href="#v-pills-delivered" role="tab" aria-controls="v-pills-delivered" aria-selected="<?= ($currentStatus === 'delivered') ? 'true' : 'false'; ?>">Delivered</a>
-                <a class="nav-link <?= ($currentStatus === 'cancelled') ? 'active' : ''; ?>" id="v-pills-cancelled-tab" data-toggle="pill" href="#v-pills-cancelled" role="tab" aria-controls="v-pills-cancelled" aria-selected="<?= ($currentStatus === 'cancelled') ? 'true' : 'false'; ?>">Cancelled</a>
-                <a class="nav-link <?= ($currentStatus === 'return-refund') ? 'active' : ''; ?>" id="v-pills-return-tab" data-toggle="pill" href="#v-pills-return" role="tab" aria-controls="v-pills-return" aria-selected="<?= ($currentStatus === 'return-refund') ? 'true' : 'false'; ?>">For Return/Refund</a>
+                <a class="nav-linkss <?= ($currentStatus === 'delivered') ? 'active' : ''; ?>" id="v-pills-delivered-tab" data-toggle="pill" href="#v-pills-delivered" role="tab" aria-controls="v-pills-delivered" aria-selected="<?= ($currentStatus === 'delivered') ? 'true' : 'false'; ?>">Delivered</a>
+                <a class="nav-linkss <?= ($currentStatus === 'cancelled') ? 'active' : ''; ?>" id="v-pills-cancelled-tab" data-toggle="pill" href="#v-pills-cancelled" role="tab" aria-controls="v-pills-cancelled" aria-selected="<?= ($currentStatus === 'cancelled') ? 'true' : 'false'; ?>">Cancelled</a>
+                <a class="nav-linkss <?= ($currentStatus === 'return-refund') ? 'active' : ''; ?>" id="v-pills-return-tab" data-toggle="pill" href="#v-pills-return" role="tab" aria-controls="v-pills-return" aria-selected="<?= ($currentStatus === 'return-refund') ? 'true' : 'false'; ?>">For Return/Refund</a>
                 </div>
             </div>
             <div class="order-container">
