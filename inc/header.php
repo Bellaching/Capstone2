@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><?php echo $_settings->info('title') != false ? $_settings->info('title') . ' | ' : '' ?><?php echo $_settings->info('sysname') ?></title>
+  <title><?php echo $_settings->info('systitle') ?></title>
   <link rel="icon" href="<?php echo validate_image($_settings->info('logo')) ?>" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,6 +23,8 @@
   <link rel="stylesheet" href="<?php echo base_url ?>plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="<?php echo base_url ?>plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="<?php echo base_url ?>plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
   <!-- Select2 -->
   <link rel="stylesheet" href="<?php echo base_url ?>plugins/select2/css/select2.min.css">
   <link rel="stylesheet" href="<?php echo base_url ?>plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
@@ -152,7 +154,7 @@
 
     html
     body {
-      height: 100%;
+      height: 80%;
       width: 100%;
       font-family: 'Poppins', sans-serif;
       text-decoration: none;
@@ -161,11 +163,12 @@
       margin: 0;
       font-weight: 600;
     }
+
     #main-header {
       position: relative;
       background: rgb(0, 0, 0) !important;
       background: none !important;
-      height: 60vh;
+      height: 30vh;
       /* Set the height of the header */
     }
 
@@ -175,7 +178,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 60vh; /* You can adjust this as needed */
+    height: 30vh; /* You can adjust this as needed */
     max-height: 600px; /* Set a maximum height for smaller screens */
     background-image: url(<?php echo base_url . $_settings->info('cover') ?>);
     background-repeat: no-repeat;
