@@ -57,7 +57,7 @@
                                 <img src="<?= validate_image($row['image_path']) ?>" alt="Brand Logo - <?= $row['name'] ?>" class="img-logo img-thumbnail">
                             </td>
 							<td><?php echo $row['name'] ?></td>
-							<td><?php echo $categories['category'] ?></td>
+						
 							<td class="text-center">
                                 <?php if($row['status'] == 1): ?>
                                     <span class="badge badge-success mx-3 rounded-pill">Active</span>
