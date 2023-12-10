@@ -874,7 +874,7 @@ class Master extends DBConnection
 				$withShippingFee = true;
 				$other_address = '';
 				break;
-			case 1: // Lalamove
+			case 2: // Lalamove
 				$withShippingFee = false;
 				$other_address = '';
 				break;
@@ -1023,7 +1023,7 @@ class Master extends DBConnection
 				if ($update) {
 					$desc = "";
 					if ($status == 0) {
-						$desc = 'Your order ' . $product_name . ' is pending.';
+						$desc = 'Your order ' . $product_name . ' is confirmed.';
 						$this->conn->query("UPDATE `appointment` set `status` = 0 where order_id = '{$id}'");
 					}
 					if ($status == 1) {
