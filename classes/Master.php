@@ -1319,6 +1319,12 @@ switch ($action) {
 	case 'delete_category':
 		echo $Master->delete_category();
 		break;
+	case 'save_supplier':
+		echo $Master->save_supplier();
+		break;
+	case 'delete_supplier':
+		echo $Master->delete_supplier();
+		break;
 	case 'save_brand':
 		echo $Master->save_brand();
 		break;

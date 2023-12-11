@@ -37,17 +37,13 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && $_GET['id'] > 0) {
 
 			<div class="form-group">
 				<label for="name" class="control-label">Name</label>
-                <input name="name" id="name" type="text" class="form-control rounded-0" value="<?php echo isset($name) ? $name : ''; ?>" required>
+                <input name="name" id="name" type="varchar" class="form-control rounded-0" value="<?php echo isset($name) ? $name : ''; ?>" required>
 			</div>
 			<div class="form-group">
-				<label for="contact" class="control-label">Contact </label>
-                <input name="contact" id="contact" type="number" class="form-control rounded-0" value="<?php echo isset($contact) ? $contact: ''; ?>" required>
+				<label for="sup_contact" class="control-label">Contact</label>
+                <input name="sup_contact" id="sup_contact" type="text" class="form-control rounded-0" value="<?php echo isset($sup_contact) ? $sup_contact: ''; ?>" required>
 			</div>
-            <div class="form-group">
-				<label for="email" class="control-label">Email</label>
-                <input name="email" id="email" type="email" class="form-control rounded-0" value="<?php echo isset($email) ? $email : ''; ?>" required>
-               
-			</div>
+           
 			
             <div class="form-group">
 				<label for="status" class="control-label">Status</label>
@@ -100,6 +96,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && $_GET['id'] > 0) {
 				}
 			})
 		})
-      
-	
+    })
+   
 </script>
