@@ -13,6 +13,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600&display=swap" rel="stylesheet">
     <style>
 
+
+
         .body{
             background-color: #ffff;
         }
@@ -177,19 +179,15 @@ section.new_arrivals {
     overflow: hidden;
     position: relative;
     border-radius: 10px;
-    height: 200px; /* Set a fixed height for the image holder */
-    display: flex;
-    align-items: center; /* Center vertically */
-    justify-content: center; /* Center horizontally */
 }
 
 .brand-img-holder img {
-    max-width: 100%;
-    height: auto; /* Maintain aspect ratio */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
     border-radius: 10px; /* Match the border-radius of the parent container */
 }
-
-
 
 
 
@@ -222,12 +220,31 @@ section.new_arrivals {
             background-color: #ffff;
         }
 
+        .new-arrivals-ctn {
+            font-size: 24px; /* Default font size */
+            text-align: center; /* Center the text */
+        }
 
 
 
+        @media screen and (max-width: 600px) {
+            .new-arrivals-ctn {
+                font-size: 20px; /* Adjust font size for smaller screens */
+            }
+        }
+
+        @media screen and (min-width: 601px) and (max-width: 900px) {
+            .new-arrivals-ctn {
+                font-size: 22px; /* Adjust font size for medium-sized screens */
+            }
+        }
 
         /* Styles for large screens */
         @media (min-width: 992px) {
+
+            .new-arrivals-ctn {
+                font-size: 22px; /* Adjust font size for medium-sized screens */
+            }
             .banner_fw_container {
                 height: 80vh;
             }
@@ -255,6 +272,7 @@ section.new_arrivals {
 
         /* Styles for medium screens */
         @media (max-width: 991px) {
+            
             .banner_fw_container {
                 height: 60vh;
             }

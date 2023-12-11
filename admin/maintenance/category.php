@@ -39,6 +39,7 @@
 						<tr>
 							<td class="text-center"><?php echo $i++; ?></td>
 							<td><?php echo date("Y-m-d H:i",strtotime($row['date_created'])) ?></td>
+							
 							<td><?php echo $row['category'] ?></td>
 							<td class="text-center">
                                 <?php if($row['status'] == 1): ?>
