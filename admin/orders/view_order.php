@@ -102,18 +102,14 @@ if ($order->num_rows > 0) {
                             <div class="ml-3">
                                 <?php if (isset($status)) : ?>
                                     <?php if ($status == 0) : ?>
-                                        <span class="badge badge-secondary px-3 rounded-pill">Pending</span>
+                                        <span class="badge badge-secondary px-3 rounded-pill">Confirmed</span>
+                                  
                                     <?php elseif ($status == 1) : ?>
-                                        <span class="badge badge-success px-3 rounded-pill">Confirmed</span>
-                                    <?php elseif ($status == 2) : ?>
                                         <span class="badge badge-default bg-gradient-teal px-3 rounded-pill">Shipped</span>
-                                    <?php elseif ($status == 3) : ?>
-                                        <span class="badge badge-warning px-3 rounded-pill">For Delivery</span>
-                                    <?php elseif ($status == 4) : ?>
-                                        <span class="badge badge-warning px-3 rounded-pill">On The Way</span>
-                                    <?php elseif ($status == 5) : ?>
+                                
+                                    <?php elseif ($status == 2) : ?>
                                         <span class="badge badge-success px-3 rounded-pill">Delivered</span>
-                                    <?php elseif ($status == 6) : ?>
+                                    <?php elseif ($status == 3) : ?>
                                         <span class="badge badge-danger px-3 rounded-pill">Cancelled</span>
                                     <?php else : ?>
                                         <span class="badge badge-danger px-3 rounded-pill">For Return/Refund</span>
