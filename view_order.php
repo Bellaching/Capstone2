@@ -129,7 +129,7 @@ if ($order->num_rows > 0) {
                 <b><?= isset($ref_code) ? $ref_code : "N/A" ?></b>
             </div>
             <div class="ml-3">
-            <?php if (isset($status)  && $status == 2) : ?>
+            <?php if (isset($status)  && $status == 3) : ?>
               
                 <form action="" id="proof_form" enctype="multipart/form-data" method="POST">
                     <div class="proof_payment_container">
@@ -157,12 +157,12 @@ if ($order->num_rows > 0) {
                     <?php if ($status == 0) : ?>
                         <span class="badge badge-secondary px-3 rounded-pill p-2 bg-secondary">Pending</span>
                     <?php elseif ($status == 1) : ?>
-                        <span class="badge badge-secondary px-3 rounded-pill p-2 bg-info">Shipped</span>
+                        <span class="badge badge-secondary px-3 rounded-pill p-2 bg-info">Cancelled</span>
                 
                     <?php elseif ($status == 2) : ?>
-                        <span class="badge badge-secondary px-3 rounded-pill p-2 bg-success">Delivered</span>
+                        <span class="badge badge-secondary px-3 rounded-pill p-2 bg-success">Confirmed</span>
                     <?php elseif ($status == 3) : ?>
-                        <span class="badge badge-secondary px-3 rounded-pill p-2 bg-warning">Cancelled</span>
+                        <span class="badge badge-secondary px-3 rounded-pill p-2 bg-warning">Shipped</span>
                     <?php else : ?>
                         <span class="badge badge-secondary px-3 rounded-pill p-2 bg-warning">For Return/Refund</span>
                     <?php endif; ?>
@@ -230,7 +230,7 @@ if ($order->num_rows > 0) {
                                     </div>
                                 </div>
 
-                                <?php if (!$row['rated'] && $status == 2) : ?>
+                                <?php if (!$row['rated'] && $status == 3) : ?>
                                     <div class="accordion" id="accordionExample-<?= $row['id'] ?>">
                                         <div class="card">
                                             <div class="card-header" id="reviewContent">
@@ -304,7 +304,7 @@ if ($order->num_rows > 0) {
             ?>
                 <?php if ($row = $order_result->fetch_assoc()) : ?>
                     <!-- Start Return/Refund -->
-                    <?php if ($status == 2) : ?>
+                    <?php if ($status == 3) : ?>
                         <div class="accordion" id="accordionExample-<?= $row['id'] ?>">
                             <div class="card">
                                 <div class="card-header" id="returnContent">

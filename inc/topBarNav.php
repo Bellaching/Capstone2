@@ -433,6 +433,8 @@
                                         echo '<div class="notification-item ' . $notificationClass . '">';
                                         echo '<h6>Hello, ' .$_settings->userdata('firstname') . '</h6>';
                                         echo '<h4 class="item-title">' . $row['description'] . '</h4>';
+                                        echo '<h4 class="item-title">' . $row['description'] . '</h4>';
+                                       
                                         // echo '<p class="item-info">' . $row['description'] . '</p>';
                                         echo '</div>';
                                         echo '</a>';
