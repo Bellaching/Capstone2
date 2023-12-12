@@ -165,32 +165,39 @@ section.new_arrivals {
   flex-direction: column;
 }
 
-#brand_list {
+  .row{
+            margin: 2%;
+        }
+
+        #brand_list {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
 
 .brand-item {
-    width: 100px; /* Adjust the width of each brand item as needed */
+    width: 200px; /* Adjust the width of each brand item as needed */
     margin: 0 10px 15px;
+    
 }
 
 .brand-img-holder {
     overflow: hidden;
     position: relative;
     border-radius: 10px;
-    max-height: 200px; /* Set a max-height to limit the image size */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%; /* Ensure the container takes the full width of its parent */
 }
 
 .brand-img-holder img {
-    width: 100%; /* Ensure the image takes up the full width of the container */
-    height: auto; /* Maintain the image's aspect ratio */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the entire image is covered, maintaining aspect ratio */
+    display: block;
     border-radius: 10px;
 }
+
+
+
 
 
 
@@ -224,9 +231,7 @@ section.new_arrivals {
             background-color: #ffff;
         }
 
-        .row{
-            margin: 2%;
-        }
+      
 
 
 
@@ -345,7 +350,7 @@ section.new_arrivals {
     ?>
     <div class=" brand-item">
         <div class="card ">
-            <div class="brand-img-holder ">
+            <div class="brand-img-holder overflow-hidden position-relative">
                 <img src="<?= validate_image($row['image_path']) ?>" alt="Brand Image" class="img-top">
             </div>
             <div class="card-body">

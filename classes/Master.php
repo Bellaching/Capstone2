@@ -1022,21 +1022,23 @@ class Master extends DBConnection
 
 				if ($update) {
 					$desc = "";
-					
+
 					if ($status == 1) {
+						$desc = 'Your order ' . $product_name . ' was cancelled.';
+						$this->conn->query("UPDATE `appointment` set `status` = 3 where order_id = '{$id}'");
+					}
+					
+					if ($status == 2) {
 						$desc = 'Your order ' . $product_name . ' is confirmed.';
 						$this->conn->query("UPDATE `appointment` set `status` = 1 where order_id = '{$id}'");
 
 					
 					}
-					if ($status == 2) {
+					if ($status == 3) {
 						$desc = 'Your order ' . $product_name . ' is shipped.';
 						$this->conn->query("UPDATE `appointment` set `status` = 2 where order_id = '{$id}'");
 					}
-					if ($status == 3) {
-						$desc = 'Your order ' . $product_name . ' was cancelled.';
-						$this->conn->query("UPDATE `appointment` set `status` = 3 where order_id = '{$id}'");
-					}
+					
 
 					$notify = $this->conn->query("INSERT INTO `notifications` SET `client_id` = '{$client_id}', `description` = '{$desc}', `order_id`='{$id}'");
 					$resp['status'] = 'success';

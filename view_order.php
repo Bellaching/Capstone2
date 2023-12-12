@@ -339,33 +339,16 @@ if ($order->num_rows > 0) {
     </div>
     <div class="clear-fix my-2"></div>
     <div class="row">
-        <div class="col-8 text-left" id="disregardThisDiv">
-            <?php if (isset($status)  && $status == 0) : ?>
-                <button class="btn btn-danger btn-flat btn-sm" id="btn-cancel" type="button">Cancel Order</button>
+        <div class="col-12 text-right">
+            <?php if(isset($status)  && $status == 0): ?>
+            <button class="btn btn-danger btn-flat btn-sm" id="btn-cancel" type="button">Cancel Order</button>
             <?php endif; ?>
-            <button class="btn btn-dark btn-flat btn-sm print-btn" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-        </div>
-        <div class="col-4 text-right">
-            <button onclick="printOrderDetails()" class="btn btn-link print-btn">Print Order Details</button>
+            <button class="btn btn-dark btn-flat btn-sm" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
         </div>
     </div>
 </div>
 <script>
-    function printOrderDetails() {
-        // Specify the div to print using its ID
-        var printContents = document.getElementById("orderDetailsContainer").innerHTML;
-        // Create a new window for printing
-        var originalContents = document.body.innerHTML;
-        document.body.innerHTML = printContents;
-        document.getElementById("disregardThisDiv").style.display = 'none';
-        // Use the JavaScript print function to print the content of the div
-        window.print();
-        // Restore the original content after printing
-        document.body.innerHTML = originalContents;
-        $('#btn-cancel').click(function() {
-            _conf("Are you sure to cancel this order?", "cancel_order", [])
-        })
-    }
+   
 
     $('#btn-cancel').click(function() {
         _conf("Are you sure to cancel this order?", "cancel_order", [])
@@ -469,27 +452,27 @@ if ($order->num_rows > 0) {
     }
 
 
-    function cancel_order() {
+    
+
+    function cancel_order(){
         start_loader();
         $.ajax({
-            url: _base_url_ + 'classes/Master.php?f=cancel_order',
-            data: {
-                id: "<?= isset($id) ? $id : '' ?>"
-            },
-            method: 'POST',
-            dataType: 'json',
-            error: err => {
+            url:_base_url_+'classes/master.php?f=cancel_order',
+            data:{id : "<?= isset($id) ? $id : '' ?>"},
+            method:'POST',
+            dataType:'json',
+            error:err=>{
                 console.error(err)
-                alert_toast('An error occurred.', 'error')
+                alert_toast('An error occurred.','error')
                 end_loader()
             },
-            success: function(resp) {
-                if (resp.status == 'success') {
+            success:function(resp){
+                if(resp.status == 'success'){
                     location.reload()
-                } else if (!!resp.msg) {
-                    alert_toast(resp.msg, 'error')
-                } else {
-                    alert_toast('An error occurred.', 'error')
+                }else if(!!resp.msg){
+                    alert_toast(resp.msg,'error')
+                }else{
+                    alert_toast('An error occurred.','error')
                 }
                 end_loader();
             }
