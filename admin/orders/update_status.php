@@ -24,11 +24,15 @@ if(isset($_GET['id'])){
         <div class="form-group">
             <label for="status" class="control-label">Status</label>
             <select name="status" id="status" class="custom-select form-control-sm">
-            <option >Select</option>
-                <option value="0" <?= isset($status) && $status == 0 ? 'selected' : "" ?>>Confirm</option>
-                <option value="1" <?= isset($status) && $status == 1 ? 'selected' : "" ?>>Ready to ship</option>
-                <option value="2" <?= isset($status) && $status == 2 ? 'selected' : "" ?>>Delivered</option>
-                <option value="3" <?= isset($status) && $status == 3? 'selected' : "" ?>>Cancelled</option>
+            
+    <option value="0" <?= isset($status) && $status == 0 ? 'selected' : '' ?>>Pending</option>
+    <option value="1" <?= isset($status) && $status == 1 ? 'selected' : '' ?>>Cancelled</option>
+    <option value="2" <?= isset($status) && $status == 2 ? 'selected' : '' ?>>Confirm</option>
+   
+    <option value="3" <?= isset($status) && $status == 3 ? 'selected' : '' ?>>Delivered</option>
+    
+
+
             </select>
         </div>
     </form>

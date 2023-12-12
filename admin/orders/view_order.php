@@ -93,7 +93,9 @@ if ($order->num_rows > 0) {
                     </div>
                     <div class="col-md-6">
                         <label for="" class="text-muted">Date Ordered</label>
-                        <div class="ml-3"><b><?= isset($date_created) ? date("M d, Y h:i A", strtotime($date_created)) : "N/A" ?></b></ </div>
+                        <div class="ml-3"><b><?= isset($date_created) ? date(DATE_RFC2822, strtotime($date_created)) : "N/A" ?>
+
+</b></div>
                         </div>
                     </div>
                     <div class="row">
@@ -102,15 +104,18 @@ if ($order->num_rows > 0) {
                             <div class="ml-3">
                                 <?php if (isset($status)) : ?>
                                     <?php if ($status == 0) : ?>
+                                        <span class="badge badge-secondary px-3 rounded-pill">Pending</span>
+                                    <?php elseif ($status == 1) : ?>
+                                        <span class="badge badge-danger px-3 rounded-pill">Cancelled</span>
+                                  
+                                    <?php elseif ($status == 2) : ?>
                                         <span class="badge badge-secondary px-3 rounded-pill">Confirmed</span>
                                   
-                                    <?php elseif ($status == 1) : ?>
-                                        <span class="badge badge-default bg-gradient-teal px-3 rounded-pill">Shipped</span>
+                                    
                                 
-                                    <?php elseif ($status == 2) : ?>
-                                        <span class="badge badge-success px-3 rounded-pill">Delivered</span>
                                     <?php elseif ($status == 3) : ?>
-                                        <span class="badge badge-danger px-3 rounded-pill">Cancelled</span>
+                                        <span class="badge badge-success px-3 rounded-pill">Delivered</span>
+                                   
                                     <?php else : ?>
                                         <span class="badge badge-danger px-3 rounded-pill">For Return/Refund</span>
                                     <?php endif; ?>
@@ -189,7 +194,7 @@ if ($order->num_rows > 0) {
 
                                 echo '<label for="" class="text-muted">Address Line 1</label>';
 
-                                echo '<div class="ml-3" id="adr1">', '<b>' . $addressline1 . '</b>', '</div>';
+                                echo '<div class="ml-3" id="adr1">', $addressline1, '</div>';
                             }
                             if ($addressline2) {
                                 echo '<label for="" class="text-muted">Address Line 2</label>';
