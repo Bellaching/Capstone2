@@ -167,12 +167,18 @@ section.new_arrivals {
 
   .row{
             margin: 2%;
+            display: flex;
+            flex-direction: row;
         }
 
         #brand_list {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+}
+
+.product_archive{
+     margin: 0 10px 15px;
 }
 
 .brand-item {
@@ -366,9 +372,9 @@ section.new_arrivals {
     <section class="new_arrivals py-5">
         <div class="container">
             <h1 class="new-arrivals-ctn">New Arrivals</h1>
-            <div class="row">
+            <div class="row responsive">
                 <?php
-                $products = $conn->query("SELECT p.*, b.name as brand, c.category FROM `product_list` p INNER JOIN brand_list b ON p.brand_id = b.id INNER JOIN `categories` c ON p.category_id = c.id WHERE p.delete_flag = 0 AND p.status = 1 LIMIT 4");
+                $products = $conn->query("SELECT p.*, b.name as brand, c.category FROM `product_list` p INNER JOIN brand_list b ON p.brand_id = b.id INNER JOIN `categories` c ON p.category_id = c.id WHERE p.delete_flag = 0 AND p.status = 1 LIMIT 6");
                 // Counter variable to keep track of displayed products
                 $counter = 0;
                 while ($row = $products->fetch_assoc()) :
@@ -401,10 +407,11 @@ section.new_arrivals {
                     }
                 endwhile;
                 ?>
-                <div class="button_bottom_home">
+               
+            </div>
+            <div class="button_bottom_home">
                     <a href="./?p=products/">Shop Now</a>
                 </div>
-            </div>
         </div>
     </section>
 
