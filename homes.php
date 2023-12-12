@@ -20,25 +20,32 @@
             background-color: #ffff;
         }
         .banner_fw_container {
-            height: 100vh;
+            height: 80vh;
+            display: flex;
+    justify-content: flex-start;
+    align-items: center;
         }
-        #banner-fw{
-            background-image: url('<?php echo validate_image($_settings->info('cover')) ?>');
-            background-size: cover;
-            height: 100vh;
-            position: relative;
-            background-color:#1A547E;
-        }
-        .banner_fw {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgb(0 0 0 / 30%); /* Adjust the alpha value (fourth parameter) to control the overlay's transparency */
-        }
+        #banner-fw {
+    background-image: url('<?php echo validate_image($_settings->info('cover')) ?>');
+    background-size: cover;
+    height: 90vh;
+    position: relative;
+    background-color: #1A547E;
+}
+
+.banner_fw {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0 0 0 / 30%);
+}
         .banner_content{
             color:white;
+            max-width: 600px; /* Adjust the maximum width based on your design */
+    margin-right: auto; /* Push the content to the left */
+    
         }
         .banner_content span {
             color:white;
@@ -54,6 +61,7 @@
             border: 1px solid white;
             color:white;
             font-family: 'Montserrat', sans-serif;
+            margin-top: 80px;
         }
 
        
@@ -166,7 +174,7 @@ section.new_arrivals {
 }
 
   .row{
-            margin: 2%;
+            margin: 4%;
             display: flex;
             flex-direction: row;
         }
@@ -202,14 +210,6 @@ section.new_arrivals {
     border-radius: 10px;
 }
 
-
-
-
-
-
-
-
-        
         .button_bottom_home a {
             background: #0d6efd;
             color: white;
@@ -238,16 +238,39 @@ section.new_arrivals {
         }
 
       
+        .slick-prev:before, .slick-next:before { 
+          background-color: white;
+          color:#004399 !important;
+        }
 
+        .slick-prev, .slick-next {           
+           margin:1%;
+        }
+
+        .slick-slide {
+    width: 888px; !important;
+  }
+
+  .slick-slide img {
+    width: 100%; /* Ensure images within the slides are responsive */
+    height: auto;
+  }
 
 
 
 
         /* Styles for large screens */
         @media (min-width: 992px) {
+            
             .banner_fw_container {
-                height: 80vh;
+             height: 80vh;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             height: 80vh;
+            
             }
+
             .banner_fw .banner_fw_container {
                 height: 100%;
             }
@@ -272,8 +295,13 @@ section.new_arrivals {
 
         /* Styles for medium screens */
         @media (max-width: 991px) {
-            .banner_fw_container {
-                height: 60vh;
+                  .banner_fw_container {
+             height: 80vh;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             height: 60vh;
+            
             }
             .banner_fw .banner_fw_container {
                 height: 100%;
@@ -298,16 +326,26 @@ section.new_arrivals {
         }
 
         /* Styles for small screens */
-        @media (max-width: 767px) {
+        @media (max-width: 667px) {
+
+            #banner-fw {
+        height: 80vh; /* Adjust the height for smaller screens */
+    }
+
             .banner_fw_container {
-                height: 40vh;
+             height: 80vh;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             height: 40vh;
+             text-align:center;
             }
             .banner_fw .banner_fw_container {
                 height: 100%;
             }
             .header_product_home {
                 align-items: center;
-
+                justify-content: center;
             }
             .button_bottom_home {
                 display: flex;
@@ -360,7 +398,7 @@ section.new_arrivals {
                 <img src="<?= validate_image($row['image_path']) ?>" alt="Brand Image" class="img-top">
             </div>
             <div class="card-body">
-                <h3 class="card-title text-center w-100"><?= $row['name'] ?></h3>
+                <h3 class="card-title text-center w-100"><b><?= $row['name'] ?></b></h3>
             </div>
         </div>
     </div>
@@ -483,23 +521,24 @@ section.new_arrivals {
   slidesToScroll: 1,
   responsive: [
     {
-      breakpoint: 1024,
+      breakpoint: 600,
       settings: {
         slidesToShow: 3,
         slidesToScroll: 3,
         infinite: true,
-        dots: true
+        dots: true,
+        arrows:true
       }
     },
     {
-      breakpoint: 600,
+      breakpoint: 300,
       settings: {
         slidesToShow: 2,
         slidesToScroll: 2
       }
     },
     {
-      breakpoint: 480,
+      breakpoint: 180,
       settings: {
         slidesToShow: 1,
         slidesToScroll: 1

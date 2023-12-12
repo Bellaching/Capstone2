@@ -51,6 +51,7 @@ class SystemSettings extends DBConnection
 		if (isset($_POST['privacy_policy'])) {
 			file_put_contents('../privacy_policy.html', $_POST['privacy_policy']);
 		}
+
 		if (isset($_FILES['img']) && $_FILES['img']['tmp_name'] != '') {
 			$fname = 'uploads/' . strtotime(date('y-m-d H:i')) . '_' . $_FILES['img']['name'];
 			$move = move_uploaded_file($_FILES['img']['tmp_name'], '../' . $fname);
@@ -61,16 +62,24 @@ class SystemSettings extends DBConnection
 				$qry = $this->conn->query("INSERT into system_info set meta_value = '{$fname}',meta_field = 'logo' ");
 			}
 		}
-		if (isset($_FILES['contact1']) && $_FILES['contact1']['tmp_name'] != '') {
-			$fname = 'uploads/' . strtotime(date('y-m-d H:i')) . '_' . $_FILES['contact1']['name'];
-			$move = move_uploaded_file($_FILES['contact1']['tmp_name'], '../' . $fname);
-			if (isset($_SESSION['system_info']['contactus1'])) {
-				$qry = $this->conn->query("UPDATE system_info set meta_value = '{$fname}' where meta_field = 'contactus1' ");
-				if (is_file('../' . $_SESSION['system_info']['contactus1'])) unlink('../' . $_SESSION['system_info']['contactus1']);
+
+		
+		if (isset($_FILES['img1']) && $_FILES['img1']['tmp_name'] != '') {
+			$fname = 'uploads/' . strtotime(date('y-m-d H:i')) . '_' . $_FILES['img1']['name'];
+			$move = move_uploaded_file($_FILES['img1']['tmp_name'], '../' . $fname);
+			if (isset($_SESSION['system_info']['service1'])) {
+				$qry = $this->conn->query("UPDATE system_info set meta_value = '{$fname}' where meta_field = 'service1' ");
+				if (is_file('../' . $_SESSION['system_info']['service1'])) unlink('../' . $_SESSION['system_info']['service1']);
 			} else {
-				$qry = $this->conn->query("INSERT into system_info set meta_value = '{$fname}',meta_field = 'contactus1' ");
+				$qry = $this->conn->query("INSERT into system_info set meta_value = '{$fname}',meta_field = 'service1' ");
 			}
 		}
+
+		
+		
+
+		
+		
 		if (isset($_FILES['cover']) && $_FILES['cover']['tmp_name'] != '') {
 			$fname = 'uploads/' . strtotime(date('y-m-d H:i')) . '_' . $_FILES['cover']['name'];
 			$move = move_uploaded_file($_FILES['cover']['tmp_name'], '../' . $fname);

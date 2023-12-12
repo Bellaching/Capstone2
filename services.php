@@ -95,7 +95,7 @@
            
             <div class="service-desc">
             <p><?php echo $_settings->info('service_description')  ?>  </p>
-                   
+               `<img src="<?php echo validate_image($_settings->info('service1')) ?>">    
             </div>
 
             

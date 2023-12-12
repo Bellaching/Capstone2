@@ -39,6 +39,14 @@
                      <?php echo $_settings->info('service_description')  ?>  
                     </textarea>
 
+                    <div class="form-group">
+                    <label for="" class="control-label">Service Image</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input rounded-circle" id="service_img" name="img1" onchange="serviceImg(this,$(this))">
+                        <label class="custom-file-label" for="service_img">Choose file</label>
+                    </div>
+                </div>
+
               
 
                 <div>
@@ -58,11 +66,11 @@
 
 
 <script>
-    function service_image(input, _this) {
+       function serviceImg(input, _this) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function(e) {
-                $('#service_image').attr('src', e.target.result);
+                $('#img1').attr('src', e.target.result);
                 _this.siblings('.custom-file-label').html(input.files[0].name)
             }
 
