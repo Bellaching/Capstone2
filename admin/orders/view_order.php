@@ -14,7 +14,19 @@ if (!isset($_GET['id'])) {
     $_settings->set_flashdata('error', 'No order ID Provided.');
     redirect('admin/?page=orders');
 }
-$order = $conn->query("SELECT o.*,concat(c.firstname,' ',c.lastname) as fullname, a.status as appointment_status, a.dates, a.hours FROM `order_list` o inner join client_list c on c.id = o.client_id left join `appointment` a on a.order_id = o.id where o.id = '{$_GET['id']}' ");
+$order = $conn->query("SELECT
+        o.*,concat(c.firstname,' ',c.lastname) as fullname,
+        a.status as appointment_status,
+        pr.author_comment as reason,
+        a.dates, a.hours
+    FROM `order_list` o
+    inner join client_list c on c.id = o.client_id
+    left join `appointment` a on a.order_id = o.id
+    LEFT JOIN (
+        SELECT *
+        FROM `product_returns`
+        ORDER BY id DESC LIMIT 1
+    ) pr ON pr.order_id = o.id where o.id = '{$_GET['id']}'");
 if ($order->num_rows > 0) {
     foreach ($order->fetch_assoc() as $k => $v) {
         $$k = $v;
@@ -123,6 +135,12 @@ if ($order->num_rows > 0) {
                                     N/A
                                 <?php endif; ?>
                             </div>
+                            <?php if ($status == 4) : ?>
+                            <label for="" class="text-muted">Reason for return/refund</label>
+                            <div class="ml-3">
+                                <b><?= $reason ?></b>
+                            </div>
+                            <?php endif; ?>
                             <label for="" class="text-muted">Order Type</label>
                             <div class="ml-3">
                                 <b>
