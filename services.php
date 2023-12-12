@@ -53,32 +53,32 @@
         margin: 1%;
     }
 
-    .service-info>a {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.619);
-        margin: 40px;
-        margin-top: -130px;
-        border-radius: 10px;
-        background-color: rgb(255, 255, 255);
-        color: black;
-    }
 
-    .service-info>a:hover {
-        background: rgb(212, 225, 228);
-    }
 
-    .service-info>a img {
-        max-width: 100%;
-        height: auto;
-    }
+
 
     .service_description p {
         text-align: center;
     }
+
+
+    .service-info{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+ .service-img>img{
+    width: 100% ;
+ }
+
+    .service-info1,
+    .service-img{
+        width: 50%;
+        margin: 5%;
+    }
+
     </style>
 
     <body class="Services">
@@ -93,10 +93,18 @@
 
         <div class="service-info">
            
-            <div class="service-desc">
-            <p><?php echo $_settings->info('service_description')  ?>  </p>
-               `<img src="<?php echo validate_image($_settings->info('service1')) ?>">    
-            </div>
+            
+
+                <div class="service-info1">
+                    <h1> <?php echo $_settings->info('service_name') ?></h1>
+                    <p><?php echo $_settings->info('service_description')  ?>  </p>
+                </div>
+
+                <div class="service-img">
+                    <img src="<?php echo validate_image($_settings->info('service1')) ?>">    
+                </div>
+
+            
 
             
 

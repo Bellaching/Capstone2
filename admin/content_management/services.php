@@ -28,16 +28,24 @@
                      <?php echo $_settings->info('servicetitle')  ?>  
                     </textarea>
 
-                    <label for="servicep" class="control-label">Service p</label>
+                    <label for="servicep" class="control-label">Service paragraph</label>
                 <textarea name="servicep" id="servicep" cols="1" rows="1" class="form-control summernote">
                      <?php echo $_settings->info('servicep')  ?>  
                     </textarea>
+
+                    <label for="service_name" class="control-label">Service Name</label>
+                <textarea name="service_name" id="service_name" cols="1" rows="1" class="form-control summernote">
+                     <?php echo $_settings->info('service_name')  ?>  
+                    </textarea>
+
 
 
                     <label for="service_description" class="control-label">Service Description</label>
                 <textarea name="service_description" id="service_description" cols="1" rows="1" class="form-control summernote">
                      <?php echo $_settings->info('service_description')  ?>  
                     </textarea>
+
+
 
                     <div class="form-group">
                     <label for="" class="control-label">Service Image</label>
