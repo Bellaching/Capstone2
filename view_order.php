@@ -290,7 +290,7 @@ if ($order->num_rows > 0) {
             </div>
             <?php
             if (isset($_GET['id']) && $_GET['id'] > 0) :
-                $order_result = $conn->query("SELECT ol.id AS id, p.id AS product_id,
+                $order_result = $conn->query("SELECT ol.id AS id, p.id AS product_id, pv.id AS variation_id,
                         p.name,
                         cl.firstname,
                         cl.lastname,
@@ -299,6 +299,7 @@ if ($order->num_rows > 0) {
                         INNER JOIN order_items oi ON oi.order_id = ol.id
                         INNER JOIN product_list p ON oi.product_id = p.id
                         inner join client_list cl on cl.id = ol.client_id
+                        inner join product_variations pv on pv.id = oi.variation_id 
                         WHERE ol.id = '{$_GET['id']}'");
 
             ?>
@@ -318,6 +319,7 @@ if ($order->num_rows > 0) {
                                     <form id="submit-return-<?= $row['id'] ?>" action="">
                                         <div class="card-body">
                                             <input class="invisible w-0" value="<?= $row['product_id'] ?>" required type="hidden" name="product_id">
+                                            <input class="invisible w-0" value="<?= $row['variation_id'] ?>" required type="hidden" name="variation_id">
                                             <input class="invisible w-0" value="<?= $row['name'] ?>" required type="hidden" name="product_name">
                                             <input class="invisible w-0" value="<?= $row['lastname'], ', ', $row['firstname'] ?>" required type="hidden" name="author_name">
                                             <input class="invisible w-0" value="<?= $row['email'] ?>" required type="hidden" name="author_email">

@@ -1119,7 +1119,7 @@ class Master extends DBConnection
 		extract($_POST);
 		$productId = $_POST['product_id'];
 		$productName = $_POST['product_name'];
-		// $variationId = $_POST['variation_id'];
+		$variationId = $_POST['variation_id'];
 		$authorName = $_POST['author_name'];
 		$authorEmail = $_POST['author_email'];
 		$orderId = $_POST['order_id'];
@@ -1130,9 +1130,9 @@ class Master extends DBConnection
 			$resp['msg'] = "Order ID not found";
 			return json_encode($resp);
 		}
-		$this->conn->query("UPDATE `order_list` ol SET ol.status = 7 where id = '{$orderId}'");
-		$submitReturn = $this->conn->query("INSERT into `product_returns` (`product_id`, `product_name`, `author_name`, `author_email`, `author_comment`)
-		VALUES ('{$productId}', '{$productName}', '{$authorName}', '{$authorEmail}', '{$authorComments}' )
+		$this->conn->query("UPDATE `order_list` ol SET ol.status = 4 where id = '{$orderId}'");
+		$submitReturn = $this->conn->query("INSERT into `product_returns` (`product_id`, `variation_id`, `order_id`, `product_name`, `author_name`, `author_email`, `author_comment`)
+		VALUES ('{$productId}', '{$variationId}', '{$orderId}', '{$productName}', '{$authorName}', '{$authorEmail}', '{$authorComments}' )
 		");
 		if ($submitReturn) {
 			$resp['status'] = 'success';
