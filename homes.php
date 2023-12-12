@@ -164,6 +164,7 @@ section.new_arrivals {
   align-items: center;
   flex-direction: column;
 }
+
 #brand_list {
     display: flex;
     flex-wrap: wrap;
@@ -171,7 +172,7 @@ section.new_arrivals {
 }
 
 .brand-item {
-    width: 200px; /* Adjust the width of each brand item as needed */
+    width: 100px; /* Adjust the width of each brand item as needed */
     margin: 0 10px 15px;
 }
 
@@ -186,12 +187,10 @@ section.new_arrivals {
 }
 
 .brand-img-holder img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain; /* You can use 'cover' or 'contain' based on your preference */
+    width: 100%; /* Ensure the image takes up the full width of the container */
+    height: auto; /* Maintain the image's aspect ratio */
     border-radius: 10px;
 }
-
 
 
 
@@ -357,7 +356,7 @@ section.new_arrivals {
     <?php endwhile; ?>
 </div>
 
-</section>
+
 
     <section class="new_arrivals py-5">
         <div class="container">

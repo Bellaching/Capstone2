@@ -35,7 +35,9 @@
                     ?>
                         <tr>
                             <td class="text-center"><?= $i++ ?></td>
-                            <td><?= date("Y-m-d H:i", strtotime($row['date_created'])) ?></td>
+                           
+                            <td><?= isset($row['date_created']) ? date("M d, Y", strtotime($row['date_created'])) : "N/A" ?></td>
+
                             <td><?= $row['ref_code'] ?></td>
                             <td><?= $row['fullname'] ?></td>
                             <td class="text-right"><?= number_format($row['total_amount'],2) ?></td>
