@@ -164,32 +164,32 @@ section.new_arrivals {
   align-items: center;
   flex-direction: column;
 }
-
 #brand_list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center; /* Center the items horizontally */
+    justify-content: center;
 }
 
 .brand-item {
-    width: 255px;
-    margin: 0 10px 15px; /* Adjust margin for spacing between items */
+    width: 200px; /* Adjust the width of each brand item as needed */
+    margin: 0 10px 15px;
 }
 
 .brand-img-holder {
     overflow: hidden;
     position: relative;
     border-radius: 10px;
-    height: 200px; /* Set a fixed height for the image holder */
+    max-height: 200px; /* Set a max-height to limit the image size */
     display: flex;
-    align-items: center; /* Center vertically */
-    justify-content: center; /* Center horizontally */
+    align-items: center;
+    justify-content: center;
 }
 
 .brand-img-holder img {
     max-width: 100%;
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 10px; /* Match the border-radius of the parent container */
+    max-height: 100%;
+    object-fit: contain; /* You can use 'cover' or 'contain' based on your preference */
+    border-radius: 10px;
 }
 
 
@@ -357,7 +357,7 @@ section.new_arrivals {
     <?php endwhile; ?>
 </div>
 
-
+</section>
 
     <section class="new_arrivals py-5">
         <div class="container">
