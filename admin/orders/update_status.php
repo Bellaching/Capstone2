@@ -27,7 +27,7 @@ if(isset($_GET['id'])){
             
     <option value="0" <?= isset($status) && $status == 0 ? 'selected' : '' ?>>Pending</option>
     <option value="1" <?= isset($status) && $status == 1 ? 'selected' : '' ?>>Cancelled</option>
-    <option value="2" <?= isset($status) && $status == 2 ? 'selected' : '' ?>>Confirm</option>
+    <option value="2" <?= isset($status) && $status == 2 ? 'selected' : '' ?>>Confirmed</option>
    
     <option value="3" <?= isset($status) && $status == 3 ? 'selected' : '' ?>>Delivered</option>
     
