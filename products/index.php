@@ -99,7 +99,7 @@ $where = "";
 
     .product-container{
        
-        margin: 1.5%;
+        margin: 3% 0 0 1%;
     }
 
     .product-container:hover{
