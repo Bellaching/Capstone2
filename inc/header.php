@@ -145,12 +145,7 @@
   <script src="<?php echo base_url ?>dist/js/script.js"></script>
   <script src="<?php echo base_url ?>assets/js/scripts.js"></script>
   <style>
-     html
-   {
   
-    background-color: #ffff;
-     
-    }
 
     html
     body {
