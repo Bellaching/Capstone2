@@ -81,33 +81,46 @@
         }
         .image_container_best_seller img {
             width: 100%;
+           
         }
         .header_product_home {
             align-items: flex-start;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             flex-wrap: nowrap;
             align-content: center;
             justify-content: center;
-            
+           width: 50%;
         }
+
         
 
+      
         .row-best{
-           background-color: #F5F5F5;
+            display: flex;
+            flex-direction: row;
+            
+            justify-content: center;
+        }
+        
+        .header_product_home_ctn{
+            padding: 0 100px;
+            width: 100%;
+
+        }
+
+        .header_product_home{
+           
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: center;
             padding: 5%;
             box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-            position: relative; /* Make sure the container is positioned relative */
+            background-color: #F5F5F5;
+            margin: 2%;
         }
 
-        
-        .header_product_home_ctn{
-            padding:10px;
-        }
         .header_product_home_ctn a {
             background: #0d6efd;
             color: white;
@@ -122,7 +135,11 @@
             color: Black;
 
             font-weight: 700;
-            font-size: 46px;
+            font-size: 26px;
+        }
+
+        .image_container_best_seller{
+            width: 200px;
         }
 
         .header_product_home_ctn  h2{
@@ -422,58 +439,48 @@ section.new_arrivals {
         </div>
     </section>
 
-    <section id="products-home-fw" >
-        <div class="products_home_fw">
-            <div class="container products_home_content">
-                <div class="row-best">
-                    <div class=" roww ">
-                        <div class="header_product_home">
-                            <?php
-                            $products = $conn->query("SELECT p.*, b.name AS brand, c.category, COUNT(o.product_id) AS order_count
-                                FROM product_list p
-                                INNER JOIN brand_list b ON p.brand_id = b.id
-                                INNER JOIN categories c ON p.category_id = c.id
-                                INNER JOIN order_items o ON o.product_id = p.id
-                                WHERE p.delete_flag = 0 
-                                AND p.status = 1 
-                                GROUP BY p.id
-                                ORDER BY order_count DESC
-                                LIMIT 5;");
-                            // Counter variable to keep track of displayed products
-                            $counter = 0;
-                            while ($row = $products->fetch_assoc()) :
-                                // Increment the counter
-                                $counter++;
-                                // Display your product information here
-                            ?>
-                            <div class="image_container_best_seller">
-                                <img src="<?= validate_image($row['image_path']) ?>" alt="Product Image" class="img-top"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-8 col-sm-12 header_product_home">
-                        <div class="header_product_home_ctn">
-                            <span><bold>Best Seller</bold></span>
-                            <h2><?= $row['name'] ?></h2>
-                            <p> <?= isset($description) ? html_entity_decode($description) : '' ?></p>
-                            <div class="product_tn_home">
-                                <a href="./?p=products/view_product&id=<?= $row['id'] ?>">View Product</a>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-                
+    <section id="products-home-fw">
+    <div class="products_home_fw">
+        <div class="container products_home_content">
+            <div class="row-best ">
                 <?php
-                    // Check if we have displayed 4 products, and break out of the loop if true
-                    if ($counter >= 4) {
-                        break;
-                        }
-                    endwhile;
+                $products = $conn->query("SELECT p.*, b.name AS brand, c.category, COUNT(o.product_id) AS order_count
+                    FROM product_list p
+                    INNER JOIN brand_list b ON p.brand_id = b.id
+                    INNER JOIN categories c ON p.category_id = c.id
+                    INNER JOIN order_items o ON o.product_id = p.id
+                    WHERE p.delete_flag = 0 
+                    AND p.status = 1 
+                    GROUP BY p.id
+                    ORDER BY order_count DESC
+                    LIMIT 2;");
+
+                // Loop through the results
+                while ($row = $products->fetch_assoc()) :
                 ?>
+                <div class="col-md-4 col-sm-12 header_product_home product-container">
+                 
+                    <div class="image_container_best_seller">
+                        <img src="<?= validate_image($row['image_path']) ?>" alt="Product Image" class="img-top"/>
+                    </div>
+                    <div class="header_product_home_ctn">
+                        <span><strong>BEST SELLER</strong></span>
+                        <h2><?= $row['name'] ?></h2>
+                        <p class="price">₱<?= strip_tags(html_entity_decode($row['price'])) ?>
+                        <div class="product_tn_home">
+                            <a href="./?p=products/view_product&id=<?= $row['id'] ?>">View Product</a>
+                        </div>
+                    </div>
+
+                    
+                    
+                </div>
+                <?php endwhile; ?>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
 
     
     <section>
