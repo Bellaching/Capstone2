@@ -222,13 +222,13 @@ section.new_arrivals {
 
 .brand-img-holder {
     margin: 2%;
-    height: 100%; /* Make sure the image holder takes the full height */
+    height: 150px; /* Make sure the image holder takes the full height */
 }
 
 .brand-img-holder img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    
     border-radius: 10px;
 }
 
