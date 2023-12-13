@@ -75,7 +75,7 @@
         }
 
 
-        
+        /* Best seller */
         .container.products_home_content {
             padding: 60px 0px;
         }
@@ -90,12 +90,10 @@
             flex-wrap: nowrap;
             align-content: center;
             justify-content: center;
-           width: 50%;
+           width: 600px;
+         
+
         }
-
-        
-
-      
         .row-best{
             display: flex;
             flex-direction: row;
@@ -106,6 +104,7 @@
         .header_product_home_ctn{
             padding: 0 100px;
             width: 100%;
+            
 
         }
 
@@ -128,6 +127,18 @@
             
            
         }
+
+        
+        .header_product_home_ctn  {
+           
+            
+            padding: 1px 5px;
+            
+           display: flex;
+           justify-items: center;
+           text-align: right;
+           flex-direction: column;
+        }
         .product_tn_home {
             margin-top: 45px;
         }
@@ -135,11 +146,11 @@
             color: Black;
 
             font-weight: 700;
-            font-size: 26px;
+            font-size: 22px;
         }
 
         .image_container_best_seller{
-            width: 200px;
+            width: 250px;
         }
 
         .header_product_home_ctn  h2{
@@ -148,6 +159,14 @@
             font-weight: 500;
             font-size: 26px;
         }
+
+        .header_product_home_ctn .price{
+            font-size:  18px;
+        }
+
+         /* end seller */
+
+
         section.new_arrivals h1 {
     margin-bottom: 30px;
     padding: 4%;
@@ -422,6 +441,11 @@ section.new_arrivals {
             }
         }
 
+        @media (min-width: 375px) and (max-width: 667px) {
+
+
+}
+
     </style>
 </head>
 <body>
@@ -464,7 +488,7 @@ section.new_arrivals {
                         <img src="<?= validate_image($row['image_path']) ?>" alt="Product Image" class="img-top"/>
                     </div>
                     <div class="header_product_home_ctn">
-                        <span><strong>BEST SELLER</strong></span>
+                        <span>OUR BEST PRODUCT</span>
                         <h2><?= $row['name'] ?></h2>
                         <p class="price">₱<?= strip_tags(html_entity_decode($row['price'])) ?>
                         <div class="product_tn_home">
