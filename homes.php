@@ -136,6 +136,7 @@ section.new_arrivals {
   display: flex;
   justify-content: center;
   align-items: center;
+  
 
 }
 /*----Mark---------------*/
@@ -148,7 +149,7 @@ section.new_arrivals {
   margin-top: 40px;
   padding: 15px 45px;
   border: 1px solid #e0e0e0;
-
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5);
 }
 
 .feature-box {
@@ -213,28 +214,24 @@ section.new_arrivals {
 }
 
 .brand-item {
-    width: 200px; /* Adjust the width of each brand item as needed */
+    width: 100%;
+    max-width: 200px;
+    height: 150px; /* Set a fixed height for consistency */
     margin: 0 10px 15px;
-   
-    
 }
 
 .brand-img-holder {
-    overflow: hidden;
-    position: relative;
-    border-radius: 10px;
-    
-
-    width: 100%; /* Ensure the container takes the full width of its parent */
+    margin: 2%;
+    height: 100%; /* Make sure the image holder takes the full height */
 }
 
 .brand-img-holder img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensure the entire image is covered, maintaining aspect ratio */
-    display: block;
+    object-fit: cover;
     border-radius: 10px;
 }
+
 
         .button_bottom_home a {
             background: #0d6efd;
