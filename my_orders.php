@@ -8,6 +8,9 @@ $delivered = $conn->query("SELECT * FROM `order_list` where client_id = '{$_sett
 $return = $conn->query("SELECT * FROM `order_list` where client_id = '{$_settings->userdata('id')}' and status = 4 order by unix_timestamp(date_created) desc ");
 
 
+$received = $conn->query("SELECT * FROM `order_list` where client_id = '{$_settings->userdata('id')}' and status = 6 order by unix_timestamp(date_created) desc ");
+
+
 $currentStatus = "pending"; // Default status is pending
 
 // Check the current status and update the variable accordingly
@@ -23,6 +26,9 @@ elseif (isset($_GET['confirmed'])) {
 }
  elseif (isset($_GET['return_refund'])) {
     $currentStatus = "return-refund";
+}
+elseif (isset($_GET['received'])) {
+   $currentStatus = "received";
 }
 ?>
 
@@ -309,7 +315,7 @@ elseif (isset($_GET['confirmed'])) {
                                         <tbody>
                                             <?php
                                             $i = 1;
-                                            while ($row = $delivered->fetch_assoc()) :
+                                            while ($row = $received->fetch_assoc()) :
                                             ?>
                                                 <tr>
                                                     <td class="text-center"><?= $i++ ?></td>
