@@ -52,6 +52,7 @@ $where = "";
     /* Adjust styling for other elements as needed */
     .search-input {
         width: 100%; /* Make the search input full width on smaller screens */
+        border-radius: 0 20px 20px 0;
     }
 
     .product-container {
@@ -99,6 +100,10 @@ $where = "";
     width: 100%;
     height: 100%;
     object-fit: cover; /* Maintain aspect ratio */
+}
+
+.input-group-append{
+    border-radius: 20px;
 }
 
 
@@ -226,7 +231,7 @@ span.ribbon {
                             <input type="search" name="search" value="<?= $search ?>" class="search-input form-control" placeholder="Search Product...">
 
                                 <div class="input-group-append" style="background-color:#0062CC;">
-                                    <button class="btn btn-outline-secondary"><i class="fa fa-search" style="color:white;"></i></button>
+                                    <button class="btn "><i class="fa fa-search" style="color:white;"></i></button>
                                 </div>
                             </div>
                         </form>

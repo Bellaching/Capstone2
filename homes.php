@@ -177,12 +177,35 @@ section.new_arrivals {
             margin: 4%;
             display: flex;
             flex-direction: row;
+            
         }
 
         #brand_list {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+}
+
+.card-item{
+    border: none;
+
+}
+
+.card-item:hover{
+    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.8);
+    
+
+
+    
+}
+
+.card{
+    box-shadow: 0px -7px 12px -4px rgba(0,0,0,0.51);
+-webkit-box-shadow: 0px -7px 12px -4px rgba(0,0,0,0.51);
+-moz-box-shadow: 0px -7px 12px -4px rgba(0,0,0,0.51);
+}
+.product-container1{
+    width: 200px;
 }
 
 .product_archive{
@@ -192,6 +215,7 @@ section.new_arrivals {
 .brand-item {
     width: 200px; /* Adjust the width of each brand item as needed */
     margin: 0 10px 15px;
+   
     
 }
 
@@ -199,6 +223,8 @@ section.new_arrivals {
     overflow: hidden;
     position: relative;
     border-radius: 10px;
+    
+
     width: 100%; /* Ensure the container takes the full width of its parent */
 }
 
@@ -248,7 +274,7 @@ section.new_arrivals {
         }
 
         .slick-slide {
-    width: 888px; !important;
+    width: 200px; !important;
   }
 
   .slick-slide img {
@@ -410,7 +436,7 @@ section.new_arrivals {
     <section class="new_arrivals py-5">
         <div class="container">
             <h1 class="new-arrivals-ctn">New Arrivals</h1>
-            <div class="row responsive">
+            <div class="row responsive-arrivals">
                 <?php
                 $products = $conn->query("SELECT p.*, b.name as brand, c.category FROM `product_list` p INNER JOIN brand_list b ON p.brand_id = b.id INNER JOIN `categories` c ON p.category_id = c.id WHERE p.delete_flag = 0 AND p.status = 1 LIMIT 6");
                 // Counter variable to keep track of displayed products
@@ -422,7 +448,7 @@ section.new_arrivals {
                 ?>  
                     <div class="col-md-4 product_archive">
                         <a class="product-container1" href="./?p=products/view_product&id=<?= $row['id'] ?>">
-                            <div class="card">
+                            <div class="card-item">
                                 <div class="product-img-holder">
                                     <img src="<?= validate_image($row['image_path']) ?>" alt="Product Image" class="img-top" style="width: 100%; height: 250px; display: flex; justify-content: center; align-items: center; object-fit:cover;" />
                                 </div>
@@ -517,10 +543,35 @@ section.new_arrivals {
   dots: true,
   infinite: false,
   speed: 300,
-  slidesToShow: 3,
+  slidesToShow: 6,
   slidesToScroll: 1,
   responsive: [
     {
+        
+        breakpoint: 1000,
+        settings: {
+          slidesToShow: 6,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+          arrows:true,
+          variableWidth: true
+        }
+      },
+    {
+        
+        breakpoint: 900,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+          arrows:true
+          
+        }
+      },
+    {
+        
       breakpoint: 600,
       settings: {
         slidesToShow: 3,
@@ -528,13 +579,18 @@ section.new_arrivals {
         infinite: true,
         dots: true,
         arrows:true
+        
       }
     },
+
+
     {
       breakpoint: 300,
       settings: {
         slidesToShow: 2,
         slidesToScroll: 2
+       
+
       }
     },
     {
@@ -542,6 +598,75 @@ section.new_arrivals {
       settings: {
         slidesToShow: 1,
         slidesToScroll: 1
+        
+      }
+    }
+    // You can unslick at a given breakpoint now by adding:
+    // settings: "unslick"
+    // instead of a settings object
+  ]
+});
+
+$('.responsive-arrivals').slick({
+  dots: true,
+  infinite: false,
+  speed: 300,
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  responsive: [
+    {
+        
+        breakpoint: 1000,
+        settings: {
+          slidesToShow: 6,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+          arrows:true,
+          variableWidth: true
+        }
+      },
+    {
+        
+        breakpoint: 900,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+          arrows:true
+          
+        }
+      },
+    {
+        
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        infinite: true,
+        dots: true,
+        arrows:true
+        
+      }
+    },
+
+
+    {
+      breakpoint: 300,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2
+       
+
+      }
+    },
+    {
+      breakpoint: 180,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+        
       }
     }
     // You can unslick at a given breakpoint now by adding:
