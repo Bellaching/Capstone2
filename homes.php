@@ -423,15 +423,13 @@ section.new_arrivals {
             <div class="brand-img-holder overflow-hidden position-relative">
                 <img src="<?= validate_image($row['image_path']) ?>" alt="Brand Image" class="img-top">
             </div>
-            <div class="card-body">
-                <h3 class="card-title text-center w-100"><b><?= $row['name'] ?></b></h3>
-            </div>
+            
         </div>
     </div>
     <?php endwhile; ?>
 </div>
 
-
+<section>
 
     <section class="new_arrivals py-5">
         <div class="container">
@@ -533,6 +531,74 @@ section.new_arrivals {
         </div>
     </section>
 
+    <section>
+    <div class="product-review responsive-review">
+            <?php
+            $productReviews = $conn->query(
+                "SELECT pr.author_rate, pr.author_comment FROM `product_reviews` pr
+                    inner join `product_variations` pv on pr.variation_id = pv.id
+                where pr.product_id =  $id order by unix_timestamp(pr.date_created) desc;
+                "
+            );
+            while ($review = $productReviews->fetch_assoc()) :
+            ?>
+                <div class="review-section mb-3 border rounded p-3">
+                    <figure class="mb-1">
+                        <blockquote class="blockquote">
+                            <p><?= ucfirst($review['author_name']) ?></p>
+                        </blockquote>
+                        <figcaption class="blockquote-footer mb-1">
+                            <?= date("Y-m-d h:i:s A", strtotime($review['date_created'])) ?> | Variation: <?= $review['variation_name'] ?>
+                        </figcaption>
+                    </figure>
+                    <div class="review-details">
+                        <?php switch (strval($review['author_rate'])):
+                            case "1": ?>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                            <?php break;
+                            case "2": ?>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                            <?php break;
+                            case "3": ?>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                            <?php break;
+                            case "4": ?>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star-o"></i>
+                            <?php break;
+                            case "5": ?>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star checked"></i>
+                                <i class="fa fa-star checked"></i>
+                            <?php break;
+                            default: ?>
+                        <?php endswitch; ?>
+                        <p class="reviewer-comments mt-3"><?= ucfirst($review['author_comment']) ?></p>
+                    </div>
+                </div>
+            <?php endwhile; ?>
+        </div>
+</div>
+
+<section>
+
     
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -575,6 +641,74 @@ section.new_arrivals {
       breakpoint: 600,
       settings: {
         slidesToShow: 3,
+        slidesToScroll: 3,
+        infinite: true,
+        dots: true,
+        arrows:true
+        
+      }
+    },
+
+
+    {
+      breakpoint: 300,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2
+       
+
+      }
+    },
+    {
+      breakpoint: 180,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+        
+      }
+    }
+    // You can unslick at a given breakpoint now by adding:
+    // settings: "unslick"
+    // instead of a settings object
+  ]
+});
+
+$('.responsive-review').slick({
+  dots: true,
+  infinite: false,
+  speed: 300,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  responsive: [
+    {
+        
+        breakpoint: 1000,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+          arrows:true,
+          variableWidth: true
+        }
+      },
+    {
+        
+        breakpoint: 900,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+          arrows:true
+          
+        }
+      },
+    {
+        
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 1,
         slidesToScroll: 3,
         infinite: true,
         dots: true,
