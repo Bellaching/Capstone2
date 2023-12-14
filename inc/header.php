@@ -145,7 +145,7 @@
   <script src="<?php echo base_url ?>dist/js/script.js"></script>
   <script src="<?php echo base_url ?>assets/js/scripts.js"></script>
   <style>
-html body {
+html, body {
   height: 100%;
   width: 100%;
   font-family: 'Poppins', sans-serif;
@@ -162,7 +162,7 @@ html body {
 
 
     #main-header {
-      position: relative;
+      position: r,elative;
       background: rgb(0, 0, 0) !important;
       background: none !important;
       height: 30vh;
