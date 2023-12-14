@@ -264,7 +264,7 @@ section.new_arrivals {
 }
 
 .brand-img-holder img {
-    
+    width: 100%;
     object-fit: cover; /* Maintain aspect ratio */
     object-position: center; /* Optional: Center the image within the container */
     mix-blend-mode: multiply;
