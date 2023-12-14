@@ -116,7 +116,7 @@
             align-items: center;
             justify-content: center;
             padding: 5%;
-            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
             background-color: #F5F5F5;
             margin: 2%;
         }
@@ -262,7 +262,7 @@ section.new_arrivals {
 }
 
 .brand-img-holder img {
-    width: 100%;
+    width: 150px;
     height: 150px;
     object-fit: cover; /* Maintain aspect ratio */
     mix-blend-mode: multiply;
@@ -292,9 +292,7 @@ section.new_arrivals {
             height: 100%;
         }
 
-        .new_arrivals{
-            background-color: #ffff;
-        }
+       
 
       
         .slick-prev:before, .slick-next:before { 
