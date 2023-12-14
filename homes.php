@@ -258,17 +258,19 @@ section.new_arrivals {
 
 .brand-img-holder {
     margin: 2%;
-    display: flex; /* Optional: Align images in a row */
-    width: 150px;
-    height: 150px;
+    display: flex;
+    width: 200px; /* Adjust the width as needed */
+    height: 200px; /* Adjust the height as needed */
 }
 
 .brand-img-holder img {
     width: 100%;
-    object-fit: cover; /* Maintain aspect ratio */
-    object-position: center; /* Optional: Center the image within the container */
+    height: 100%;
+    object-fit: contain; /* Use 'contain' to show the whole image */
+    object-position: center;
     mix-blend-mode: multiply;
 }
+
 
         .button_bottom_home a {
             background: #0d6efd;
