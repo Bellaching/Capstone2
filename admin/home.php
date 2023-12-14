@@ -112,7 +112,7 @@
           </div>
           <div class="col-12 col-sm-6 col-md-3">
             <div class="shadow info-box mb-3">
-              <span class="info-box-icon bg-gradient-secondary elevation-1"><i class="fas fa-tasks"></i></span>
+              <span class="info-box-icon bg-gradient-secondary elevation-1"><i class="fas fa-hourglass-half"></i></span>
 
               <div class="info-box-content">
               <a href="<?php echo base_url ?>admin/?page=orders">
@@ -131,7 +131,7 @@
           </div>
           <div class="col-12 col-sm-6 col-md-3">
             <div class="shadow info-box mb-3">
-              <span class="info-box-icon bg-gradient-primary elevation-1"><i class="fas fa-tasks"></i></span>
+              <span class="info-box-icon bg-gradient-primary elevation-1"> <i class="fas fa-times"></i></span>
 
               <div class="info-box-content">
               <a href="<?php echo base_url ?>admin/?page=orders">

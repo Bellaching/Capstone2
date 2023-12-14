@@ -95,7 +95,7 @@ elseif (isset($_GET['received'])) {
                                             <col width="15%">
                                         </colgroup>
                                         <thead>
-                                            <tr class="bg-gradient-dark text-light">
+                                            <tr class="bg-gradient-dark " style="color:#004399;">
                                                 <th class="text-center">#</th>
                                                 <th class="text-center">Date Ordered</th>
                                                 <th class="text-center">Ref. Code</th>
