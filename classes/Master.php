@@ -258,7 +258,7 @@ class Master extends DBConnection
 		extract($_POST);
 
 		$del = $this->conn->query("DELETE FROM `brand_list` WHERE id = '{$id}'");
-		
+
 		if ($del) {
 			$resp['status'] = 'success';
 			$this->settings->set_flashdata('success', "Brand successfully deleted.");
@@ -1046,18 +1046,16 @@ class Master extends DBConnection
 						$desc = 'Your order ' . $product_name . ' was cancelled.';
 						$this->conn->query("UPDATE `appointment` set `status` = 3 where order_id = '{$id}'");
 					}
-					
+
 					if ($status == 2) {
 						$desc = 'Your order ' . $product_name . ' is confirmed.';
 						$this->conn->query("UPDATE `appointment` set `status` = 1 where order_id = '{$id}'");
-
-					
 					}
 					if ($status == 3) {
 						$desc = 'Your order ' . $product_name . ' is shipped.';
 						$this->conn->query("UPDATE `appointment` set `status` = 2 where order_id = '{$id}'");
 					}
-					
+
 
 					$notify = $this->conn->query("INSERT INTO `notifications` SET `client_id` = '{$client_id}', `description` = '{$desc}', `order_id`='{$id}'");
 					$resp['status'] = 'success';
@@ -1273,6 +1271,7 @@ class Master extends DBConnection
 	{
 		extract($_POST);
 		$date = $_POST['date'];
+		// Return all pending and confirmed appointment.
 		$checkAvailabilityDates = $this->conn->query("SELECT hours FROM appointment where dates = '{$date}' and status not in (2,3)");
 		if ($checkAvailabilityDates) {
 			$resp['status'] = 'success';

@@ -7,7 +7,7 @@
 <div class="col-lg-12">
     <div class="card card-outline card-primary">
         <div class="card-header">
-            <h5 class="card-title">Services</h5>
+            <h5 class="card-title">Logo & Style</h5>
         </div>
         <div class="card-body">
             <form action="" id="system-frm">
@@ -28,41 +28,16 @@
                      <?php echo $_settings->info('servicetitle')  ?>  
                     </textarea>
 
-                    <label for="servicep" class="control-label">Service paragraph</label>
+                    <label for="servicep" class="control-label">Service p</label>
                 <textarea name="servicep" id="servicep" cols="1" rows="1" class="form-control summernote">
                      <?php echo $_settings->info('servicep')  ?>  
                     </textarea>
-
-                    <label for="service_name" class="control-label">Service Name</label>
-                <textarea name="service_name" id="service_name" cols="1" rows="1" class="form-control summernote">
-                     <?php echo $_settings->info('service_name')  ?>  
-                    </textarea>
-
 
 
                     <label for="service_description" class="control-label">Service Description</label>
                 <textarea name="service_description" id="service_description" cols="1" rows="1" class="form-control summernote">
                      <?php echo $_settings->info('service_description')  ?>  
                     </textarea>
-
-
-                    <div class="form-group">
-                    <label for="" class="control-label">Service Background</label>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input rounded-circle" id="service_cover" name="cover1" onchange="serviceImg(this,$(this))">
-                        <label class="custom-file-label" for="service_cover">Choose file</label>
-                    </div>
-
-
-
-                    <div class="form-group">
-                    <label for="" class="control-label">Service Image</label>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input rounded-circle" id="service_img" name="img1" onchange="serviceImg1(this,$(this))">
-                        <label class="custom-file-label" for="service_img">Choose file</label>
-                    </div>
-
-                </div>
 
               
 
@@ -83,22 +58,11 @@
 
 
 <script>
-       function serviceImg(input, _this) {
+    function service_image(input, _this) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function(e) {
-                $('#img1').attr('src', e.target.result);
-                _this.siblings('.custom-file-label').html(input.files[0].name)
-            }
-
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-        function serviceImg1(input, _this) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                $('#cover1').attr('src', e.target.result);
+                $('#service_image').attr('src', e.target.result);
                 _this.siblings('.custom-file-label').html(input.files[0].name)
             }
 
