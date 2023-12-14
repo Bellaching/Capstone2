@@ -261,6 +261,7 @@ section.new_arrivals {
     display: flex;
     width: 200px; /* Adjust the width as needed */
     height: 200px; /* Adjust the height as needed */
+    margin: 0 2%;
 }
 
 .brand-img-holder img {
