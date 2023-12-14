@@ -145,7 +145,7 @@
   <script src="<?php echo base_url ?>dist/js/script.js"></script>
   <script src="<?php echo base_url ?>assets/js/scripts.js"></script>
   <style>
-html, body {
+html body {
   height: 100%;
   width: 100%;
   font-family: 'Poppins', sans-serif;
@@ -154,6 +154,7 @@ html, body {
   margin: 0;
   font-weight: 600;
   background-repeat: no-repeat;
+  background-color: #F0F2F5;
  /* background-image: url('<?php echo validate_image($_settings->info('system_cover')) ?>');*/
   background-size: cover;
   background-position: center;
