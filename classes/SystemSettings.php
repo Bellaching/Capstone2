@@ -51,7 +51,6 @@ class SystemSettings extends DBConnection
 		if (isset($_POST['privacy_policy'])) {
 			file_put_contents('../privacy_policy.html', $_POST['privacy_policy']);
 		}
-
 		if (isset($_FILES['img']) && $_FILES['img']['tmp_name'] != '') {
 			$fname = 'uploads/' . strtotime(date('y-m-d H:i')) . '_' . $_FILES['img']['name'];
 			$move = move_uploaded_file($_FILES['img']['tmp_name'], '../' . $fname);
@@ -63,7 +62,6 @@ class SystemSettings extends DBConnection
 			}
 		}
 
-		
 		if (isset($_FILES['img1']) && $_FILES['img1']['tmp_name'] != '') {
 			$fname = 'uploads/' . strtotime(date('y-m-d H:i')) . '_' . $_FILES['img1']['name'];
 			$move = move_uploaded_file($_FILES['img1']['tmp_name'], '../' . $fname);
@@ -75,11 +73,6 @@ class SystemSettings extends DBConnection
 			}
 		}
 
-		
-		
-
-		
-		
 		if (isset($_FILES['cover']) && $_FILES['cover']['tmp_name'] != '') {
 			$fname = 'uploads/' . strtotime(date('y-m-d H:i')) . '_' . $_FILES['cover']['name'];
 			$move = move_uploaded_file($_FILES['cover']['tmp_name'], '../' . $fname);

@@ -62,15 +62,15 @@
                     </a>
                 </li>
                 <?php if ($_settings->userdata('type') == 1) : ?>
-                <li class="navs nav-item">
-                    <a href="<?php echo base_url ?>admin/?page=shop_config" class="nav-links nav-link">
-                        <i class="nav-icon fas fa-cog"></i>
-                        <p>Shop Configuration</p>
-                    </a>
-                </li>
+                    <li class="navs nav-item">
+                        <a href="<?php echo base_url ?>admin/?page=shop_config" class="nav-links nav-link">
+                            <i class="nav-icon fas fa-cog"></i>
+                            <p>Shop Configuration</p>
+                        </a>
+                    </li>
                 <?php endif; ?>
 
-               
+
                 <li class="navs nav-item">
                     <a href="#" class="nav-links nav-link">
                         <i class="nav-icon fas fa-boxes"></i>
@@ -98,7 +98,7 @@
                                 <p>Contact Us</p>
                             </a>
                         </li>
-                       
+
                         <li class="navs nav-item">
                             <a href="<?php echo base_url ?>admin/?page=content_management/logo" class=" nav-links nav-link nav-content_management_logo">
                                 <i class="nav-icon fas fa-envelope"></i>
@@ -146,28 +146,28 @@
                         <i class="right fas fa-angle-left"></i>
                     </a>
                     <ul class="nav nav-treeview">
-                    <?php if ($_settings->userdata('type') == 1) : ?>
-                        <li class="navs nav-item">
-                            <a href="<?php echo base_url ?>admin/?page=shop_calendar" class="nav-links nav-link nav-clients">
-                                <i class="nav-icon fas fa-calendar"></i>
-                                <p>Calendar</p>
-                            </a>
-                        </li>
-                        <li class="navs nav-item">
-                            <a href="<?php echo base_url ?>admin/?page=orders" class="nav-links nav-link nav-clients">
-                                <i class="nav-icon fas fa-tasks"></i>
-                                <p>Orders</p>
-                            </a>
-                        </li>
+                        <?php if ($_settings->userdata('type') == 1) : ?>
+                            <li class="navs nav-item">
+                                <a href="<?php echo base_url ?>admin/?page=shop_calendar" class="nav-links nav-link nav-clients">
+                                    <i class="nav-icon fas fa-calendar"></i>
+                                    <p>Calendar</p>
+                                </a>
+                            </li>
+                            <li class="navs nav-item">
+                                <a href="<?php echo base_url ?>admin/?page=orders" class="nav-links nav-link nav-clients">
+                                    <i class="nav-icon fas fa-tasks"></i>
+                                    <p>Orders</p>
+                                </a>
+                            </li>
 
 
 
-                        <li class="navs nav-item">
-                            <a href="<?php echo base_url ?>admin/?page=clients" class="nav-links nav-link nav-clients">
-                                <i class="nav-icon fas fa-users"></i>
-                                <p>Registered Clients</p>
-                            </a>
-                        </li>
+                            <li class="navs nav-item">
+                                <a href="<?php echo base_url ?>admin/?page=clients" class="nav-links nav-link nav-clients">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>Registered Clients</p>
+                                </a>
+                            </li>
 
                         <?php endif; ?>
 

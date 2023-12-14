@@ -1,15 +1,19 @@
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 <?php
-$selectedValue = ""; 
+$selectedValue = "";
 
 include 'sendemailporder.php';
 $total = 0;
+$unAvailableDays = [];
 $api_url_province = 'https://ph-locations-api.buonzz.com/v1/provinces';
 $response1 = file_get_contents($api_url_province);
 $api_url_city = 'https://ph-locations-api.buonzz.com/v1/cities';
 $response2 = file_get_contents($api_url_city);
 $all_order_config = $conn->query("SELECT * from order_config where is_all = 1 limit 1")->fetch_assoc();
-$unavailableDates = $conn->query("SELECT schedule from unavailable_dates")->fetch_all();
+$unavailableDates = $conn->query("SELECT * from unavailable_dates");
+while ($unavailDate = $unavailableDates->fetch_assoc()) {
+    array_push($unAvailableDays, $unavailDate);
+}
 if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
     $qry = $conn->query("SELECT * FROM `client_list` where id = '{$_settings->userdata('id')}'");
     if ($qry->num_rows > 0) {
@@ -317,7 +321,7 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
                         </div>
                     </div>
                     <div class="mx-1">
-                    <h1 class="label-info mt-3"><strong>Contact <span style="color: red;">*</span></strong></h1>
+                        <h1 class="label-info mt-3"><strong>Contact <span style="color: red;">*</span></strong></h1>
                         <div class="dropdown-divider my-3"></div>
                         <div class="form-group">
                             <input class="form-control mb-2" type="email" name="email" id="email" placeholder="yourmail@gmail.com" required value="<?= isset($email) ? $email : "" ?>">
@@ -429,9 +433,9 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
 
                                             ?>
                                             <span class="custom-control-input custom-control-input-primary">Address Line 1</span>
-                                            <input name="addressline1" id="addressline1" rows="3" class="form-control mb-1 rounded-0" placeholder="Streeet, Blk, Lot, and brgy" value="<?= isset($addressline1) ? $addressline1 : "" ?>" required  readonly></input>
+                                            <input name="addressline1" id="addressline1" rows="3" class="form-control mb-1 rounded-0" placeholder="Streeet, Blk, Lot, and brgy" value="<?= isset($addressline1) ? $addressline1 : "" ?>" required readonly></input>
                                             <span class="custom-control-input custom-control-input-primary">Address Line 2</span>
-                                            <input name="addressline2" id="addressline2" rows="3" class="form-control mb-1 rounded-0" placeholder="(Apartment, suite, etc, (optional))" value="<?= isset($addressline2) ? $addressline2 : "" ?>" required  readonly></input>
+                                            <input name="addressline2" id="addressline2" rows="3" class="form-control mb-1 rounded-0" placeholder="(Apartment, suite, etc, (optional))" value="<?= isset($addressline2) ? $addressline2 : "" ?>" required readonly></input>
                                             <span class="custom-control-input custom-control-input-primary">Zip code</span>
                                             <input type="text" name="zipcode" id="zipcode" rows="3" class="form-control mb-1 zipcode" placeholder="Zip Code" value="<?= isset($zipcode) ? $zipcode : "N/A" ?>" onkeydown="return allowOnlyNumbers(event)" required readonly></input>
 
@@ -575,8 +579,9 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
     function showAvailability() {
         $('#calendar_modal').modal('show');
     }
-    const unavailableDates = JSON.parse(JSON.stringify(<?= json_encode($unavailableDates) ?>));
-    var dates = unavailableDates.flatMap(item => item)
+    const unavailableDates = JSON.parse(JSON.stringify(<?= json_encode($unAvailableDays) ?>));
+    var dates = unavailableDates.filter(item => item.duration < 1).flatMap(item => item.schedule);
+    console.log(dates);
     $("#meetup_datepicker").datepicker({
         todayHighlight: true,
         minDate: 1,
@@ -586,7 +591,6 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
             return [dates.indexOf(string) == -1];
         },
         onSelect: function(date) {
-            console.log(date)
             $.ajax({
                 url: _base_url_ + "classes/Master.php?f=retrieve_availability",
                 data: {
@@ -611,6 +615,14 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
                                 `${parseInt(item[0].slice(0, 2)) + 1}:${item[0].slice(3, 5)} ${amp}`;
                             item.push(hoursInterval);
                         });
+                        const unavailableTimeFromDate = unavailableDates.filter(item => item.schedule === date);
+                        console.log(unavailableTimeFromDate);
+                        if (unavailableTimeFromDate.length > 0) {
+                            unavailableTimeFromDate.forEach(item => {
+                                resp.data.push([item.from_hours, item.to_hours]);
+                            })
+                        }
+                        console.log(resp.data);
                         $("#meetup_timepicker").removeAttr('disabled')
                         $("#meetup_timepicker").timepicker({
                             minTime: '8am',

@@ -20,32 +20,25 @@
             background-color: #ffff;
         }
         .banner_fw_container {
-            height: 80vh;
-            display: flex;
-    justify-content: flex-start;
-    align-items: center;
+            height: 100vh;
         }
-        #banner-fw {
-    background-image: url('<?php echo validate_image($_settings->info('cover')) ?>');
-    background-size: cover;
-    height: 90vh;
-    position: relative;
-    background-color: #1A547E;
-}
-
-.banner_fw {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgb(0 0 0 / 30%);
-}
+        #banner-fw{
+            background-image: url('<?php echo validate_image($_settings->info('cover')) ?>');
+            background-size: cover;
+            height: 100vh;
+            position: relative;
+            background-color:#1A547E;
+        }
+        .banner_fw {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgb(0 0 0 / 30%); /* Adjust the alpha value (fourth parameter) to control the overlay's transparency */
+        }
         .banner_content{
             color:white;
-            max-width: 600px; /* Adjust the maximum width based on your design */
-    margin-right: auto; /* Push the content to the left */
-    
         }
         .banner_content span {
             color:white;
@@ -61,7 +54,6 @@
             border: 1px solid white;
             color:white;
             font-family: 'Montserrat', sans-serif;
-            margin-top: 80px;
         }
 
        
@@ -123,9 +115,8 @@
         .header_product_home_ctn a {
             background: #0d6efd;
             color: white;
-            padding: 5px 20px;
-            
-           
+            padding: 15px 60px;
+            border-radius: 41px;
         }
 
         
@@ -142,9 +133,8 @@
         .product_tn_home {
             margin-top: 45px;
         }
-        .header_product_home_ctn span, h2{
-            color: Black;
-
+        .header_product_home_ctn span {
+            color: #0d6efd;
             font-weight: 700;
             font-size: 22px;
         }
@@ -169,16 +159,20 @@
 
         section.new_arrivals h1 {
     margin-bottom: 30px;
-    padding: 4%;
+    padding-bottom: 30px;
     text-align: center;
-    font-size: 36px;
+    font-size: 1.5rem;
     letter-spacing: 1px;
     text-transform: uppercase;
-    font-weight: 800;
-   
-    color:#202020;
-    
-    
+    font-weight: 600;
+    margin-top: 40px;
+    padding: 5px 30px;
+    border: 1px solid #e0e0e0;
+    width: 20%; /* Adjust the width as needed */
+    color: #ffffff;
+    background-color: #202020;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 section.new_arrivals {
@@ -192,20 +186,19 @@ section.new_arrivals {
   display: flex;
   justify-content: center;
   align-items: center;
-  
 
 }
 /*----Mark---------------*/
 .feature-heading h2{
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: #1b1919;
   letter-spacing: 1px;
   text-transform: uppercase;
-  font-weight: 800;
-  margin-top: 30px;
+  font-weight: 600;
+  margin-top: 40px;
   padding: 15px 45px;
- 
-  
+  border: 1px solid #e0e0e0;
+
 }
 
 .feature-box {
@@ -231,10 +224,9 @@ section.new_arrivals {
 }
 
   .row{
-            margin: 4%;
+            margin: 2%;
             display: flex;
             flex-direction: row;
-            
         }
 
         #brand_list {
@@ -243,51 +235,39 @@ section.new_arrivals {
     justify-content: center;
 }
 
-.card-item{
-    border: none;
-
-}
-
-.card-item:hover{
-    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.8);
-    
-
-
-    
-}
-
-
-.product-container1{
-    width: 200px;
-}
-
 .product_archive{
      margin: 0 10px 15px;
 }
 
 .brand-item {
-    width: 100%; /* Make the brand item take 100% of its container */
-    max-width: 200px; /* Set a maximum width if needed */
+    width: 200px; /* Adjust the width of each brand item as needed */
     margin: 0 10px 15px;
-}
-
-.card {
-    border: none;
+    
 }
 
 .brand-img-holder {
-    margin: 2%;
-   
+    overflow: hidden;
+    position: relative;
+    border-radius: 10px;
+    width: 100%; /* Ensure the container takes the full width of its parent */
 }
 
 .brand-img-holder img {
     width: 100%;
-    height: 150px;
-    object-fit: cover; /* Maintain aspect ratio */
-    mix-blend-mode: multiply;
-   
+    height: 100%;
+    object-fit: cover; /* Ensure the entire image is covered, maintaining aspect ratio */
+    display: block;
+    border-radius: 10px;
 }
 
+
+
+
+
+
+
+
+        
         .button_bottom_home a {
             background: #0d6efd;
             color: white;
@@ -316,39 +296,16 @@ section.new_arrivals {
         }
 
       
-        .slick-prev:before, .slick-next:before { 
-          background-color: white;
-          color:#004399 !important;
-        }
 
-        .slick-prev, .slick-next {           
-           margin:1%;
-        }
-
-        .slick-slide {
-    width: 200px; !important;
-  }
-
-  .slick-slide img {
-    width: 100%; /* Ensure images within the slides are responsive */
-    height: auto;
-  }
 
 
 
 
         /* Styles for large screens */
         @media (min-width: 992px) {
-            
             .banner_fw_container {
-             height: 80vh;
-             display: flex;
-             justify-content: center;
-             align-items: center;
-             height: 80vh;
-            
+                height: 80vh;
             }
-
             .banner_fw .banner_fw_container {
                 height: 100%;
             }
@@ -373,13 +330,8 @@ section.new_arrivals {
 
         /* Styles for medium screens */
         @media (max-width: 991px) {
-                  .banner_fw_container {
-             height: 80vh;
-             display: flex;
-             justify-content: center;
-             align-items: center;
-             height: 60vh;
-            
+            .banner_fw_container {
+                height: 60vh;
             }
             .banner_fw .banner_fw_container {
                 height: 100%;
@@ -404,26 +356,16 @@ section.new_arrivals {
         }
 
         /* Styles for small screens */
-        @media (max-width: 667px) {
-
-            #banner-fw {
-        height: 80vh; /* Adjust the height for smaller screens */
-    }
-
+        @media (max-width: 767px) {
             .banner_fw_container {
-             height: 80vh;
-             display: flex;
-             justify-content: center;
-             align-items: center;
-             height: 40vh;
-             text-align:center;
+                height: 40vh;
             }
             .banner_fw .banner_fw_container {
                 height: 100%;
             }
             .header_product_home {
                 align-items: center;
-                justify-content: center;
+
             }
             .button_bottom_home {
                 display: flex;
@@ -510,7 +452,7 @@ section.new_arrivals {
     <section>
         <div class="container_brand">
         <div class="feature-heading">
-       <h2><strong>Featured Brands</strong></h2>
+       <h2>Featured Brands</h2>
      </div>
 
      <div class="row responsive" id="brand_list" >
@@ -523,7 +465,9 @@ section.new_arrivals {
             <div class="brand-img-holder overflow-hidden position-relative">
                 <img src="<?= validate_image($row['image_path']) ?>" alt="Brand Image" class="img-top">
             </div>
-            
+            <div class="card-body">
+                <h3 class="card-title text-center w-100"><?= $row['name'] ?></h3>
+            </div>
         </div>
     </div>
     <?php endwhile; ?>
@@ -531,12 +475,10 @@ section.new_arrivals {
 
 
 
-<section>
-
     <section class="new_arrivals py-5">
         <div class="container">
             <h1 class="new-arrivals-ctn">New Arrivals</h1>
-            <div class="row responsive-arrivals">
+            <div class="row responsive">
                 <?php
                 $products = $conn->query("SELECT p.*, b.name as brand, c.category FROM `product_list` p INNER JOIN brand_list b ON p.brand_id = b.id INNER JOIN `categories` c ON p.category_id = c.id WHERE p.delete_flag = 0 AND p.status = 1 LIMIT 6");
                 // Counter variable to keep track of displayed products
@@ -548,7 +490,7 @@ section.new_arrivals {
                 ?>  
                     <div class="col-md-4 product_archive">
                         <a class="product-container1" href="./?p=products/view_product&id=<?= $row['id'] ?>">
-                            <div class="card-item">
+                            <div class="card">
                                 <div class="product-img-holder">
                                     <img src="<?= validate_image($row['image_path']) ?>" alt="Product Image" class="img-top" style="width: 100%; height: 250px; display: flex; justify-content: center; align-items: center; object-fit:cover;" />
                                 </div>
@@ -580,9 +522,58 @@ section.new_arrivals {
     </section>
 
     
-   
-
-   
+    <section id="products-home-fw" >
+        <div class="products_home_fw">
+            <div class="container products_home_content">
+                <div class="row">
+                    <div class="col-md-4 col-sm-12">
+                        <div class="header_product_home">
+                            <?php
+                            $products = $conn->query("SELECT p.*, b.name AS brand, c.category, COUNT(o.product_id) AS order_count
+                                FROM product_list p
+                                INNER JOIN brand_list b ON p.brand_id = b.id
+                                INNER JOIN categories c ON p.category_id = c.id
+                                INNER JOIN order_items o ON o.product_id = p.id
+                                WHERE p.delete_flag = 0 
+                                AND p.status = 1 
+                                GROUP BY p.id
+                                ORDER BY order_count DESC
+                                LIMIT 1;");
+                            // Counter variable to keep track of displayed products
+                            $counter = 0;
+                            while ($row = $products->fetch_assoc()) :
+                                // Increment the counter
+                                $counter++;
+                                // Display your product information here
+                            ?>
+                            <div class="image_container_best_seller">
+                                <img src="<?= validate_image($row['image_path']) ?>" alt="Product Image" class="img-top"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-sm-12 header_product_home">
+                        <div class="header_product_home_ctn">
+                            <span>Best Seller</span>
+                            <h2><?= $row['name'] ?></h2>
+                            <p> <?= isset($description) ? html_entity_decode($description) : '' ?></p>
+                            <div class="product_tn_home">
+                                <a href="./?p=products/view_product&id=<?= $row['id'] ?>">View Product</a>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+                <?php
+                    // Check if we have displayed 4 products, and break out of the loop if true
+                    if ($counter >= 4) {
+                        break;
+                        }
+                    endwhile;
+                ?>
+            </div>
+        </div>
+    </section>
 
     
 </body>
@@ -594,198 +585,30 @@ section.new_arrivals {
   dots: true,
   infinite: false,
   speed: 300,
-  slidesToShow: 6,
-  slidesToScroll: 1,
-  responsive: [
-    {
-        
-        breakpoint: 1000,
-        settings: {
-          slidesToShow: 6,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: true,
-          arrows:true,
-          variableWidth: true
-        }
-      },
-    {
-        
-        breakpoint: 900,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: true,
-          arrows:true
-          
-        }
-      },
-    {
-        
-      breakpoint: 600,
-      settings: {
-        slidesToShow: 3,
-        slidesToScroll: 3,
-        infinite: true,
-        dots: true,
-        arrows:true
-        
-      }
-    },
-
-
-    {
-      breakpoint: 300,
-      settings: {
-        slidesToShow: 2,
-        slidesToScroll: 2
-       
-
-      }
-    },
-    {
-      breakpoint: 180,
-      settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1
-        
-      }
-    }
-    // You can unslick at a given breakpoint now by adding:
-    // settings: "unslick"
-    // instead of a settings object
-  ]
-});
-
-$('.responsive-review').slick({
-  dots: true,
-  infinite: false,
-  speed: 300,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  responsive: [
-    {
-        
-        breakpoint: 1000,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: true,
-          arrows:true,
-          variableWidth: true
-        }
-      },
-    {
-        
-        breakpoint: 900,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: true,
-          arrows:true
-          
-        }
-      },
-    {
-        
-      breakpoint: 600,
-      settings: {
-        slidesToShow: 1,
-        slidesToScroll: 3,
-        infinite: true,
-        dots: true,
-        arrows:true
-        
-      }
-    },
-
-
-    {
-      breakpoint: 300,
-      settings: {
-        slidesToShow: 2,
-        slidesToScroll: 2
-       
-
-      }
-    },
-    {
-      breakpoint: 180,
-      settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1
-        
-      }
-    }
-    // You can unslick at a given breakpoint now by adding:
-    // settings: "unslick"
-    // instead of a settings object
-  ]
-});
-
-$('.responsive-arrivals').slick({
-  dots: true,
-  infinite: false,
-  speed: 300,
   slidesToShow: 3,
   slidesToScroll: 1,
   responsive: [
     {
-        
-        breakpoint: 1000,
-        settings: {
-          slidesToShow: 6,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: true,
-          arrows:true,
-          variableWidth: true
-        }
-      },
-    {
-        
-        breakpoint: 900,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: true,
-          arrows:true
-          
-        }
-      },
-    {
-        
-      breakpoint: 600,
+      breakpoint: 1024,
       settings: {
         slidesToShow: 3,
         slidesToScroll: 3,
         infinite: true,
-        dots: true,
-        arrows:true
-        
+        dots: true
       }
     },
-
-
     {
-      breakpoint: 300,
+      breakpoint: 600,
       settings: {
         slidesToShow: 2,
         slidesToScroll: 2
-       
-
       }
     },
     {
-      breakpoint: 180,
+      breakpoint: 480,
       settings: {
         slidesToShow: 1,
         slidesToScroll: 1
-        
       }
     }
     // You can unslick at a given breakpoint now by adding:
