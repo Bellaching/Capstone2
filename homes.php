@@ -259,6 +259,8 @@ section.new_arrivals {
 .brand-img-holder {
     margin: 2%;
     display: flex; /* Optional: Align images in a row */
+    width: 150px;
+    height: 150px;
 }
 
 .brand-img-holder img {
