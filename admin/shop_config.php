@@ -86,10 +86,10 @@ if ($shop_config->num_rows > 0) {
                     <label for="closing" class="control-label">Closing</label>
                     <input name="closing" id="closing" disabled class="form-control" value="<?= isset($config) ? $config['closing'] : ''; ?>" required>
                 </div>
-               <!--- <div class="mr-2">
+                <div class="mr-2">
                     <label for="appointment_interval" class="control-label">Appointment Interval <small>per minutes</small></label>
                     <input name="appointment_interval" id="appointment_interval" type="number" min="15" class="form-control" value="<?= isset($config) ? $config['appointment_interval'] : ''; ?>" required>
-                </div>---->
+                </div>
                 <div class="d-flex align-items-end">
                     <button class="btn btn-flat btn-primary" type="submit">Save</button>
                 </div>
