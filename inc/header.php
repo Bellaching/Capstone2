@@ -154,7 +154,7 @@ html, body {
   margin: 0;
   font-weight: 600;
   background-repeat: no-repeat;
-  background-color: #F0F2F5;
+  
  /* background-image: url('<?php echo validate_image($_settings->info('system_cover')) ?>');*/
   background-size: cover;
   background-position: center;

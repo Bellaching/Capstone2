@@ -262,7 +262,7 @@ section.new_arrivals {
     width: 200px; /* Adjust the width as needed */
     height: 200px; /* Adjust the height as needed */
     margin:  5%;
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+   
 
 }
 
