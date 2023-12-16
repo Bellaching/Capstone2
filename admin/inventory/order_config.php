@@ -34,7 +34,7 @@ $order_config = $conn->query("SELECT og.*, pl.id as product_id from order_config
                     </select>
                 </div>
             <div class="mr-2">
-                    <label for="max-price" class="control-label">Maximum order price <?= isset($type) ? $type : '' ?></label>
+                    <label for="max-price" class="control-label">Maximum price limit <?= isset($type) ? $type : '' ?></label>
                     <input name="max-price" id="max-price" type="text" class="form-control rounded-0 CurrencyInput" value="<?php echo isset($value) ? $value : ''; ?>" required>
                 </div>
                 <!-- <div class="mr-2">
