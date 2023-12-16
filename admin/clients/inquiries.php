@@ -50,7 +50,7 @@
                             </td>
 
                             <td class="text-center">
-                                <?php if($row['status'] == 1): ?>
+                                <?php if($row['status'] == 0): ?>
                                     <span class="badge badge-success">Pending</span>
                                 <?php else: ?>
                                     <span class="badge badge-danger">Done</span>
