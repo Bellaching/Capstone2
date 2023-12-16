@@ -166,6 +166,7 @@
                             // echo '<p class="item-info">' . $row['description'] . '</p>';
                             echo '</div>';
                             echo '</a>';
+                            echo '<audio id="audio_' . $notification_id . '" src="./assets/notif_sound.wav"></audio>';
                         }
 
                         echo '</div>';
