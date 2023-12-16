@@ -57,16 +57,15 @@ ob_end_flush(); // Send the output buffer and release the output buffer
 <style>
   /*--------------------------------------Contact-Us-Layout-----------------------------------------------------*/
 
-.container_msg{
+  .container_msg {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 3%;
- 
 }
 
-.alert-sent{
+.alert-sent {
   display: flex;
   justify-content: center;
   background-color: #7EB4E7;
@@ -74,62 +73,70 @@ ob_end_flush(); // Send the output buffer and release the output buffer
   margin: 3%;
 }
 
-
-.customer_message{
+.customer_message {
   background-color: white;
   padding: 3%;
   width: 50%;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+}
 
-  }
-
-.name_email{
+.name_email {
   display: flex;
   flex-direction: row;
-  
 }
 
-small{
-font-size: 12px;
+small {
+  font-size: 12px;
 }
 
-.contact-form{
+.contact-form {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column ;
+  flex-direction: column;
   margin-top: 3%;
   background-color: white;
   padding: 3%;
-  width: 50%;
+  width: 80%; /* Adjusted width for smaller screens */
+  max-width: 400px; /* Added max-width to prevent the container from becoming too wide */
   border-radius: 10px;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
 }
 
-.contact{
+.contact {
   display: flex;
   flex-direction: column;
   padding: 3%;
-  
 }
 
-.contact input, textarea{
-  margin:  2% 0;
+.contact input,
+.contact textarea {
+  margin: 2% 0;
   padding: 1%;
- 
-  border:  1px solid #004399;
+  width: 100%; /* Make the input elements take up the full width of the container */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  border: 1px solid #004399;
   border-radius: 5px;
 }
 
 .send-btn {
-    color: white;
-    background-color: #C5CBD1 ;
-    width: 30%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto; /* Add this line to center the button horizontally */
-    margin-top: 10px; /* Add some top margin for spacing */
+  color: white;
+  background-color: #c5cbd1;
+  width: 100%; /* Make the button take up the full width of the container */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0; /* Adjusted margin for spacing */
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.send-btn {
+  background-color: #004399;
 }
 
 .btn{
@@ -142,6 +149,82 @@ font-size: 12px;
 .send-btn{
   background-color:#004399;
 }
+
+/* Media queries for different screen sizes */
+@media only screen and (max-width: 375px) {
+  /* Minimum width: 375px (Mobile devices) */
+  .customer_message,
+  .contact-form {
+    width: 100%;
+    max-width: none; /* Reset max-width for full width on smaller screens */
+  }
+
+  .name_email {
+    flex-direction: column;
+  }
+}
+
+@media only screen and (min-width: 376px) and (max-width: 480px) {
+  /* 376px to 480px (Mobile devices) */
+  .customer_message,
+  .contact-form {
+    width: 80%; /* Adjust the width for smaller screens */
+  }
+
+  .name_email {
+    flex-direction: column;
+  }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+  /* iPads, Tablets */
+  .customer_message,
+  .contact-form {
+    width: 70%; /* Adjust the width for medium-sized screens */
+  }
+
+  .name_email {
+    flex-direction: column;
+  }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+  /* Small screens, laptops */
+  .customer_message,
+  .contact-form {
+    width: 60%; /* Adjust the width for larger screens */
+  }
+
+  .name_email {
+    flex-direction: column;
+  }
+}
+
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {
+  /* Desktops, large screens */
+  .customer_message,
+  .contact-form {
+    width: 50%; /* Adjust the width for extra large screens */
+  }
+
+  .name_email {
+    flex-direction: column;
+  }
+}
+
+@media only screen and (min-width: 1201px) {
+  /* Extra large screens, TV */
+  .customer_message,
+  .contact-form {
+    width: 40%; /* Adjust the width for very large screens */
+  }
+
+  .name_email {
+    flex-direction: column;
+  }
+}
+
+
 
 
 
