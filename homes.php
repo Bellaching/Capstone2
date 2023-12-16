@@ -627,13 +627,13 @@ $('.responsive-best-seller').slick({
   dots: true,
   infinite: true,
   speed: 300,
-  slidesToShow: 1,
+  slidesToShow: 6,
   slidesToScroll: 1,
   responsive: [
     {
       breakpoint: 1000,
       settings: {
-        slidesToShow: 2,
+        slidesToShow: 6,
         slidesToScroll: 2,
         infinite: true,
         dots: true,
@@ -644,7 +644,7 @@ $('.responsive-best-seller').slick({
     {
       breakpoint: 900,
       settings: {
-        slidesToShow: 2,
+        slidesToShow: 6,
         slidesToScroll: 2,
         infinite: true,
         dots: true,
@@ -655,7 +655,7 @@ $('.responsive-best-seller').slick({
     {
       breakpoint: 600,
       settings: {
-        slidesToShow: 1,
+        slidesToShow: 3,
         slidesToScroll: 1,
         infinite: true,
         dots: true,
