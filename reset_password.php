@@ -31,8 +31,7 @@ if (isset($_POST['email'])) {
                 $mail->addAddress($emailInput);
                 $mail->Subject = 'Password Reset Request';
                 $mail->Body = 'Your password reset request was successful. Click the following link to reset your password: ' .
-                    'https://atvmotoshop.online/Capstone2/password_reset.php?token=' . $token . '&email=' . urlencode($_POST['email']);
-                    
+                    'https://atvmotoshop.online/?p=password_reset.php?token=' . $token . '&email=' . urlencode($_POST['email']);
 
                 $mail->send();
                 echo json_encode([
