@@ -7,7 +7,7 @@ $email = isset($_GET['email']) ? urldecode($_GET['email']) : '';
 
 <!DOCTYPE html>
 <html lang="en">
-  <?php require_once('inc/header.php') ?>
+ 
  <!--- <link rel="stylesheet" href="registerstyle.css"> --->
  <!--- <link rel="stylesheet" href="registerstyle.css"> --->
 

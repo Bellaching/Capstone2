@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newPassword = isset($_POST['newPass']) ? $_POST['newPass'] : '';
 
     // Check if email and token exist in the forgotPassword table
-    $checkTokenQuery = $conn->query("SELECT * FROM `forgotPassword` WHERE email = '$email' AND token = '$token'");
+    $checkTokenQuery = $conn->query("SELECT * FROM `forgotpassword` WHERE email = '$email' AND token = '$token'");
     $tokenExists = $checkTokenQuery->num_rows > 0;
 
     if ($tokenExists) {
