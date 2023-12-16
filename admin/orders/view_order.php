@@ -75,11 +75,11 @@ if ($order->num_rows > 0) {
                                     <span class="badge badge-secondary px-3 rounded-pill p-2 bg-secondary">Pending </span>
                                     <b><?= $dates . ' ' . strtoupper($hours) ?></b>
                                 <?php break;
-                                case 1: ?>
+                                case 2: ?>
                                     <span class="badge badge-secondary px-3 rounded-pill p-2 bg-info">Confirmed </span>
                                     <b><?= $dates . ' ' . strtoupper($hours) ?></b>
                                 <?php break;
-                                case 2: ?>
+                                case 1: ?>
                                     <span class="badge badge-secondary px-3 rounded-pill p-2 bg-warning">Cancelled </span>
                                     <b><?= $dates . ' ' . strtoupper($hours) ?></b>
                                 <?php break;
