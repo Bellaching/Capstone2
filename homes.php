@@ -118,7 +118,10 @@
       }
 
       .products_home_content>h2{
-        margin-top: 10%;
+        margin: 5%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
        
       }
 
