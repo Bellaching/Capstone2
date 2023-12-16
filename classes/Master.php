@@ -117,6 +117,11 @@ class Master extends DBConnection
 	}
 
 
+		
+		
+	
+	
+
 
 	function save_category()
 	{
@@ -269,6 +274,26 @@ class Master extends DBConnection
 		return json_encode($resp);
 	}
 
+	
+	function delete_message()
+	{
+		extract($_POST);
+
+		$del = $this->conn->query("DELETE FROM `inquiry_list` WHERE id = '{$id}'");
+
+		if ($del) {
+			$resp['status'] = 'success';
+			$this->settings->set_flashdata('success', "Inquiry successfully deleted.");
+		} else {
+			$resp['status'] = 'failed';
+			$resp['error'] = $this->conn->error;
+		}
+		return json_encode($resp);
+	}
+
+
+
+	
 	function save_supplier()
 	{
 		extract($_POST);
