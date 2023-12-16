@@ -231,6 +231,64 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     border: none;
   }
 
+  /* Mobile devices */
+/* Mobile devices */
+@media only screen and (max-width: 480px) {
+  .contact-info {
+    grid-template-columns: 1fr;
+    padding: 2%;
+  }
+
+  .contact-info>div {
+    margin: 20px;
+  }
+
+  .contact-section {
+    flex-direction: column;
+  }
+
+  .contact-form,
+  .map {
+    width: 100%;
+  }
+
+  .connect-with-us {
+    position: static;
+  }
+
+  .contact-h1 {
+    height: 200px;
+  }
+}
+
+/* iPads, Tablets */
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+  .contact-info {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 2%;
+  }
+
+  .contact-info>div {
+    margin: 20px;
+  }
+
+  .contact-section {
+    flex-direction: column;
+  }
+
+  .contact-form,
+  .map {
+    width: 100%;
+  }
+
+  .connect-with-us {
+    position: static;
+  }
+}
+
+
+
+
   /*-------------------------------------End-Contact-Us-Layout-----------------------------------------------------*/
 </style>
 
