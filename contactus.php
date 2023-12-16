@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $client_id = $_settings->userdata('id'); // Assuming client_id is stored in $_settings
 
     // Connect to the database (Update the username and password if needed)
-    $conn = new mysqli("localhost", "root", "", "capstone_two_db");
+    $conn = new mysqli("localhost", "u738394287_arnoldtv", "", "4N8cIt=&qM#c");
 
     // Check connection
     if ($conn->connect_error) {
