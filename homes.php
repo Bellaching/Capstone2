@@ -292,25 +292,79 @@ section.new_arrivals {
        
 
       
-        .slick-prev:before, .slick-next:before { 
-          background-color: white;
-          color:#004399 !important;
+      .slick-container {
+            margin: 0 -15px; /* Adjust margin as needed */
         }
 
-        .slick-prev, .slick-next {           
-           margin:1%;
+        /* Additional style for slick slider item */
+        .slick-item {
+            padding: 0 15px; /* Adjust padding as needed */
         }
 
-        .slick-slide {
-    width: 200px; !important;
+@media (min-width: 300px) {
+  .product-container {
+    width: 50%;
+   
   }
 
-  .slick-slide img {
-    width: 100%; /* Ensure images within the slides are responsive */
-    height: auto;
+ 
+}
+
+@media (max-width: 400px) {
+  .product-container {
+    width: 100%;
+     
+  }
+  .row-best{
+ display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+@media (max-width: 600px) {
+  .product-container {
+    width: 100%;
+     
+  }
+  .row-best{
+ display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
   }
 
+}
 
+@media (max-width: 800px) {
+  .product-container {
+    width: 80%;
+    
+  }
+
+  .row-best{
+ display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  
+}
+
+@media (min-width: 900px) {
+  .product-container {
+    width: 33.33%;
+  }
+
+}
+
+@media (min-width: 1000px) {
+  .product-container {
+    width: 25%;
+  }
+  
+}
 
 
         /* Styles for large screens */
@@ -434,77 +488,68 @@ section.new_arrivals {
         </div>
     </section>
 
-    <section id="products-home-fw">
-    <div class="products_home_fw">
-        <div class="container products_home_content ">
-        <h2>BEST SELLERS!!!</h2>
-            <div class="row-best">
-           
-                <?php
-                $products = $conn->query("SELECT p.*, b.name AS brand, c.category, COUNT(o.product_id) AS order_count
-                    FROM product_list p
-                    INNER JOIN brand_list b ON p.brand_id = b.id
-                    INNER JOIN categories c ON p.category_id = c.id
-                    INNER JOIN order_items o ON o.product_id = p.id
-                    WHERE p.delete_flag = 0 
-                    AND p.status = 1 
-                    GROUP BY p.id
-                    ORDER BY order_count DESC
-                    LIMIT 3;");
+<section id="products-home-fw">
+  <div class="products_home_fw">
+    <div class="container products_home_content">
+      <h2>BEST SELLERS!!!</h2>
+      <div class="row-best ">
+        <?php
+        $products = $conn->query("SELECT p.*, b.name AS brand, c.category, COUNT(o.product_id) AS order_count
+            FROM product_list p
+            INNER JOIN brand_list b ON p.brand_id = b.id
+            INNER JOIN categories c ON p.category_id = c.id
+            INNER JOIN order_items o ON o.product_id = p.id
+            WHERE p.delete_flag = 0 
+            AND p.status = 1 
+            GROUP BY p.id
+            ORDER BY order_count DESC
+            LIMIT 3;");
 
-                // Loop through the results
-                while ($row = $products->fetch_assoc()) :
-                ?>
-                <div class="col-md-4 col-sm-12 header_product_home product-container">
-                 
-                    <div class="image_container_best_seller">
-                        <img src="<?= validate_image($row['image_path']) ?>" alt="Product Image" class="img-top"/>
-                    </div>
-                    <div class="header_product_home_ctn">
-                       
-                        <h2><?= $row['name'] ?></h2>
-                        <p class="price">₱<?= strip_tags(html_entity_decode($row['price'])) ?>
-                        <div class="product_tn_home">
-                            <a href="./?p=products/view_product&id=<?= $row['id'] ?>">View Product</a>
-                        </div>
-                    </div>
-
-                    
-                    
-                </div>
-                <?php endwhile; ?>
+        // Loop through the results
+        while ($row = $products->fetch_assoc()) :
+        ?>
+        <div class="col-md-4 col-sm-12 header_product_home product-container">
+          <div class="image_container_best_seller">
+            <img src="<?= validate_image($row['image_path']) ?>" alt="Product Image" class="img-top" />
+          </div>
+          <div class="header_product_home_ctn">
+            <h2><?= $row['name'] ?></h2>
+            <p class="price">₱<?= strip_tags(html_entity_decode($row['price'])) ?>
+            <div class="product_tn_home">
+              <a href="./?p=products/view_product&id=<?= $row['id'] ?>">View Product</a>
             </div>
+          </div>
+        </div>
+        <?php endwhile; ?>
+      </div>
+    </div>
+  </div>
+</section>
+
+    
+<section>
+    <div class="container_brand">
+        <div class="feature-heading">
+            <h2><strong>Featured Brands</strong></h2>
+        </div>
+
+        <div class="row responsive slick-container" id="brand_list">
+            <?php 
+            $brands = $conn->query("SELECT * FROM `brand_list` where status = 1 and delete_flag = 0 order by `name`");
+            while($row = $brands->fetch_assoc()):
+            ?>
+            <div class="brand-item slick-item">
+                <div class="card">
+                    <div class="brand-img-holder overflow-hidden position-relative">
+                        <img src="<?= validate_image($row['image_path']) ?>" alt="Brand Image" class="img-top">
+                    </div>
+                </div>
+            </div>
+            <?php endwhile; ?>
         </div>
     </div>
 </section>
 
-
-    
-    <section>
-        <div class="container_brand">
-        <div class="feature-heading">
-       <h2><strong>Featured Brands</strong></h2>
-     </div>
-
-     <div class="row responsive" id="brand_list" >
-    <?php 
-    $brands = $conn->query("SELECT * FROM `brand_list` where status = 1 and delete_flag = 0 order by `name`");
-    while($row = $brands->fetch_assoc()):
-    ?>
-    <div class=" brand-item">
-        <div class="card ">
-            <div class="brand-img-holder overflow-hidden position-relative">
-                <img src="<?= validate_image($row['image_path']) ?>" alt="Brand Image" class="img-top">
-            </div>
-            
-        </div>
-    </div>
-    <?php endwhile; ?>
-</div>
-
-
-
-<section>
 
     <section class="new_arrivals py-5">
         <div class="container">
@@ -630,64 +675,14 @@ section.new_arrivals {
     // instead of a settings object
   ]
 });
-$('.responsive-best-seller').slick({
-  dots: true,
-  infinite: true,
-  speed: 300,
-  slidesToShow: 3,
-  slidesToScroll: 3,
-  responsive: [
-    {
-      breakpoint: 1000,
-      settings: {
-        slidesToShow: 6,
-        slidesToScroll: 3,
-        infinite: true,
-        dots: true,
-        arrows: true,
-        variableWidth: false,
-      }
-    },
-    {
-      breakpoint: 900,
-      settings: {
-        slidesToShow: 6,
-        slidesToScroll: 3,
-        infinite: true,
-        dots: true,
-        arrows: true,
-        variableWidth: false,
-      }
-    },
-    {
-      breakpoint: 600,
-      settings: {
-        slidesToShow: 3,
-        slidesToScroll: 3,
-        infinite: true,
-        dots: true,
-        arrows: true,
-        variableWidth: false,
-      }
-    },
-    {
-      breakpoint: 300,
-      settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        variableWidth: false,
-      }
-    },
-    {
-      breakpoint: 180,
-      settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        variableWidth: false,
-      }
-    }
-  ]
-});
+
+
+
+        
+  
+
+
+
 
 
 $('.responsive-arrivals').slick({
