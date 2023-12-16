@@ -443,7 +443,7 @@ section.new_arrivals {
                     AND p.status = 1 
                     GROUP BY p.id
                     ORDER BY order_count DESC
-                    LIMIT 8;");
+                    LIMIT 5;");
 
                 // Loop through the results
                 while ($row = $products->fetch_assoc()) :
