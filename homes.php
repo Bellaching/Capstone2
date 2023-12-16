@@ -431,7 +431,7 @@ section.new_arrivals {
     <div class="products_home_fw">
         <div class="container products_home_content ">
         <h2>BEST SELLERS!!!</h2>
-            <div class="row-best responsive-best-seller">
+            <div class="row-best">
            
                 <?php
                 $products = $conn->query("SELECT p.*, b.name AS brand, c.category, COUNT(o.product_id) AS order_count
