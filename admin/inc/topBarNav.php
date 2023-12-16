@@ -272,19 +272,24 @@
     }
 
     $('#dLabel').on('click', function(e) {
+    console.log('Bell icon clicked!');
     $('.notifications').toggleClass('show');
 
     if ($('.notifications').hasClass('show')) {
+        console.log('Adding show class');
         $('.notifications').css({
-        'left': '0px',
-        'right': 'inherit'
+            'left': '0px',
+            'right': 'inherit'
         });
     } else {
+        console.log('Removing show class');
         $('.notifications').css({
-        'left': '',
-        'right': ''
+            'left': '',
+            'right': ''
         });
     }
+});
+
 
         notificationReminder();
         fetchNotifications();

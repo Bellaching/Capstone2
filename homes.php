@@ -77,7 +77,58 @@
 
         /*-------------------------------------------------------------Best seller ------------------------------------*/
 
-      
+      .row-best{
+        display: flex;
+        flex-direction: row;
+        margin-top: 2%;
+        
+      }
+
+      .product-container{
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        border: none;
+        border-radius: 10px;
+        width: auto;
+        padding: 2%;
+        margin: 2%;
+        
+        box-shadow: 2px 2px 30px rgba(0,0,0,0.5)
+       
+      }
+
+      .image_container_best_seller{
+        width: 200px;
+        height: 200px;
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+       
+      }
+
+       .image_container_best_seller img{
+        width: 100%;
+        height: auto;
+       
+        
+      }
+
+      .products_home_content>h2{
+        margin-top: 10%;
+       
+      }
+
+     
+      .header_product_home_ctn{
+        display: flex;
+        justify-content: left;
+        flex-direction: column;
+       
+        width: 100%;
+      }
+
         
        
        /*-----------------------------------------------------------New seller------------------------------------------*/
@@ -378,8 +429,10 @@ section.new_arrivals {
 
     <section id="products-home-fw">
     <div class="products_home_fw">
-        <div class="container products_home_content">
-            <div class="row-best ">
+        <div class="container products_home_content ">
+        <h2>BEST SELLERS!!!</h2>
+            <div class="row-best responsive-best-seller">
+           
                 <?php
                 $products = $conn->query("SELECT p.*, b.name AS brand, c.category, COUNT(o.product_id) AS order_count
                     FROM product_list p
@@ -390,7 +443,7 @@ section.new_arrivals {
                     AND p.status = 1 
                     GROUP BY p.id
                     ORDER BY order_count DESC
-                    LIMIT 2;");
+                    LIMIT 8;");
 
                 // Loop through the results
                 while ($row = $products->fetch_assoc()) :
@@ -401,7 +454,7 @@ section.new_arrivals {
                         <img src="<?= validate_image($row['image_path']) ?>" alt="Product Image" class="img-top"/>
                     </div>
                     <div class="header_product_home_ctn">
-                        <span><strong>BEST SELLER</strong></span>
+                       
                         <h2><?= $row['name'] ?></h2>
                         <p class="price">₱<?= strip_tags(html_entity_decode($row['price'])) ?>
                         <div class="product_tn_home">
@@ -570,74 +623,65 @@ section.new_arrivals {
     // instead of a settings object
   ]
 });
-
-$('.responsive-review').slick({
+$('.responsive-best-seller').slick({
   dots: true,
-  infinite: false,
+  infinite: true,
   speed: 300,
   slidesToShow: 1,
   slidesToScroll: 1,
   responsive: [
     {
-        
-        breakpoint: 1000,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: true,
-          arrows:true,
-          variableWidth: true
-        }
-      },
+      breakpoint: 1000,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2,
+        infinite: true,
+        dots: true,
+        arrows: true,
+        variableWidth: false,
+      }
+    },
     {
-        
-        breakpoint: 900,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: true,
-          arrows:true
-          
-        }
-      },
+      breakpoint: 900,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2,
+        infinite: true,
+        dots: true,
+        arrows: true,
+        variableWidth: false,
+      }
+    },
     {
-        
       breakpoint: 600,
       settings: {
         slidesToShow: 1,
-        slidesToScroll: 3,
+        slidesToScroll: 1,
         infinite: true,
         dots: true,
-        arrows:true
-        
+        arrows: true,
+        variableWidth: false,
       }
     },
-
-
     {
       breakpoint: 300,
       settings: {
-        slidesToShow: 2,
-        slidesToScroll: 2
-       
-
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        variableWidth: false,
       }
     },
     {
       breakpoint: 180,
       settings: {
         slidesToShow: 1,
-        slidesToScroll: 1
-        
+        slidesToScroll: 1,
+        variableWidth: false,
       }
     }
-    // You can unslick at a given breakpoint now by adding:
-    // settings: "unslick"
-    // instead of a settings object
   ]
 });
+
 
 $('.responsive-arrivals').slick({
   dots: true,
