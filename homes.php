@@ -129,6 +129,13 @@
         width: 100%;
       }
 
+      .product_tn_home a:hover{
+        background-color:#0D6EFD;
+        padding: 3%;
+        color: white;
+        transition: background-color 1s ease;
+      }
+
         
        
        /*-----------------------------------------------------------New seller------------------------------------------*/
