@@ -75,79 +75,12 @@
         }
 
 
-        
-        .container.products_home_content {
-            padding: 60px 0px;
-        }
-        .image_container_best_seller img {
-            width: 100%;
-           
-        }
-        .header_product_home {
-            align-items: flex-start;
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            align-content: center;
-            justify-content: center;
-           width: 50%;
-        }
-
-        
+        /*-------------------------------------------------------------Best seller ------------------------------------*/
 
       
-        .row-best{
-            display: flex;
-            flex-direction: row;
-            
-            justify-content: center;
-        }
         
-        .header_product_home_ctn{
-            padding: 0 100px;
-            width: 100%;
-
-        }
-
-        .header_product_home{
-           
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            padding: 5%;
-            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
-            background-color: #F5F5F5;
-            margin: 2%;
-        }
-
-        .header_product_home_ctn a {
-            background: #0d6efd;
-            color: white;
-            padding: 5px 20px;
-            
-           
-        }
-        .product_tn_home {
-            margin-top: 45px;
-        }
-        .header_product_home_ctn span, h2{
-            color: Black;
-
-            font-weight: 700;
-            font-size: 26px;
-        }
-
-        .image_container_best_seller{
-            width: 200px;
-        }
-
-        .header_product_home_ctn  h2{
-            color: Black;
-
-            font-weight: 500;
-            font-size: 26px;
-        }
+       
+       /*-----------------------------------------------------------New seller------------------------------------------*/
         section.new_arrivals h1 {
     margin-bottom: 30px;
     padding: 4%;
