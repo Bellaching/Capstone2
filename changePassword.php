@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($changePass) {
             // Delete the record from the forgotPassword table
-            $deleteTokenQuery = $conn->query("DELETE FROM `forgotPassword` WHERE email = '$email' AND token = '$token'");
+            $deleteTokenQuery = $conn->query("DELETE FROM `forgotpassword` WHERE email = '$email' AND token = '$token'");
 
             if ($deleteTokenQuery) {
                 echo json_encode(['status' => 'success', 'msg' => 'Update successful']);
