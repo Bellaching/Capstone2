@@ -10,8 +10,10 @@ $mail = new PHPMailer(true);
 $alert = '';
 
 if(isset($_POST['submit'])){
-  $name = $_POST['name'];
-  $email = $_POST['email'];
+
+
+  $subject = $_POST['subject'];
+  $inquiry_email = $_POST['inquiry_email'];
   $message = $_POST['message'];
 
   try{
@@ -23,16 +25,16 @@ if(isset($_POST['submit'])){
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port = '587';
 
-    $mail->setFrom('jewellsalongcong09@gmail.com', 'Arnold TV Motoshop'); // Gmail address which you used as SMTP server
-    $mail->addAddress($_POST['email']); // Email address where you want to receive emails (you can use any of your gmail address including the gmail address which you used as SMTP server)
+    $mail->setFrom('donotreply@gmail.com', 'Arnold TV Motoshop'); // Gmail address which you used as SMTP server
+    $mail->addAddress($_POST['inquiry_email']); // Email address where you want to receive emails (you can use any of your gmail address including the gmail address which you used as SMTP server)
 
     $mail->isHTML(true);
     $mail->Subject = 'Message Received (Contact Page)';
-    $mail->Body = "<h3>Name : $name <br>Email: $email <br>Message : $message</h3>";
+    $mail->Body = "<h2> $subject </h3> <br><small>Reply: $message" ;
 
     $mail->send();
     $alert = '<div class="alert-success">
-                 <span>Message Sent! Thank you for contacting us.</span>
+                 <span>Message Reply Sent!.</span>
                 </div>';
   } catch (Exception $e){
     $alert = '<div class="alert-error">

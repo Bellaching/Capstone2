@@ -5,7 +5,7 @@
 <?php endif;?>
 <div class="card card-outline card-primary">
 	<div class="card-header">
-		<h3 class="card-title">List of Services</h3>
+		<h3 class="card-title">List of Inquiries</h3>
 		<div class="card-tools">
 			<a href="?page=maintenance/manage_service" class="btn btn-flat btn-primary"><span class="fas fa-plus"></span>  Create New</a>
 		</div>
@@ -16,7 +16,7 @@
 			<table class="table table-bordered table-stripped">
 				<colgroup>
 					<col width="5%">
-					<col width="15%">
+					<col width="25%">
 					<col width="20%">
 					<col width="30%">
 					<col width="15%">
@@ -29,6 +29,7 @@
 						<th>Name</th>
 						<th>Email</th>
 						<th>Subject</th>
+            <th>Status</th>
             <th>Action</th>
 					</tr>
 				</thead>
@@ -40,11 +41,20 @@
 					?>
 						<tr>
 							<td class="text-center"><?php echo $i++; ?></td>
-							<td><?php echo date("Y-m-d H:i",strtotime($row['date_created'])) ?></td>
+							<td><?php echo isset($row['date_created']) ? date("M d, Y g:ia", strtotime($row['date_created'])) : "N/A"; ?></td>
+
 							<td><?php echo $row['name'] ?></td>
               <td><?php echo $row['inquiry_email'] ?></td>
 							<td>
                                 <p class="truncate-3 m-0 lh-1"><small><?php echo $row['subject'] ?></small></p>
+                            </td>
+
+                            <td class="text-center">
+                                <?php if($row['status'] == 1): ?>
+                                    <span class="badge badge-success">Pending</span>
+                                <?php else: ?>
+                                    <span class="badge badge-danger">Done</span>
+                                <?php endif; ?>
                             </td>
 					
 							<td align="center">

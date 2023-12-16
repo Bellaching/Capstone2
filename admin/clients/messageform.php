@@ -9,8 +9,6 @@ if ($conn->connect_error) {
 
 
 
-// Close the database connection
-
 
 ?>
 
@@ -29,180 +27,83 @@ if ($conn->connect_error) {
 <style>
   /*--------------------------------------Contact-Us-Layout-----------------------------------------------------*/
 
+.container_msg{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+ 
+ 
 
-  .contact-info {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    justify-content: space-around;
-    align-items: stretch;
-    padding: 1%;
-  }
-
-  .contact-info h1 {
-    font-size: 24px;
-  }
-
+  padding: 3%;
+  border
+}
 
 
-  .Address p {
-    font-size: 11px;
-  }
+.customer_message{
+  background-color: white;
+  padding: 3%;
+}
 
-  .contact-h1 {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-    color: #fff;
-    background-color: #004399;
-    height: 40px;
-    width: 100%;
-    height: 300px;
-  }
+.name_email{
+  display: flex;
+  flex-direction: row;
+}
 
+small{
+font-size: 12px;
+}
 
-  .contact-h1 h1 {
-    margin-top: 3%;
-  }
+.contact-form{
+  margin-top: 3%;
+  background-color: white;
+}
 
-  .contact-h1 p {
-    margin-top: 1%;
-  }
+.contact{
+  display: flex;
+  flex-direction: column;
+  padding: 3%;
+}
 
-  .contact-info>div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.619);
-
-    margin: 40px;
-    margin-top: -150px;
-    border-radius: 10px;
-    background-color: rgb(255, 255, 255);
-  }
-
-  .contact-info>div img {
-    max-width: 100%;
-    height: auto;
-  }
-
-  .contact-info h1,
-  .contact-info p {
-    margin: 5px 0;
-  }
-
-  .connect-with-us {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-  }
-
-  .messenger-icon {
-    display: flex;
-    align-items: center;
+.contact input, textarea{
+  margin: 1%;
+  padding: 1%;
+}
 
 
-
-    padding: 10px;
-    /* Adjust padding as needed */
-    border-radius: 10px;
-    /* Add border-radius for rounded corners */
-  }
-
-  .messenger-icon i {
-    color: #EF4A98;
-    /* Add some spacing between the icon and the background */
-    font-size: 54px;
-
-    margin: 10%;
-  }
-
-  .contact-section {
-    display: flex;
-    flex-direction: row;
-
-    justify-content: center;
-    align-items: center;
-
-  }
-
-  .contact {
-    display: flex;
-    flex-direction: column;
-    padding: 4%;
-  }
-
-  .connect-with-us a {
-    margin-top: 1%;
-    margin-bottom: 1%;
-    color: #004399;
-    font-size: 24px;
-  }
-
-  .contact-section {
-    display: flex;
-    flex-direction: row;
-
-    justify-content: center;
-    align-items: center;
-
-  }
-
-
-
-  .contact-form {
-
-    width: 50%;
-    margin: 5%;
-    border: none;
-    background-color: white;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.619);
-  }
-
-
-
-  .text-box,
-  textarea {
-    border-radius: 25px;
-    padding: 2%;
-    border: none;
-    background-color: #D4EEFA;
-    margin: 2% 0;
-  }
-
-  .send-btn {
-    background-color: #004399;
-    color: white;
-    border-radius: 25px;
-    padding: 2%;
-    border: none;
-  }
 
   /*-------------------------------------End-Contact-Us-Layout-----------------------------------------------------*/
 </style>
 
 <body class="Contactus">
 
-    <section>
+<div class="container_msg">
 
+    <section class="customer_message">
 <?php
     // Select all records from the inquiry_list table
-$result = $conn->query("SELECT * FROM inquiry_list where id = '{$_settings->userdata('id')}'");
-
+$result = $conn->query("SELECT * FROM inquiry_list  where id = '{$_GET['id']}'");
 
 // Display the retrieved data
 while ($row = $result->fetch_assoc()) {
-    echo "Name: " . $row["name"] . "<br>";
-    echo "Email: " . $row["inquiry_email"] . "<br>";
-    echo "Subject: " . $row["subject"] . "<br>";
-    echo "Message: " . $row["inquiry_message"] . "<br>";
+    echo  "<h2>" .$row["subject"] . "</h2> <br>";
+    echo '<div class="name_email"> ';
+
+    
+    echo "<h6>" . "From " . $row["name"] ." "."@" . "</h6> ";
+    echo "<small style='font-size: 80%;'>" . strtolower($row["inquiry_email"]) . "</small>". "</br>";
+    echo '</div>';
+    echo "<small style='font-size: 80%;'>" . (isset($row['date_created']) ? date("M d, Y g:ia", strtotime($row['date_created'])) : "N/A") . "</small>" . "</br>";
+
+
+    echo "<hr>";
+  
+    echo "</br>". $row["inquiry_message"] . "<br>";
    
 }
-$conn->close();
 
+// Close the database connection
+$conn->close();
 ?>
 </section>
 
@@ -210,9 +111,9 @@ $conn->close();
     <div class="contact-form">
       
         <form class="contact" action="" method="post">
-            <input type="varchar" id="name" name="name" class="text-box" placeholder="Your Name" ronkeydown="return allowOnlyLetters(event)" required>
-            <input type="email" id="email" name="email" class="text-box" placeholder="Your Email" required>
-            <textarea type="text" name="message" id="message" rows="5" placeholder="Message" required></textarea>
+            <input type="varchar" id="subject" name="subject" class="text-box" placeholder="Subject" ronkeydown="return allowOnlyLetters(event)" required>
+            <input type="email" id="email" name="email" class="text-box" placeholder="Reply to " required> </input>
+            <textarea class="form-control summernote" type="text" name="message" id="message" rows="5" placeholder="Message" required></textarea>
             <input type="submit" name="submit" class="send-btn" value="Send">
 
         </form>
@@ -227,6 +128,9 @@ $conn->close();
     }
   </script>
 
+  
+  </div>
+
 
 </body>
 
@@ -239,4 +143,23 @@ $conn->close();
       return false; // Prevent the key press
     }
   }
+
+  $(document).ready(function() {
+        var summernoteInstance = $('.summernote').summernote({
+            toolbar: [
+                ['style', ['style']],
+
+                ['fontname', ['fontname']],
+                ['fontsize', ['fontsize']], // Include the font size dropdown
+                ['color', ['color']],
+
+
+                ['view', ['undo', 'redo', 'fullscreen', 'codeview', 'help']]
+            ],
+            fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '24', '36', '48', '64', '82', '150'],
+            fontNames: ['Arial', 'Times New Roman', 'Courier New', 'Custom Font', 'Montserrat'],
+        });
+
+  });
+
 </script>
