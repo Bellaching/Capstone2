@@ -81,6 +81,8 @@
         display: flex;
         flex-direction: row;
         margin-top: 2%;
+        justify-content: center;
+        align-items: center;
         
       }
 
@@ -503,7 +505,7 @@ section.new_arrivals {
             AND p.status = 1 
             GROUP BY p.id
             ORDER BY order_count DESC
-            LIMIT 3;");
+            LIMIT 4;");
 
         // Loop through the results
         while ($row = $products->fetch_assoc()) :
