@@ -36,10 +36,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         $sql = "INSERT INTO inquiry_list (client_id, name, inquiry_email, subject, inquiry_message) VALUES ('$client_id', '$name', '$inquiry_email', '$subject', '$inquiry_message')";
 
         if ($conn->query($sql) === TRUE) {
-            $alert = "Record added successfully!";
-        } else {
-            $alert = "Error: " . $sql . "<br>" . $conn->error;
-        }
+          $alert = '<div style="background-color: #4CAF50; color: white; padding: 10px; border-radius: 5px;">Record added successfully!</div>';
+      } else {
+          $alert = '<div style="background-color: #f44336; color: white; padding: 10px; border-radius: 5px;">Error adding record: ' . $conn->error . '</div>';
+      }
+      
     } else {
         // Display an alert if the user is not logged in
         echo '<script>alert("Please Login First!");</script>';
