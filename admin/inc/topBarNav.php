@@ -284,7 +284,7 @@
         'right': ''
         });
     }
-});
+
         notificationReminder();
         fetchNotifications();
 
