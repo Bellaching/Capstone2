@@ -525,20 +525,21 @@
         });
     }
     $(document).ready(function() {
-        $('#dLabel').on('click', function(e) {
-            $('.notifications').toggleClass('show');
+      
+    $('#dLabel').on('click', function(e) {
+    $('.notifications').toggleClass('show');
 
-            if ($('.notifications').hasClass('show')) {
-                $('.notifications').css({
-                'left': '0px',
-                'right': 'inherit'
-                });
-            } else {
-                $('.notifications').css({
-                'left': '',
-                'right': ''
-                });
-            }
+    if ($('.notifications').hasClass('show')) {
+        $('.notifications').css({
+        'left': '0px',
+        'right': 'inherit'
+        });
+    } else {
+        $('.notifications').css({
+        'left': '',
+        'right': ''
+        });
+    }
         });
         fetchNotifications();
 
