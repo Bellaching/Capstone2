@@ -526,21 +526,25 @@
     }
     $(document).ready(function() {
       
-    $('#dLabel').on('click', function(e) {
+        $('#dLabel').on('click', function(e) {
+    console.log('Bell icon clicked');
     $('.notifications').toggleClass('show');
 
     if ($('.notifications').hasClass('show')) {
+        console.log('Notifications shown');
         $('.notifications').css({
-        'left': '0px',
-        'right': 'inherit'
+            'left': '0px',
+            'right': 'inherit'
         });
     } else {
+        console.log('Notifications hidden');
         $('.notifications').css({
-        'left': '',
-        'right': ''
+            'left': '',
+            'right': ''
         });
     }
-        });
+});
+
         fetchNotifications();
 
         setInterval(fetchNotifications, 15000);
