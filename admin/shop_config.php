@@ -71,6 +71,123 @@ if ($shop_config->num_rows > 0) {
 
         border-width: 1px 0 0 1px;
     }
+
+    /* Default styles for all screen sizes */
+.order-configuration {
+  padding: 0;
+}
+
+.config-body {
+  width: 100%;
+}
+
+/* Media queries for different screen sizes */
+@media only screen and (max-width: 480px) {
+  /* 320px - 480px: Mobile devices */
+  .config-body {
+    width: 100%;
+  }
+
+  .config-body form {
+    width: 100%;
+  }
+
+  .config-body form .d-flex {
+    flex-direction: column;
+  }
+
+  .config-body form .d-flex .mr-2,
+  .config-body form .d-flex .mr-2 .schedule-interval {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .main-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+  /* 481px - 768px: iPads, Tablets */
+  .config-body {
+    width: 100%;
+  }
+
+  .config-body form {
+    width: 100%;
+  }
+
+  .config-body form .d-flex {
+    flex-direction: column;
+  }
+
+  .config-body form .d-flex .mr-2,
+  .config-body form .d-flex .mr-2 .schedule-interval {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .main-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+  /* 769px - 1024px: Small screens, laptops */
+  .config-body {
+    width: 100%;
+  }
+
+  .config-body form {
+    width: 100%;
+  }
+
+  .config-body form .d-flex {
+    flex-direction: column;
+  }
+
+  .config-body form .d-flex .mr-2,
+  .config-body form .d-flex .mr-2 .schedule-interval {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .main-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+}
+
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {
+  /* 1025px - 1200px: Desktops, large screens */
+  .config-body {
+    width: 100%;
+  }
+
+  .config-body form {
+    width: 100%;
+  }
+
+  .config-body form .d-flex {
+    flex-direction: column;
+  }
+
+  .config-body form .d-flex .mr-2,
+  .config-body form .d-flex .mr-2 .schedule-interval {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .main-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+}
+
+
+
 </style>
 <div class="order-configuration px-3 bg-white mb-5">
     <h1 class="pt-3">Shop Configuration</h1>
