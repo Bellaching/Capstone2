@@ -1,6 +1,45 @@
 <?php
 include 'sendemail.php';
+
+// Initialize $alert to an empty string
+$alert = "";
+
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
+    // Retrieve form data
+    $name = $_POST['name'];
+    $inquiry_email = $_POST['inquiry_email'];
+    $subject = $_POST['subject'];
+    $inquiry_message = $_POST['inquiry_message'];
+    $client_id = $_settings->userdata('id'); // Assuming client_id is stored in $_settings
+
+    // Connect to the database (Update the username and password if needed)
+    $conn = new mysqli("localhost", "root", "", "capstone_two_db");
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
+        // Insert form data into the database
+        $sql = "INSERT INTO inquiry_list (client_id, name, inquiry_email, subject, inquiry_message) VALUES ('$client_id', '$name', '$inquiry_email', '$subject', '$inquiry_message')";
+
+        if ($conn->query($sql) === TRUE) {
+            $alert = "Record added successfully!";
+        } else {
+            $alert = "Error: " . $sql . "<br>" . $conn->error;
+        }
+    } else {
+        // Display an alert if the user is not logged in
+        echo '<script>alert("Please Login First!");</script>';
+    }
+
+    // Close the database connection
+    $conn->close();
+}
 ?>
+
 
 <head>
   <meta charset="utf-8">
@@ -189,6 +228,7 @@ include 'sendemail.php';
   <!--END-OF-HEADER--------------------------------------------------------------------------------->
 
   <!--Contact--------------------------------------------------------------------------------------->
+  
   <div class="contact-container">
     <div class="contact-h1">
       <h1>Contact us</h1>
@@ -217,7 +257,7 @@ include 'sendemail.php';
 
 
     </div>
-
+   
 
     <?php if (!empty($alert)) : ?>
       <div class="alert"><?php echo $alert; ?></div>
@@ -230,6 +270,8 @@ include 'sendemail.php';
 
   </div>
 
+
+
  <div class="contact-section">
 
     
@@ -237,8 +279,10 @@ include 'sendemail.php';
       
         <form class="contact" action="" method="post">
             <input type="varchar" id="name" name="name" class="text-box" placeholder="Your Name" ronkeydown="return allowOnlyLetters(event)" required>
-            <input type="email" id="email" name="email" class="text-box" placeholder="Your Email" required>
-            <textarea type="text" name="message" id="message" rows="5" placeholder="Message" required></textarea>
+            <input type="email" id="inquiry_email" name="inquiry_email" class="text-box" placeholder="Your Email" required>
+            <input type="varchar" id="subject" name="subject" class="text-box" placeholder="Subject" required>
+            <textarea type="text" name="inquiry_message" id="inquiry_message" rows="5" placeholder="Message" required></textarea>
+
             <input type="submit" name="submit" class="send-btn" value="Send">
 
         </form>
@@ -252,6 +296,8 @@ include 'sendemail.php';
    
 </div>
 
+    
+
 
   <script type="text/javascript">
     if (window.history.replaceState) {
@@ -259,16 +305,23 @@ include 'sendemail.php';
     }
   </script>
 
+<script type="text/javascript">
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+
+    // Check if the form is submitted in JavaScript
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector('.contact').addEventListener('submit', function (e) {
+            if (document.getElementById('name').value === '' || document.getElementById('inquiry_email').value === '' || document.getElementById('subject').value === '' || document.getElementById('inquiry_message').value === '') {
+                e.preventDefault();
+                alert('All fields must be filled out!');
+            }
+        });
+    });
+</script>
+
 
 </body>
 
-<script>
-  function allowOnlyLetters(event) {
-    // Check if the key pressed is a letter
-    if (event.key.match(/[A-Za-z]/)) {
-      return true; // Allow the key press
-    } else {
-      return false; // Prevent the key press
-    }
-  }
-</script>
+
