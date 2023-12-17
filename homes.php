@@ -140,6 +140,12 @@
         transition: background-color 1s ease;
       }
 
+      .products_home_content>h2{
+          display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
         
        
        /*-----------------------------------------------------------New seller------------------------------------------*/
