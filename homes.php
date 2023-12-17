@@ -265,7 +265,7 @@ section.new_arrivals {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 250px;
+    width: 200px;
    
     height: au;
 }
