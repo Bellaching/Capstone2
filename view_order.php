@@ -128,17 +128,69 @@ if ($order->num_rows > 0) {
             <div class="ml-3">
                 <b><?= isset($ref_code) ? $ref_code : "N/A" ?></b>
             </div>
-            <div class="ml-3">
-                <?php if (isset($status)  && $status == 3) : ?>
-
-                    
-                <?php endif; ?>
-            </div>
+          
         </div>
         <div class="col-md-6">
             <label for="" class="text-muted">Date Ordered</label>
             <div class="ml-3"><b><?= isset($date_created) ? date("M d, Y h:i A", strtotime($date_created)) : "N/A" ?></b></div>
         </div>
+
+        <div class="col-md-6">
+                            <?php
+                            //get province name
+                            $api_url = 'https://ph-locations-api.buonzz.com/v1/provinces';
+                            $response = file_get_contents($api_url);
+
+                            $provinces = json_decode($response, true);
+
+                            $provinceCode = $province;
+
+                            $provinceName = null;
+
+                            foreach ($provinces['data'] as $province) {
+                                if ($province['id'] === $provinceCode) {
+                                    $provinceName = $province['name'];
+                                    break;
+                                }
+                            }
+
+                            //get city name
+                            $api_url2 = 'https://ph-locations-api.buonzz.com/v1/cities';
+                            $response2 = file_get_contents($api_url2);
+
+                            $cities = json_decode($response2, true);
+
+                            $cityCode = $city;
+
+                            $cityName = null;
+
+                            foreach ($cities['data'] as $city) {
+                                if ($city['id'] === $cityCode) {
+                                    $cityName = $city['name'];
+                                    break;
+                                }
+                            }
+
+                            echo '<label for="" class="text-muted">Client Address</label>';
+                            echo '<div class="ml-3" id="prov"> ', '<b>' . $cityName . ', ' . $provinceName . '</b>', '</div>';
+
+                            echo '<label for="" class="text-muted">Customer Number:</label>';
+                            echo '<div class="ml-3" id="contact">' . $contact . '</div>';
+                            if ($addressline1) {
+
+                                echo '<label for="" class="text-muted">Address Line 1</label>';
+
+                                echo '<div class="ml-3" id="adr1">', $addressline1, '</div>';
+                            }
+                            if ($addressline2) {
+                                echo '<label for="" class="text-muted">Address Line 2</label>';
+
+                                echo '<div class="ml-3" id="adr2">' . $addressline2 . '</div>';
+                            }
+                            ?>
+
+                        </div>
+                    </div>
     </div>
     <div class="row">
         <div class="col-md-6">
@@ -199,21 +251,35 @@ if ($order->num_rows > 0) {
                 ?>
                         <div class="card mb-3">
                             <div class="d-flex flex-column">
+
                                 <div class="d-flex align-items-center w-100 border cart-item px-3" data-id="<?= $row['id'] ?>">
+
                                     <div class="col-auto flex-grow-1 flex-shrink-1 px-1 py-1">
+
                                         <div class="d-flex align-items-center w-100 ">
+
                                             <div class="col-auto">
+
                                                 <img src="<?= validate_image($row['image_path']) ?>" alt="Product Image" class="img-thumbnail prod-cart-img">
+
                                             </div>
                                             <div class="col-auto flex-grow-1 flex-shrink-1 ms-3">
+
                                                 <a href="./?p=products/view_product&id=<?= $row['product_id'] ?>" class="h4 text-muted" target="_blank">
+                                                
                                                     <p class="text-truncate-1 m-0"><?= $row['name'] ?></p>
+
                                                 </a>
                                                 <small><?= $row['brand'] ?></small><br>
+
                                                 <small><?= $row['category'] ?></small><br>
+
                                                 <div class="d-flex align-items-center w-100 mb-1">
+
                                                     <span><?= number_format($row['quantity']) ?></span>
+
                                                     <span class="ml-2">X <?= number_format($row['price'], 2) ?></span>
+
                                                 </div>
                                             </div>
                                             <div class="col-auto text-right">
