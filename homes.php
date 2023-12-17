@@ -121,7 +121,6 @@
         margin: 5%;
         display: flex;
         align-items: center;
-        justify-content: center;
        
       }
 
@@ -220,26 +219,24 @@ section.new_arrivals {
     justify-content: center;
 }
 
-.card-item{
-    border: none;
 
-}
-
-.card-item:hover{
-    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.8);
-    
-
-
-    
-}
 
 
 .product-container1{
-    width: 200px;
+  display: flex;
+        flex-direction: column;
+        text-align: left;
+        border: none;
+        border-radius: 10px;
+        width: auto;
+        padding: 2%;
+        margin: 2%;
+        
+        box-shadow: 2px 2px 30px rgba(0,0,0,0.5)
 }
 
 .product_archive{
-     margin: 0 10px 15px;
+    margin: 2%;
 }
 
 .brand-item {
@@ -725,7 +722,7 @@ $('.responsive-arrivals').slick({
         
       breakpoint: 600,
       settings: {
-        slidesToShow: 3,
+        slidesToShow: 2,
         slidesToScroll: 3,
         infinite: true,
         dots: true,
@@ -738,7 +735,7 @@ $('.responsive-arrivals').slick({
     {
       breakpoint: 300,
       settings: {
-        slidesToShow: 2,
+        slidesToShow: 1,
         slidesToScroll: 2
        
 
