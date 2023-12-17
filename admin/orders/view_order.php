@@ -107,63 +107,7 @@ if ($order->num_rows > 0) {
                         <label for="" class="text-muted">Date Ordered</label>
                         <div class="ml-3"><b><?= isset($date_created) ? date(DATE_RFC2822, strtotime($date_created)) : "N/A" ?>
 
-                        </b></div>
-
-                        <div class="col-md-6">
-                            <?php
-                            //get province name
-                            $api_url = 'https://ph-locations-api.buonzz.com/v1/provinces';
-                            $response = file_get_contents($api_url);
-
-                            $provinces = json_decode($response, true);
-
-                            $provinceCode = $province;
-
-                            $provinceName = null;
-
-                            foreach ($provinces['data'] as $province) {
-                                if ($province['id'] === $provinceCode) {
-                                    $provinceName = $province['name'];
-                                    break;
-                                }
-                            }
-
-                            //get city name
-                            $api_url2 = 'https://ph-locations-api.buonzz.com/v1/cities';
-                            $response2 = file_get_contents($api_url2);
-
-                            $cities = json_decode($response2, true);
-
-                            $cityCode = $city;
-
-                            $cityName = null;
-
-                            foreach ($cities['data'] as $city) {
-                                if ($city['id'] === $cityCode) {
-                                    $cityName = $city['name'];
-                                    break;
-                                }
-                            }
-
-                            echo '<label for="" class="text-muted">Client Address</label>';
-                            echo '<div class="ml-3" id="prov"> ', '<b>' . $cityName . ', ' . $provinceName . '</b>', '</div>';
-
-                            echo '<label for="" class="text-muted">Customer Number:</label>';
-                            echo '<div class="ml-3" id="contact">' . $contact . '</div>';
-                            if ($addressline1) {
-
-                                echo '<label for="" class="text-muted">Address Line 1</label>';
-
-                                echo '<div class="ml-3" id="adr1">', $addressline1, '</div>';
-                            }
-                            if ($addressline2) {
-                                echo '<label for="" class="text-muted">Address Line 2</label>';
-
-                                echo '<div class="ml-3" id="adr2">' . $addressline2 . '</div>';
-                            }
-                            ?>
-
-                        </div>
+</b></div>
                         </div>
                     </div>
                     <div class="row">
@@ -222,7 +166,61 @@ if ($order->num_rows > 0) {
                             </div>
 
                         </div>
-                       
+                        <div class="col-md-6">
+                            <?php
+                            //get province name
+                            $api_url = 'https://ph-locations-api.buonzz.com/v1/provinces';
+                            $response = file_get_contents($api_url);
+
+                            $provinces = json_decode($response, true);
+
+                            $provinceCode = $province;
+
+                            $provinceName = null;
+
+                            foreach ($provinces['data'] as $province) {
+                                if ($province['id'] === $provinceCode) {
+                                    $provinceName = $province['name'];
+                                    break;
+                                }
+                            }
+
+                            //get city name
+                            $api_url2 = 'https://ph-locations-api.buonzz.com/v1/cities';
+                            $response2 = file_get_contents($api_url2);
+
+                            $cities = json_decode($response2, true);
+
+                            $cityCode = $city;
+
+                            $cityName = null;
+
+                            foreach ($cities['data'] as $city) {
+                                if ($city['id'] === $cityCode) {
+                                    $cityName = $city['name'];
+                                    break;
+                                }
+                            }
+
+                            echo '<label for="" class="text-muted">Client Address ,'.$cityName.', ' . $provinceName .'</label>';
+                            echo '<div class="ml-3" id="prov"> ', '<b>' . $cityName . ', ' . $provinceName . '</b>', '</div>';
+
+                            echo '<label for="" class="text-muted">Customer Number:</label>';
+                            echo '<div class="ml-3" id="contact">' . $contact . '</div>';
+                            if ($addressline1) {
+
+                                echo '<label for="" class="text-muted">Address Line 1</label>';
+
+                                echo '<div class="ml-3" id="adr1">', $addressline1, '</div>';
+                            }
+                            if ($addressline2) {
+                                echo '<label for="" class="text-muted">Address Line 2</label>';
+
+                                echo '<div class="ml-3" id="adr2">' . $addressline2 . '</div>';
+                            }
+                            ?>
+
+                        </div>
                     </div>
                     <div class="clear-fix my-2"></div>
                     <div class="row">
