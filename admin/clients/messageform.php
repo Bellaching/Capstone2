@@ -76,7 +76,7 @@ ob_end_flush(); // Send the output buffer and release the output buffer
 .customer_message {
   background-color: white;
   padding: 3%;
-  width: 50%;
+  width: 75%;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -98,7 +98,7 @@ small {
   background-color: white;
   padding: 3%;
   width: 80%; /* Adjusted width for smaller screens */
-  max-width: 400px; /* Added max-width to prevent the container from becoming too wide */
+  width: 900px; /* Added max-width to prevent the container from becoming too wide */
   border-radius: 10px;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
 }
@@ -188,41 +188,8 @@ small {
   }
 }
 
-@media only screen and (min-width: 769px) and (max-width: 1024px) {
-  /* Small screens, laptops */
-  .customer_message,
-  .contact-form {
-    width: 60%; /* Adjust the width for larger screens */
-  }
 
-  .name_email {
-    flex-direction: column;
-  }
-}
 
-@media only screen and (min-width: 1025px) and (max-width: 1200px) {
-  /* Desktops, large screens */
-  .customer_message,
-  .contact-form {
-    width: 50%; /* Adjust the width for extra large screens */
-  }
-
-  .name_email {
-    flex-direction: column;
-  }
-}
-
-@media only screen and (min-width: 1201px) {
-  /* Extra large screens, TV */
-  .customer_message,
-  .contact-form {
-    width: 40%; /* Adjust the width for very large screens */
-  }
-
-  .name_email {
-    flex-direction: column;
-  }
-}
 
 
 
