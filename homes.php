@@ -185,7 +185,7 @@ section.new_arrivals {
   letter-spacing: 1px;
   text-transform: uppercase;
   font-weight: 800;
-  margin-top: 30px;
+  margin-top: 15px;
   padding: 15px 45px;
  
   
