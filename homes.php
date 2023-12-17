@@ -95,7 +95,7 @@
         width: auto;
         padding: 2%;
         margin: 2%;
-        
+        height: auto;
         box-shadow: 2px 2px 30px rgba(0,0,0,0.5)
        
       }
@@ -512,7 +512,7 @@ section.new_arrivals {
             AND p.status = 1 
             GROUP BY p.id
             ORDER BY order_count DESC
-            LIMIT 4;");
+            LIMIT 3;");
 
         // Loop through the results
         while ($row = $products->fetch_assoc()) :

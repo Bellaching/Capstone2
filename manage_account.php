@@ -515,7 +515,7 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2){
                     <!-- Right side for Password fields -->
                     <div class="right">
                         <!-- Current Password input -->
-                        <div class="input-form">
+                        <div class="input-group">
                             <small class="label">Current Password:</small>
                             <div class="password-container">
                                 <input type="password" name="oldpassword" id="oldpassword" placeholder="">
@@ -525,7 +525,7 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2){
                         
                         <!-- New Password inputs -->
                         <div><small class="label-rem"><em>(Fill the password fields only if you want to update your password)</em></small></div>
-                        <div class="input-form">
+                        <div class="input-group">
                             <small class="label">New Password:</small>
                             <div class="password-container">
                                 <input type="password" name="password" id="password" placeholder="">
@@ -534,11 +534,11 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2){
                         </div>
                         
                         <!-- Confirm New Password input -->
-                        <div class="input-form">
+                        <div class="input-group">
                             <small class="label">Confirm New Password:</small>
                             <div class="password-container">
                                 <input type="password" id="cpassword" placeholder="">
-                                <span class="password-toggle"><i class="fa fa-eye-slash text-muted pass_type" data-type="password"></i></span>
+                                <span class="password-toggle "><i class="fa fa-eye-slash text-muted pass_type" data-type="password"></i></span>
                             </div>
                         </div>
                         
@@ -698,16 +698,16 @@ $(function(){
        
         
 
-        $('.pass_type').click(function(){
+    $('.pass_type').click(function(){
             var type = $(this).attr('data-type')
             if(type == 'password'){
                 $(this).attr('data-type','text')
-                $(this).closest('input-group').find('input').attr('type',"text")
+                $(this).closest('.input-group').find('input').attr('type',"text")
                 $(this).removeClass("fa-eye-slash")
                 $(this).addClass("fa-eye")
             } else {
                 $(this).attr('data-type','password')
-                $(this).closest('input-group').find('input').attr('type',"password")
+                $(this).closest('.input-group').find('input').attr('type',"password")
                 $(this).removeClass("fa-eye")
                 $(this).addClass("fa-eye-slash")
             }
