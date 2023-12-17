@@ -337,7 +337,7 @@ if (isset($_GET['cancelled'])) {
                             </div>
                         </div>
                     </div>
-                   
+                    </div>  </div>   </div>   </div>   </div>
 <script>
     $(function() {
         $('.view_data').click(function() {
