@@ -15,7 +15,7 @@ if (!isset($_GET['id'])) {
     $_settings->set_flashdata('error', 'No order ID Provided.');
     redirect('admin/?page=orders');
 }
-$order = $conn->query("SELECT o.*,concat(c.firstname,' ',c.lastname) as fullname, a.id as appointment_id, a.dates, a.hours, a.status as appointment_status FROM `order_list` o inner join client_list c on c.id = o.client_id left join appointment a on a.order_id = o.id where o.id = '{$_GET['id']}' ");
+$order = $conn->query("SELECT o.*,concat(c.firstname,' ',c.lastname) as fullname, o.*,concat(c.city,' ',c.province) as citypro ,a.id as appointment_id, a.dates, a.hours, a.status as appointment_status FROM `order_list` o inner join client_list c on c.id = o.client_id left join appointment a on a.order_id = o.id where o.id = '{$_GET['id']}' ");
 if ($order->num_rows > 0) {
     foreach ($order->fetch_assoc() as $k => $v) {
         $$k = $v;
@@ -172,7 +172,7 @@ if ($order->num_rows > 0) {
                             }
 
                             echo '<label for="" class="text-muted">Client Address</label>';
-                            echo '<div class="ml-3" id="prov"> ', '<b>' . $cityName . ', ' . $provinceName . '</b>', '</div>';
+                            echo '<div class="ml-3" id="prov"> ', '<b>' . $cityName .',' .$provinceName.'</b>', '</div>';
 
                             echo '<label for="" class="text-muted">Customer Number:</label>';
                             echo '<div class="ml-3" id="contact">' . $contact . '</div>';
