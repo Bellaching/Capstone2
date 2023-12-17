@@ -214,7 +214,7 @@ section.new_arrivals {
 }
 
   .row{
-            margin: 4%;
+            margin: 1%;
             display: flex;
             flex-direction: row;
             
@@ -565,7 +565,7 @@ section.new_arrivals {
             <h1 class="new-arrivals-ctn">New Arrivals</h1>
             <div class="row responsive-arrivals">
                 <?php
-                $products = $conn->query("SELECT p.*, b.name as brand, c.category FROM `product_list` p INNER JOIN brand_list b ON p.brand_id = b.id INNER JOIN `categories` c ON p.category_id = c.id WHERE p.delete_flag = 0 AND p.status = 1 LIMIT 8");
+                $products = $conn->query("SELECT p.*, b.name as brand, c.category FROM `product_list` p INNER JOIN brand_list b ON p.brand_id = b.id INNER JOIN `categories` c ON p.category_id = c.id WHERE p.delete_flag = 0 AND p.status = 1 LIMIT 6");
                 // Counter variable to keep track of displayed products
                 $counter = 0;
                 while ($row = $products->fetch_assoc()) :
