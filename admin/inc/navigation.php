@@ -108,9 +108,17 @@
                         <li class="navs nav-item">
                             <a href="<?php echo base_url ?>admin/?page=content_management/logo" class=" nav-links nav-link nav-content_management_logo">
                                 <i class="nav-icon fas fa-envelope"></i>
-                                <p>Logo</p>
+                                <p>Logo and Name</p>
                             </a>
+                            </li>
 
+                            <li class="navs nav-item">
+                            <a href="<?php echo base_url ?>admin/?page=content_management/Terms_and_service" class=" nav-links nav-link nav-content_management_Terms_and_service">
+                            <i class="nav-icon fas fa-file-alt"></i> 
+
+                                <p>Terms and Services</p>
+                            </a>
+                            </li>
 
 
                     </ul>

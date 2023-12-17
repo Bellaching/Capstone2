@@ -81,12 +81,23 @@
     margin-top: 2%;
     /* This keeps the footer at the bottom */
   }
+
+  .terms{
+    color: white;
+  }
+
+  .container-foot{
+    display: flex;
+    flex-direction: row;
+  }
 </style>
 
 
 <!-- Footer-->
 <footer class="py-5">
-  <div class="container">
+  <div class="container-foot">
+  <a class="terms <?= isset($page) && $page == 'termsNservice' ? 'active' : '' ?>" aria-current="page" href="./?p=termsNservice">Terms & Service</a>
+
     <p class="m-0 text-center text-white"><?php echo $_settings->info('sys_shortname') ?> 2023</p>
     <!-- <p class="m-0 text-center text-white">Developed By: Jewell Salongcong</p>-->
   </div>

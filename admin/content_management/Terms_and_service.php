@@ -7,7 +7,7 @@
 <div class="col-lg-12">
     <div class="card card-outline card-primary">
         <div class="card-header">
-            <h5 class="card-title">Services</h5>
+            <h5 class="card-title">Terms and Service</h5>
         </div>
         <div class="card-body">
             <form action="" id="system-frm">
@@ -23,33 +23,20 @@
 
                
 
-                <label for="servicetitle" class="control-label">Service h1</label>
-                <textarea name="servicetitle" id="servicetitle" cols="1" rows="1" class="form-control summernote">
-                     <?php echo $_settings->info('servicetitle')  ?>  
-                    </textarea>
+             
 
-                    <label for="servicep" class="control-label">Service p</label>
-                <textarea name="servicep" id="servicep" cols="1" rows="1" class="form-control summernote">
-                     <?php echo $_settings->info('servicep')  ?>  
+                    <label for="terms" class="control-label">Terms and Service</label>
+                <textarea name="terms" id="terms" cols="50" rows="1" class="form-control summernote">
+                     <?php echo $_settings->info('terms')  ?>  
                     </textarea>
 
 
-                    <label for="service_description" class="control-label">Service Description</label>
-                <textarea name="service_description" id="service_description" cols="1" rows="1" class="form-control summernote">
-                     <?php echo $_settings->info('service_description')  ?>  
-                    </textarea>
-
-                    <div class="form-group">
-                    <label for="" class="control-label">Service Image</label>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input rounded-circle" id="service1" name="img1" onchange="serviceImg(this,$(this))">
-                        <label class="custom-file-label" for="service1">Choose file</label>
-                    </div>
+                   
                 </div>
 
               
 
-                <div>
+               
 
 
             </form>
