@@ -365,10 +365,7 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
                                         <input class="custom-control-input custom-control-input-primary" type="radio" id="customRadio1" name="order_type" value="1" checked>
                                         <label for="customRadio1" class="custom-label">JRS </label><br>
                                     </div>
-                                    <div class="my-1">
-                                        <input class="custom-control-input custom-control-input-primary" type="radio" id="customRadio2" name="order_type" value="2">
-                                        <label for="customRadio2" class="custom-label">Lalamove (Shipping fee care of buyer)</label><br>
-                                    </div>
+                                   
                                     <div class="my-1">
                                         <input class="custom-control-input custom-control-input-primary" type="radio" id="customRadio3" name="order_type" value="3">
                                         <label for="customRadio3" class="custom-label">Pick up (No shipping fee)</label><br>

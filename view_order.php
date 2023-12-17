@@ -131,16 +131,7 @@ if ($order->num_rows > 0) {
             <div class="ml-3">
                 <?php if (isset($status)  && $status == 3) : ?>
 
-                    <form action="" id="proof_form" enctype="multipart/form-data" method="POST">
-                        <div class="proof_payment_container">
-                            <label for="proof_payment" class="text-muted">Upload Proof of Payment</label>
-                            <input type="text" class="" id="ref_code" name="ref_code" value="<?= isset($ref_code) ? $ref_code : "N/A" ?>" hidden>
-                            <input type="text" class="" id="order_id" name="order_id" value="<?= isset($id) ? $id : "N/A" ?>" hidden>
-                            <input type="text" class="" id="user_name" name="user_name" value="<?= isset($fullname) ? $fullname : "N/A" ?>" hidden>
-                            <input type="file" class="custom_gall form-control-file" id="proof_file" name="proof_file" accept="image/*">
-                            <button class="btn btn-flat btn-primary" form="proof_form" id="uploadButton">Upload</button>
-                        </div>
-                    </form>
+                    
                 <?php endif; ?>
             </div>
         </div>
