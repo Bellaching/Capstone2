@@ -89,7 +89,7 @@ if(isset($_GET['id'])){
         // Disable options based on the selected status
         switch(selectedStatus) {
             case '0': // Pending
-                statusSelect.find('option[value="0"]').prop('disabled', false); // Disable Confirmed
+                statusSelect.find('option[value="1"]').prop('disabled', false); // Disable Confirmed
                 statusSelect.find('option[value="2"]').prop('disabled', false); // Disable Confirmed
                 statusSelect.find('option[value="3"]').prop('disabled', false); // Disable Delivered
             case '1': // Cancelled
