@@ -38,8 +38,7 @@ if(isset($_GET['id'])){
     </form>
 </div>
 
-<script>
-$(function(){
+<script>$(function(){
     var statusSelect = $('#status');
     
     // Initial check to disable options based on the current status
@@ -86,12 +85,22 @@ $(function(){
     // Function to check and disable options based on the selected status
     function checkStatusOptions() {
         var selectedStatus = statusSelect.val();
-        if (selectedStatus == 3) { // If status is Delivered
-            statusSelect.find('option[value="0"]').prop('disabled', true); // Disable Pending
-            statusSelect.find('option[value="1"]').prop('disabled', true); // Disable Cancelled
-        } else {
-            // Enable all options if status is not Delivered
-            statusSelect.find('option').prop('disabled', false);
+        
+        // Disable options based on the selected status
+        switch(selectedStatus) {
+            case '0': // Pending
+            case '1': // Cancelled
+                statusSelect.find('option[value="2"]').prop('disabled', true); // Disable Confirmed
+                statusSelect.find('option[value="3"]').prop('disabled', true); // Disable Delivered
+                break;
+            case '2': // Confirmed
+            case '3': // Delivered
+                statusSelect.find('option[value="0"]').prop('disabled', true); // Disable Pending
+                statusSelect.find('option[value="1"]').prop('disabled', true); // Disable Cancelled
+                break;
+            default:
+                // Enable all options for other statuses
+                statusSelect.find('option').prop('disabled', false);
         }
     }
 
@@ -100,6 +109,7 @@ $(function(){
         checkStatusOptions();
     });
 });
+
 </script>
 
 
