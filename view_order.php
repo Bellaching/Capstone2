@@ -310,13 +310,7 @@ if ($order->num_rows > 0) {
                     <?php if ($status == 3) : ?>
                         <div class="accordion" id="accordionExample-<?= $row['id'] ?>">
                             <div class="card">
-                                <div class="card-header" id="returnContent">
-                                    <h2 class="mb-0">
-                                        <button class="btn btn-link btn-block text-danger text-left" type="button" data-toggle="collapse" data-target="#returnSection-<?= $row['id'] ?>" aria-expanded="false" aria-controls="reviewSection-<?= $row['id'] ?>">
-                                            Ask for Return/Refund
-                                        </button>
-                                    </h2>
-                                </div>
+                                
                                 <div id="returnSection-<?= $row['id'] ?>" class="collapse" aria-labelledby="returnContent" data-parent="#accordionExample-<?= $row['id'] ?>">
                                     <form id="submit-return-<?= $row['id'] ?>" action="">
                                         <div class="card-body">
