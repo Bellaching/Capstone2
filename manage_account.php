@@ -245,6 +245,20 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2){
     color: #004399;
 }
 
+.input-group{
+    display: flex;
+    justify-content: center;
+    margin: 5%;
+    flex-direction: column;
+}
+
+.right{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
 
 @media only screen and (max-width: 900px) {
         .name {
