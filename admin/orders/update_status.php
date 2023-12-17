@@ -39,7 +39,6 @@ if(isset($_GET['id'])){
 </div>
 
 <script>$(function(){
-   $(function(){
     var statusSelect = $('#status');
     
     // Initial check to disable options based on the current status
@@ -91,17 +90,19 @@ if(isset($_GET['id'])){
         switch(selectedStatus) {
             case '0': // Pending
             case '1': // Cancelled
+                statusSelect.find('option[value="0"]').prop('disabled', true); // Disable Confirmed
                 statusSelect.find('option[value="2"]').prop('disabled', true); // Disable Confirmed
                 statusSelect.find('option[value="3"]').prop('disabled', true); // Disable Delivered
+
                 break;
             case '2': // Confirmed
-                statusSelect.find('option[value="3"]').prop('disabled', true); // Disable Delivered
-                statusSelect.find('option[value="0"]').prop('disabled', false); // Enable Pending
-                statusSelect.find('option[value="1"]').prop('disabled', false); // Enable Cancelled
+                statusSelect.find('option[value="0"]').prop('disabled', true); // Disable Confirmed
+                statusSelect.find('option[value="1"]').prop('disabled', true); // Disable Confirmed
+                
                 break;
             case '3': // Delivered
-                statusSelect.find('option[value="2"]').prop('disabled', true); // Disable Confirmed
                 statusSelect.find('option[value="0"]').prop('disabled', true); // Disable Pending
+                statusSelect.find('option[value="2"]').prop('disabled', true); // Disable Confirmed
                 statusSelect.find('option[value="1"]').prop('disabled', true); // Disable Cancelled
                 break;
             default:
@@ -115,6 +116,7 @@ if(isset($_GET['id'])){
         checkStatusOptions();
     });
 });
+
 </script>
 
 
