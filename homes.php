@@ -253,29 +253,28 @@ section.new_arrivals {
    text-align: center;
     width: 100%; /* Make the brand item take 100% of its container */
     max-width: 200px; /* Set a maximum width if needed */
-  
+ 
 }
 
-.card {
-    border: none;
-}
 
 .brand-img-holder {
     margin: 2%;
     display: flex;
-    width: 200px; /* Adjust the width as needed */
-    height: 200px; /* Adjust the height as needed */
+    width: 150px;
+        height: 150px;
     margin:  5%;
+    
    
 
 }
 
 .brand-img-holder img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Use 'contain' to show the whole image */
-    object-position: center;
-    mix-blend-mode: multiply;
+  width: 100%;
+        height: auto;
+   
+    
+   
+    
 }
 
 
@@ -552,11 +551,11 @@ section.new_arrivals {
             while($row = $brands->fetch_assoc()):
             ?>
             <div class="brand-item slick-item">
-                <div class="card">
+              
                     <div class="brand-img-holder overflow-hidden position-relative">
                         <img src="<?= validate_image($row['image_path']) ?>" alt="Brand Image" class="img-top">
                     </div>
-                </div>
+               
             </div>
             <?php endwhile; ?>
         </div>
