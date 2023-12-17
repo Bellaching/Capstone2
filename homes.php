@@ -151,7 +151,7 @@
        
        /*-----------------------------------------------------------New seller------------------------------------------*/
         section.new_arrivals h1 {
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     padding: 4%;
     text-align: center;
     font-size: 36px;
