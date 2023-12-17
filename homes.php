@@ -247,9 +247,13 @@ section.new_arrivals {
 }
 
 .brand-item {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   text-align: center;
     width: 100%; /* Make the brand item take 100% of its container */
     max-width: 200px; /* Set a maximum width if needed */
-    margin: 0 10px 15px;
+  
 }
 
 .card {
@@ -621,7 +625,7 @@ section.new_arrivals {
   dots: true,
   infinite: false,
   speed: 300,
-  slidesToShow: 6,
+  slidesToShow: 10,
   slidesToScroll: 1,
   responsive: [
     {
