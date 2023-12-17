@@ -174,8 +174,8 @@ if ($order->num_rows > 0) {
                             echo '<label for="" class="text-muted">Client Address</label>';
                             echo '<div class="ml-3" id="prov"> ', '<b>' . $cityName .',' .$provinceName.'</b>', '</div>';
 
-                            echo '<label for="" class="text-muted">Customer Number:</label>';
-                            echo '<div class="ml-3" id="contact">' . $contact . '</div>';
+                           
+                            
                             if ($addressline1) {
 
                                 echo '<label for="" class="text-muted">Address Line 1</label>';
