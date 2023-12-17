@@ -586,7 +586,7 @@ section.new_arrivals {
                     </div>
                 <?php
                     // Check if we have displayed 4 products, and break out of the loop if true
-                    if ($counter >= 6) {
+                    if ($counter >= 8) {
                         break;
                     }
                 endwhile;
