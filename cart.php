@@ -1,5 +1,5 @@
 <style>
-    .prod-cart-img {
+     .prod-cart-img {
         width: 100%;
         height: 13em;
         object-fit: scale-down;
@@ -13,6 +13,81 @@
     .text-price {
         color: firebrick;
     }
+
+   
+
+  
+
+  /* Default styles for all screen sizes */
+
+/* Mobile devices */
+@media only screen and (min-width: 320px) and (max-width: 480px) {
+    .cart-con {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Optional: Adjust height as needed */
+}
+
+.cart-con > div {
+  /* Preserve the padding */
+  padding: 3rem;
+}
+}
+
+/* iPads, Tablets */
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+    .cart-con {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Optional: Adjust height as needed */
+}
+
+.cart-con > div {
+  /* Preserve the padding */
+  padding: 3rem;
+}
+}
+
+/* Small screens, laptops */
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+    .cart-con {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Optional: Adjust height as needed */
+}
+
+.cart-con > div {
+  /* Preserve the padding */
+  padding: 3rem;
+}
+}
+
+/* Desktops, large screens */
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {
+    .cart-con {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Optional: Adjust height as needed */
+}
+
+.cart-con > div {
+  /* Preserve the padding */
+  padding: 3rem;
+}
+}
+
+
+
+
+
 </style>
 <div class="content py-5 mt-3">
     <div class="container">
@@ -45,9 +120,9 @@
                     $total += ($row['quantity'] * $row['price']);
                     echo "<script>console.log(" . json_encode($row) . ");</script>";
                 ?>
-                    <div class="d-flex align-items-center w-100 border cart-item" data-id="<?= $row['id'] ?>">
-                        <div class="col-auto flex-grow-1 flex-shrink-1 px-1 py-1">
-                            <div class="d-flex align-items-center w-100 p-3">
+                    <div class=" cart-item" data-id="<?= $row['id'] ?>">
+                        <div class="">
+                            <div class="cart-con d-flex align-items-center w-100 p-3">
                                 <div class="col-auto mx-3">
                                     <img src="<?= validate_image($row['image_path']) ?>" alt="Product Image" class="img-thumbnail prod-cart-img">
                                 </div>
