@@ -245,40 +245,36 @@ section.new_arrivals {
         box-shadow: 2px 2px 30px rgba(0,0,0,0.5)
 }
 
+
 .product_archive{
     margin: 2%;
 }
 
 .brand-item {
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   text-align: center;
-    width: 100%; /* Make the brand item take 100% of its container */
-    max-width: 200px; /* Set a maximum width if needed */
- 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 250px;
+    margin: 0 3%;
+   
 }
 
-
 .brand-img-holder {
-    margin: 2%;
     display: flex;
-    width: 150px;
-        height: 150px;
-    margin:  5%;
-    
+    justify-content: center;
+    align-items: center;
+    width: 250px;
    
-
+    height: au;
 }
 
 .brand-img-holder img {
   width: 100%;
-        height: auto;
-   
-    
-   
-    
+    height: auto;
 }
+
 
 
         .button_bottom_home a {
@@ -553,13 +549,12 @@ section.new_arrivals {
             $brands = $conn->query("SELECT * FROM `brand_list` where status = 1 and delete_flag = 0 order by `name`");
             while($row = $brands->fetch_assoc()):
             ?>
-            <div class="brand-item slick-item">
-              
-                    <div class="brand-img-holder overflow-hidden position-relative">
-                        <img src="<?= validate_image($row['image_path']) ?>" alt="Brand Image" class="img-top">
-                    </div>
-               
-            </div>
+           <div class="brand-item slick-item">
+    <div class="brand-img-holder">
+        <img src="<?= validate_image($row['image_path']) ?>" alt="Brand Image" class="img-top">
+    </div>
+</div>
+
             <?php endwhile; ?>
         </div>
     </div>
@@ -627,14 +622,14 @@ section.new_arrivals {
   dots: true,
   infinite: false,
   speed: 300,
-  slidesToShow: 10,
+  slidesToShow: 3,
   slidesToScroll: 1,
   responsive: [
     {
         
         breakpoint: 1000,
         settings: {
-          slidesToShow: 6,
+          slidesToShow: 3,
           slidesToScroll: 3,
           infinite: true,
           dots: true,
