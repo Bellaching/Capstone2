@@ -77,6 +77,9 @@
 
         /*-------------------------------------------------------------Best seller ------------------------------------*/
 
+        .bestseller_name{
+          font-size: 18px;
+        }
       .row-best{
         display: flex;
         flex-direction: row;
@@ -525,7 +528,7 @@ section.new_arrivals {
             <img src="<?= validate_image($row['image_path']) ?>" alt="Product Image" class="img-top" />
           </div>
           <div class="header_product_home_ctn">
-            <h2><?= $row['name'] ?></h2>
+            <h2 class="bestseller_name"><?= $row['name'] ?></h2>
             <p class="price">₱<?= strip_tags(html_entity_decode($row['price'])) ?>
             <div class="product_tn_home">
               <a href="./?p=products/view_product&id=<?= $row['id'] ?>">View Product</a>

@@ -18,6 +18,7 @@ if(isset($_GET['id'])){
 </head>
 
 <div class="container-fluid">
+    
     <form action="" id="update_order">
         <input type="hidden" name="id" value="<?= isset($id) ? $id : "" ?>">
         <input type="hidden" name="client_id" value="<?= isset($client_id) ? $client_id : "" ?>">

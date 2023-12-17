@@ -88,18 +88,32 @@
 
   .container-foot{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    
   }
+
+  .terms {
+    display: flex;
+    justify-content: left; /* Align items horizontally to the left */
+    font-size: 12px;
+}
 </style>
 
 
 <!-- Footer-->
 <footer class="py-5">
   <div class="container-foot">
-  <a class="terms <?= isset($page) && $page == 'termsNservice' ? 'active' : '' ?>" aria-current="page" href="./?p=termsNservice">Terms & Service</a>
-
+   
+  
+  <div class="name">
     <p class="m-0 text-center text-white"><?php echo $_settings->info('sys_shortname') ?> 2023</p>
     <!-- <p class="m-0 text-center text-white">Developed By: Jewell Salongcong</p>-->
+    <div >
+
+    <div class="terms">
+    <a class="terms <?= isset($page) && $page == 'termsNservice' ? 'active' : '' ?>" aria-current="page" href="./?p=termsNservice">Terms & Service</a>
+  </div>
+
   </div>
 </footer>
 
