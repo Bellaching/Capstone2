@@ -94,9 +94,11 @@
 
   .terms {
     display: flex;
-    justify-content: left; /* Align items horizontally to the left */
-    font-size: 12px;
+    justify-content: center; /* Align items horizontally to the left */
+    font-size: 15px;
 }
+
+
 </style>
 
 
