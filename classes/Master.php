@@ -1081,6 +1081,22 @@ class Master extends DBConnection
 			$this->settings->set_flashdata('success', $resp['msg']);
 		return json_encode($resp);
 	}
+
+	function update_review_status(){
+		extract($_POST);
+		$update = $this->conn->query("UPDATE `product_reviews` set `status` = '{$status}' where id = '{$id}'");
+		if($update){
+			$resp['status'] ='success';
+			$resp['msg'] = " Review's status has been updated successfully.";
+		}else{
+			$resp['error'] = $this->conn->error;
+			$resp['status'] ='failed';
+			$resp['msg'] = "Review's status has failed to update.";
+		}
+		if($resp['status'] == 'success')
+		$this->settings->set_flashdata('success',$resp['msg']);
+		return json_encode($resp);
+	}
 	function delete_order()
 	{
 		extract($_POST);
@@ -1132,6 +1148,8 @@ class Master extends DBConnection
 			$this->settings->set_flashdata('success', $resp['msg']);
 		return json_encode($resp);
 	}
+
+	
 
 	function submit_return()
 	{
@@ -1432,6 +1450,9 @@ switch ($action) {
 		break;
 	case 'update_order_status':
 		echo $Master->update_order_status();
+		break;
+	case 'update_review_status':
+		echo $Master->update_review_status();
 		break;
 	case 'delete_order':
 		echo $Master->delete_order();

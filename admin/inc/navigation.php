@@ -185,7 +185,13 @@
                                 <p>Customer Inquiries</p>
                             </a>
                         </li>
-
+                        
+                        <li class="navs nav-item">
+                            <a href="<?php echo base_url ?>admin/?page=clients/customers_reviews" class="nav-links nav-link nav-clients_customers_reviews">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>Customer Review</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="navs nav-item">

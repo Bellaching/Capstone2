@@ -21,6 +21,7 @@
 					<col width="30%">
 					<col width="15%">
 					<col width="10%">
+					<col width="10%">
 				</colgroup>
 				<thead>
 					<tr>
@@ -79,7 +80,7 @@
 <script>
 	$(document).ready(function(){
 		$('.delete_data').click(function(){
-			_conf("Are you sure to delete this service permanently?","delete_message",[$(this).attr('data-id')])
+			_conf("Are you sure to delete this inquiry permanently?","delete_message",[$(this).attr('data-id')])
 		})
 		$('.table').dataTable();
 	})
