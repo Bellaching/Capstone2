@@ -517,7 +517,7 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
 
 <input name="different_addressline1" id="different_addressline1" rows="3" class="form-control rounded-0" placeholder="Address Line 1 (Different Address)" value="" ></input>
 <input name="different_addressline2" id="different_addressline2" rows="3" class="form-control rounded-0" placeholder="Address Line 2 (Different Address)" value="" ></input>
-<input type="text" name="different_zipcode" id="different_zipcode" rows="3" class="form-control zipcode" placeholder="Zip Code (Different Address)" value="" maxlength="4"></input>
+<input type="text" name="different_zipcode" id="different_zipcode" rows="3" class="form-control zipcode" placeholder="Zip Code (Different Address)" value=""></input>
 
                                         </div>
 
