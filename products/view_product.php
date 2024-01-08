@@ -1,836 +1,814 @@
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
 <?php
-if (isset($_GET['id']) && $_GET['id'] > 0) {
-    $result = $conn->query("SELECT * from product_image_gallery where product_id = '" . $_GET['id'] . "' AND is_deleted = 0");
-    $product_order_config = $conn->query("SELECT * from order_config og where product_id = '" . $_GET['id'] . "' limit 1")->fetch_assoc();
-    $all_order_config = $conn->query("SELECT * from order_config where is_all = 1 limit 1")->fetch_assoc();
-    $qry = $conn->query("SELECT p.*, b.name as brand, c.category from `product_list` p
-        inner join brand_list b on p.brand_id = b.id
-        inner join categories c on p.category_id = c.id
-        -- left join product_variations v on p.id = v.product_id
-        where p.id = '{$_GET['id']}'");
+$selectedValue = ""; 
 
+include 'sendemailporder.php';
+$total = 0;
+$api_url_province = 'https://ph-locations-api.buonzz.com/v1/provinces';
+$response1 = file_get_contents($api_url_province);
+$api_url_city = 'https://ph-locations-api.buonzz.com/v1/cities';
+$response2 = file_get_contents($api_url_city);
+$all_order_config = $conn->query("SELECT * from order_config where is_all = 1 limit 1")->fetch_assoc();
+$unavailableDates = $conn->query("SELECT schedule from unavailable_dates")->fetch_all();
+if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
+    $qry = $conn->query("SELECT * FROM `client_list` where id = '{$_settings->userdata('id')}'");
     if ($qry->num_rows > 0) {
-        while ($row = $qry->fetch_assoc()) {
-            foreach ($row as $k => $v) {
-                $$k = stripslashes($v);
+        $res = $qry->fetch_array();
+        foreach ($res as $k => $v) {
+            if (!is_numeric($k)) {
+                $$k = $v;
             }
-            $stocks = $conn->query("SELECT SUM(quantity) FROM stock_list where product_id = '$id'")->fetch_array()[0];
-            $out = $conn->query("SELECT SUM(quantity) FROM order_items where product_id = '{$id}' and order_id in (SELECT id FROM order_list where `status` != 5)")->fetch_array()[0];
-            $cart_item_count = $conn->query("SELECT SUM(quantity) FROM cart_list where product_id = '$id'")->fetch_array()[0];
-            $stocks = $stocks > 0 ? $stocks : 0;
-            $out = $out > 0 ? $out : 0;
-            $available1 = $stocks - $out;
-            $available = $available1 - $cart_item_count;
-
-            // $variations = $conn->query("SELECT * FROM product_variations where product_id = '$id' and variation_stock > 0");
-            // while ($variation = $variations->fetch_array()) {
-            //     echo "<script>console.log('" . $variation['variation_name'] . "');</script>";
-            //     echo "<script>console.log('" . $variation['id'] . "');</script>";
-            // }
         }
     } else {
-        echo "<script> alert('Unknown Product ID!'); location.replace('./?page=products');</script>";
+        echo "<script> alert('You are not allowed to access this page. Unknown User ID.'); location.replace('./') </script>";
     }
 } else {
-    echo "<script> alert('Product ID is required!'); location.replace('./?page=products');</script>";
+    echo "<script> alert('You are not allowed to access this page.'); location.replace('./') </script>";
 }
 ?>
-
 <style>
-    .product-img {
-        max-width: 450px;
-        object-fit: scale-down;
-        object-position: center center;
-        border: none;
+    .label-info {
+        font-style: bold;
+        font-size: 25px;
+
+        margin: 5% 0 1% 0;
     }
 
     .card-body {
+        border-radius: 10px;
+        padding: 2%;
+        border: 1px solid #609AC4;
+        border-radius: 4px;
+        width: 100%;
+    }
+
+    /* Add this CSS to your stylesheet */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* .left,
+    .right {
+        width: 50%;
+        background-color: #FFFFFF;
+    }
+
+    .right {
+        position: sticky;
+        top: 0;
+        background-color: rgba(96, 154, 196, 0.7);
+    } */
+
+    .place-order {
+        margin: 4% 0;
+    }
+
+    .input-form-name {
         display: flex;
         flex-direction: row;
 
     }
 
-    .left,
-    .right {
-        width: 50%;
-        margin: 0 0 0 0.5%;
-
+    .zip-city {
+        display: flex;
+        flex-direction: row;
     }
 
-    .right {
+    .fname,
+    .lname {
+        width: 50%;
+        margin: 0 0 0 1%;
+    }
+
+    .zip {
+        width: 50%;
+        margin: 0 0 0 1%;
+    }
+
+    .option {
+        padding: 2%;
+        margin: 2%;
+    }
+
+    small {
+        margin: 2%;
+    }
+
+    input:active {
+        border-color: #004399;
+    }
+
+    .card-body .option {
+        border-radius: 4px;
+        padding: 1%;
+        border: 1px solid #609AC4;
+        border-radius: 4px;
+        width: 100%;
+        margin: 0.5% 2%;
+    }
+
+    .info-summer-form {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+    }
+
+    .righth2 {
+        font-size: 25px;
+        margin: unset !important;
+    }
+
+    .product-sum {
         display: flex;
         flex-direction: column;
     }
 
-    .brand_name {
-        color: #004399;
-        font-size: 1.875rem;
-    }
-
-    .price {
-        color: #004399;
-        font-size: 1.25rem;
-    }
-
-    .desc {
-        text-align: justify;
-    }
-
-    .ab {
-        flex-direction: row;
-    }
-
-    .add-cart {
-        border: 1px solid none;
-        margin: 10% 0%;
-        padding: 3% 5%;
-        background-color: #004399;
-        color: white;
-        border-radius: 2px;
-        width: 100%;
-
-    }
-
-    .add-cart a {
-        text-align: center;
-        color: white;
-    }
-
-
-
-
-    .card-title {
-        color: white;
-    }
-
-    .containerr {
-
-        margin: 4%;
-        width: 80%;
-
-    }
-
-
-    .card {
-        border: none;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    button[disabled] {
-        opacity: 0.6;
-        /* Reduce opacity to indicate it's disabled */
-        cursor: not-allowed;
-        /* Change cursor to indicate non-interactivity */
-        /* Optionally, you can add other styles like changing background color, text color, etc. */
-    }
-
-    .text-price {
-        color: firebrick;
-    }
-
-    .gallery-item img {
-        height: 119px;
-        object-fit: cover;
-        width: 100%;
-    }
-
-    .gallery-container {
-        overflow: auto;
-        width: 100%;
-    }
-
-    .gallery {
-        position: relative;
-        white-space: nowrap;
-        height: 100%;
-    }
-
-    .gallery-item {
-        margin: 10px;
-        cursor: pointer;
-        display: inline-block;
-    }
-
-    #lightbox {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1000;
-        background: rgba(0, 0, 0, 0.8);
-    }
-
-    #lightbox img {
-        display: block;
-        margin: 50px auto;
-        max-width: 90%;
-        max-height: 90%;
-    }
-
-    #lightbox .close {
-        color: #fff;
-        font-size: 30px;
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        cursor: pointer;
-    }
-
-    .product_title_description {
-        text-align: justify;
-    }
-
-    .checked {
-        color: #f7d72c;
-    }
-
-    .left-container {
-        max-width: 25vw;
-        min-width: 25vw;
-    }
-
-    .product-image img {
-        object-fit: cover;
-        width: 100%;
-    }
-
-    .review-section .review-details i:not(.checked) {
-        color: #a5a3a3;
-    }
-
-    .review-section .review-details .reviewer-comments {
+    th,
+    td,
+    span {
         font-size: 14px;
-        text-align: justify;
     }
 
-    .img-thumbnail {
-        box-shadow: 0 3px 10px rgba(3, 3, 3, 0.619);
-    }
-
-    #cart_modal .modal-dialog-end {
+    .sum-info {
         display: flex;
-        align-items: end;
-        min-height: calc(100% - 3.5rem);
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 7%;
     }
 
-    #cart_modal .cart-info .cart-product-img {
-        object-fit: cover;
-        max-width: 150px;
-        object-position: center center;
+    .img-sum {
+        width: auto;
+        height: 50px;
+    }
+
+    .card-body .input {
+        border-radius: 10px;
+        padding: 2%;
+        border: 1px solid #609AC4;
+        border-radius: 4px;
+        width: 100%;
+        margin: 5px 0;
+        /* Adjust the margin as needed */
+    }
+
+    input,
+    button,
+    select:focus {
+        box-shadow: unset !important;
+    }
+
+    .min-vh-5 {
+        min-height: 5vh;
+    }
+
+    .min-vh-35 {
+        min-height: 35vh;
+    }
+
+
+    .ui-datepicker {
+        min-width: 300px;
+    }
+
+    .ui-datepicker .ui-datepicker-calendar {
+        background: #fff;
+    }
+
+    .ui-datepicker table {
         width: 100%;
     }
 
-    .invinsible {
-        visibility: hidden;
+
+    .ui-datepicker table td,
+    .ui-datepicker table td th {
+        border: 1px solid #1A547E;
+        padding: 5px;
     }
 
-    .details {
-        margin: 2% 0;
-        padding: 2%;
-        background-color: #ffff;
-    }
-
-    .productt {
-        background-color: #ffff;
-        padding: 2%;
-    }
-
-    .review-section {
-        background-color: #ffff;
-    }
-
-    .descript>h5 {
+    .ui-datepicker>table .ui-datepicker-unselectable {
         background-color: #1A547E;
+        color: white;
+    }
+
+    .ui-datepicker>table .ui-datepicker-unselectable .ui-state-default {
+        border: unset;
+    }
+
+    .ui-datepicker-header .ui-datepicker-prev {
+        position: absolute;
+        padding: 5px;
+        color: white;
+        left: 8px;
+        cursor: pointer;
+    }
+
+    .ui-datepicker-header .ui-datepicker-title {
+        width: 100%;
+        text-align: center;
+    }
+
+    .ui-datepicker-header .ui-datepicker-next {
+        position: absolute;
+        padding: 5px;
+        color: white;
+        right: 8px;
+        cursor: pointer;
+    }
+
+    .ui-datepicker-header {
+        display: flex;
+        align-items: center;
+        background: #1A547E;
+        min-height: 35px;
+        color: white;
+    }
+
+
+    .ui-state-default,
+    .ui-widget-content .ui-state-default,
+    .ui-widget-header .ui-state-default {
+        border-width: 1px 0 0 1px;
+    }
+
+    th {
+        color: white;
+
+    }
+
+    thead {
+        background-color: #0062CC;
+        border: none;
+    }
+
+    .card-body {
+        background-color: white;
     }
 </style>
-
-<?php
-$SingleVariation = null; // Initialize $SingleVariation
-
-$variations = $conn->query("SELECT * FROM product_variations where product_id = $id");
-$copyVariationResult = array();
-
-function MakeCopy($result, &$c1)
-{
-    while ($row = $result->fetch_assoc()) {
-        foreach ($row as $key => $value) {
-            $c1[$key] = $value;
-        }
-    }
-}
-
-if ($variations->num_rows === 1) {
-    MakeCopy($variations, $copyVariationResult);
-    $SingleVariation = $copyVariationResult; // Assign value to $SingleVariation
-}
-
-?>
-<div class="content my-3">
+<div class="content ">
     <div class="container">
-        <div class="productt d-flex">
-            <div class="left-container">
-                <div class="image product-image text-center">
-                    <img src="<?= validate_image(isset($image_path) ? $image_path : "") ?>" alt="Product Image <?= isset($name) ? $name : "" ?>" class="img-thumbnail product-img">
-                </div>
-                <div class="gallery-container">
-                    <div class="gallery">
-                        <?php
-                        while ($row = $result->fetch_assoc()) {
-                            echo '<div class="gallery-item" data-image="' . $row['image_url'] . '">
-                                      <img src="' . $row['image_url'] . '" alt="Gallery Image">
-                                  </div>';
-                        }
-                        ?>
-                        <?php while ($row = $result->fetch_assoc()) : ?>
-                            Image: <?= $row ?>
-                            <img src="'<?= $row['image_url'] ?>'" alt="Gallery Image">
-                        <?php endwhile; ?>
-                    </div>
-                </div>
-                <div id="lightbox">
-                    <span class="close">&times;</span>
-                    <img id="lightbox-image" src="" alt="Lightbox Image">
-                </div>
-            </div>
-            <div class="right-container px-5">
-                <div class="info">
-                    <h1 class="brand_name text-capitalize"><?= isset($name) ? $name : '' ?> <?= $variations->num_rows === 1 ? ' - ' . $SingleVariation['variation_name'] : '' ?></h1>
-
-                </div>
-                <h3 class="text-success" id="default">
-                    ₱<?php
-                        $minVariation = $conn->query("SELECT MIN(variation_price) as lowestVariation FROM product_variations where product_id = $id")->fetch_assoc();
-                        echo number_format($minVariation['lowestVariation'], 2);
-                        ?>
-                </h3>
-                <h3 class="text-success" id="selectedVariation"></h3>
-
-                <div class="mt-3 border-bottom">
-                    <h5>Variation: </h3>
-                </div>
-                <div class="info mt-3">
-                    <h6>
-                        Total Available Stocks:
-                        <strong>
+        <div class="card-body">
+            <form action="" id="place_order" class="info-summer-form d-flex flex-column">
+                <div class="d-flex flex-column w-100">
+                    <div class="mx-1">
+                        <div class="product-sum h-100">
                             <?php
-                            $productQuantityQuery = $conn->query("SELECT * FROM stock_list where product_id = $id");
-                            $productQuantity = $productQuantityQuery->fetch_assoc();
-                            $orderItemStocks = $conn->query("SELECT SUM(quantity) as totalQuantity FROM order_items where product_id = '{$id}' and order_id in (SELECT id FROM order_list where `status` != 5)");
-                            $cartItemCount = $conn->query("SELECT SUM(quantity) as cartQuantity FROM cart_list where product_id = '{$id}'")->fetch_array()[0];
-                            $productStockTotalQuantity = $productQuantity['quantity'];
-                            if ($orderItemStocks->num_rows > 0) {
-                                $oiStocksQuantity = $orderItemStocks->fetch_assoc();
-                                $productStockQuantity = $productQuantity['quantity'] - $oiStocksQuantity['totalQuantity'];
-                                $productStockTotalQuantity = $productStockQuantity - $cartItemCount;
-                            }
+                            $cart = $conn->query("SELECT c.*, p.name, p.image_path, p.weight, b.name as brand, cc.category, v.*, v.variation_price as price FROM `cart_list` c
+                                INNER JOIN product_list p ON c.product_id = p.id
+                                INNER JOIN brand_list b ON p.brand_id = b.id
+                                INNER JOIN categories cc ON p.category_id = cc.id
+                                INNER JOIN product_variations v ON c.variation_id = v.id
+                                WHERE c.client_id = '{$_settings->userdata('id')}' ORDER BY p.name ASC");
                             ?>
-                            <span id="available_stock"><?= isset($productStockTotalQuantity) ? number_format($productStockTotalQuantity) : '' ?></span>
-                        </strong>
-                    </h6>
-                    <div class="d-flex flex-column">
-                        <?php if ($variations->num_rows > 1) : ?>
-                            <?php
-                            while ($variation = $variations->fetch_assoc()) :
-                                $orderItemWithSameVariation = $conn->query("SELECT SUM(quantity) FROM order_items where product_id = '{$id}'
-                                and variation_id = '{$variation['id']}' and order_id in (SELECT id FROM order_list where `status` != 5)");
-                                $variationTotalQuantity = $variation['variation_stock'];
-                                $cartVarItemCount = $conn->query("SELECT SUM(quantity) as cartQuantity FROM cart_list where product_id = '{$id}'
-                                and variation_id = '{$variation['id']}'")->fetch_array()[0];
-                                if ($orderItemWithSameVariation->num_rows > 0) {
-                                    $oitQuantity = $orderItemWithSameVariation->fetch_array()[0];
-                                    $variationQuantity = $variation['variation_stock'] - $oitQuantity;
-                                    $variationTotalQuantity = $variationQuantity - $cartVarItemCount;
-                                }
-                            ?>
-                                <?php if ($variationTotalQuantity > 0) : ?>
-                                    <div class="d-block me-5">
-                                        <label class="w-100" for='variation_<?php echo $variation['id'] ?>'>
-                                            <div class="d-flex justify-content-between">
-                                                <div class="bd-highlights">
-                                                    <?php if (isset($product_order_config)) : ?>
-                                                        <input type='radio' name='variations' id='variation_<?php echo $variation['id'] ?>' data-maxprice='<?= $product_order_config['value'] ?>' data-max=' <?= $variationTotalQuantity ?>' data-price='<?= $variation['variation_price'] ?>' data-name='<?= $variation['variation_name'] ?>' value='<?php echo $variation['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($variation['variation_price'], 2)  ?>')" />
-                                                    <?php elseif (isset($all_order_config)) : ?>
-                                                        <input type='radio' name='variations' id='variation_<?php echo $variation['id'] ?>' data-maxprice='<?= $all_order_config['value'] ?>' data-max=' <?= $variationTotalQuantity ?>' data-price='<?= $variation['variation_price'] ?>' data-name='<?= $variation['variation_name'] ?>' value='<?php echo $variation['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($variation['variation_price'], 2)  ?>')" />
-                                                    <?php else : ?>
-                                                        <input type='radio' name='variations' id='variation_<?php echo $variation['id'] ?>' data-max=' <?= $variationTotalQuantity ?>' data-price='<?= $variation['variation_price'] ?>' data-name='<?= $variation['variation_name'] ?>' value='<?php echo $variation['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($variation['variation_price'], 2)  ?>')" />
-                                                    <?php endif; ?>
-                                                    <span id='stock_<?php echo $variation['id'] ?>'>
-                                                        <?php echo $variation['variation_name'] ?>
-                                                    </span>
-                                                </div>
-                                                <div class="bd-highlights">
-                                                    <small>
-                                                        <i id='variation_stock_<?php echo $variation['id'] ?>' class="var_stock" data-id="<?php echo $variation['id'] ?>" data-total="<?= $variationTotalQuantity ?>"> <?= $variationTotalQuantity ?> qty.</i>
-                                                    </small>
-                                                </div>
-                                            </div>
-                                        </label>
-                                    </div>
-                                <?php endif; ?>
-                            <?php
-                            endwhile; ?>
-                        <?php elseif ($variations->num_rows === 1) : ?>
-                            <?php if (isset($product_order_config)) : ?>
-                                <input type='radio' name='variations' class="invisible" id='variation_<?php echo $copyVariationResult['id'] ?>' data-maxprice='<?= $product_order_config['value'] ?>' data-max='<?= $productStockTotalQuantity ?>' data-price='<?= $copyVariationResult['variation_price'] ?>' data-name='<?= $copyVariationResult['variation_name'] ?>' value='<?php echo $copyVariationResult['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($copyVariationResult['variation_price'], 2)  ?>')" />
-                            <?php elseif (isset($all_order_config)) : ?>
-                                <input type='radio' name='variations' class="invisible" id='variation_<?php echo $copyVariationResult['id'] ?>' data-maxprice='<?= $all_order_config['value'] ?>' data-max='<?= $productStockTotalQuantity ?>' data-price='<?= $copyVariationResult['variation_price'] ?>' data-name='<?= $copyVariationResult['variation_name'] ?>' value='<?php echo $copyVariationResult['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($copyVariationResult['variation_price'], 2)  ?>')" />
-                            <?php else : ?>
-                                <input type='radio' name='variations' class="invisible" id='variation_<?php echo $copyVariationResult['id'] ?>' data-max='<?= $productStockTotalQuantity ?>' data-price='<?= $copyVariationResult['variation_price'] ?>' data-name='<?= $copyVariationResult['variation_name'] ?>' value='<?php echo $copyVariationResult['id'] ?>' onclick="handleVariationSelect(this, '<?= number_format($copyVariationResult['variation_price'], 2)  ?>')" />
-                            <?php endif; ?>
-                        <?php endif; ?>
+                            <div class="mx-3 py-3">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th width="25%" class="text-center">Image</th>
+                                            <th>Product Name</th>
+                                            <th>Variation</th>
+                                            <th>Weight</th>
+                                            <th>Quantity</th>
+                                            <th>Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $shipping = 0;
+                                        $totalItem = 0;
+                                        while ($row = $cart->fetch_assoc()) : ?>
+                                            <tr>
+                                                <td width="25%" class="text-center">
+                                                    <img src="<?= validate_image($row['image_path']) ?>" alt="Product Image" class="img-sum">
+                                                </td>
+                                                <td>
+                                                    <span><?= $row['name'] ?></span>
+                                                </td>
+                                                <td>
+                                                    <span><?= $row['variation_name'] ?></span>
+                                                </td>
+                                                <td>
+                                                    <span><?= $row['weight'] ?></span>
+                                                </td>
+                                                <td>
+                                                    <span><?= $row['quantity'] ?></span>
+                                                </td>
+                                                <td>
+                                                    <span><?= number_format($row['price'], 2) ?></span>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                            $totalItem += ($row['quantity'] * $row['price']);
 
+                                            $total = $totalItem;
+                                            ?>
+                                        <?php endwhile; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="mt-auto mx-3 text-end min-vh-5">
+                                <input name="shipping_amount" value="<?= $shipping ?>" type="hidden" />
+                                <p id="sf"><i>Shipping Fees Notice: Our system does not include shipping fees. Please note that shipping costs will be applied separately during checkout</i></p>
+                                <h2 id="totalWithSf" class="righth2">Total Price: <?= number_format($total, 2) ?> </h2>
+                                <h2 id="totalWithoutSf" class="righth2" style="display: none;">Total Price: <?= number_format($totalItem, 2) ?> </h2>
+                            </div>
+                        </div>
                     </div>
-                   
-                </div>
-
-                <div class="d-block mt-3">
-                    <div id="available">
-                        <button id='add_to_cart' class='btn text-white' style="background: #004399" onclick='addToCart()' <?php ($variations->num_rows === 1) ? 'disabled' : '' ?>>Add to Cart</button>
-                    </div>
-                    <div class="out-of-stock" id="unavailable">
-                        <button class="btn btn-danger">Add to cart</button>
-                    </div>
-
-                    <div class="share">
-                        <a href="javascript:void(0);" onclick="copyShareLink(<?php echo $id; ?>)">
-                            <i class="fas fa-share-alt"></i> Share
-                        </a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <div class="details">
-
-
-            <div class="spec">
-                <div class="mt-3 border-bottom">
-                    <h5>Product Specifications</h3>
-                </div>
-                <div class="info">
-                    <small class="text-muted">Compatible Models:</small>
-                    <small> <?= isset($models) ? $models : '' ?></small>
-
-                </div>
-                <div class="info">
-
-
-                    <small class="text-muted">Category:</small>
-                    <small><?= isset($category) ? $category : '' ?></small>
-                </div>
-                <div class="info">
-                    <small class="text-muted"> Brand: </small>
-                    <small> Brand: <?= isset($brand) ? $brand : '' ?></small>
-                </div>
-            </div>
-            <br>
-            <div class="descript">
-                <div class="mt-3 border-bottom">
-                    <h5>Description</h3>
-                </div>
-
-                <?= isset($description) ? html_entity_decode($description) : '' ?>
-            </div>
-
-        </div>
-
-
-        <div class="container my-5">
-    <div class="product-review">
-        <?php
-        $productReviews = $conn->query(
-            "SELECT pr.author_rate, pr.author_comment, pr.date_created, pr.author_name, pv.variation_name, pr.status FROM `product_reviews` pr
-            inner join `product_variations` pv on pr.variation_id = pv.id
-            where pr.product_id =  $id order by unix_timestamp(pr.date_created) desc;
-            "
-        );
-        while ($review = $productReviews->fetch_assoc()) :
-            // Check if the status is 1 (rejected), and if so, skip rendering the review
-            if ($review['status'] == 1) {
-                continue;
-            }
-        ?>
-            <div class="review-section mb-3 border rounded p-3">
-                <figure class="mb-1">
-                    <blockquote class="blockquote">
-                        <p><?= ucfirst($review['author_name']) ?></p>
-                    </blockquote>
-                    <figcaption class="blockquote-footer mb-1">
-                        <?= date("Y-m-d h:i:s A", strtotime($review['date_created'])) ?> | Variation: <?= $review['variation_name'] ?>
-                    </figcaption>
-                </figure>
-                <div class="review-details">
-                    <?php switch (strval($review['author_rate'])) :
-                        case "1": ?>
-                            <i class="fa fa-star checked"></i>
-                            <i class="fa fa-star-o"></i>
-                            <i class="fa fa-star-o"></i>
-                            <i class="fa fa-star-o"></i>
-                            <i class="fa fa-star-o"></i>
-                            <?php break;
-                        case "2": ?>
-                            <i class="fa fa-star checked"></i>
-                            <i class="fa fa-star checked"></i>
-                            <i class="fa fa-star-o"></i>
-                            <i class="fa fa-star-o"></i>
-                            <i class="fa fa-star-o"></i>
-                            <?php break;
-                        case "3": ?>
-                            <i class="fa fa-star checked"></i>
-                            <i class="fa fa-star checked"></i>
-                            <i class="fa fa-star checked"></i>
-                            <i class="fa fa-star-o"></i>
-                            <i class="fa fa-star-o"></i>
-                            <?php break;
-                        case "4": ?>
-                            <i class="fa fa-star checked"></i>
-                            <i class="fa fa-star checked"></i>
-                            <i class="fa fa-star checked"></i>
-                            <i class="fa fa-star checked"></i>
-                            <i class="fa fa-star-o"></i>
-                            <?php break;
-                        case "5": ?>
-                            <i class="fa fa-star checked"></i>
-                            <i class="fa fa-star checked"></i>
-                            <i class="fa fa-star checked"></i>
-                            <i class="fa fa-star checked"></i>
-                            <i class="fa fa-star checked"></i>
-                            <?php break;
-                        default: ?>
-                            <!-- Handle other cases if needed -->
-                    <?php endswitch; ?>
-                    <p class="reviewer-comments mt-3"><?= ucfirst($review['author_comment']) ?></p>
-                </div>
-            </div>
-        <?php endwhile; ?>
-    </div>
-</div>
-
-</div>
-
-<div class="modal fade" id="cart_modal" role='dialog'>
-    <div class="modal-dialog modal-lg modal-dialog-end" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="cart-info">
-                    <div class="d-flex flex-row">
-                        <img src="<?= validate_image(isset($image_path) ? $image_path : "") ?>" alt="Product Image <?= isset($name) ? $name : "" ?>" class="cart-product-img">
-                        <div class="flex-grow-1 mx-3">
-                            <div class="d-flex flex-column h-100">
-                                <h2 class="text-secondary">
-                                    <?= $name ?>
-                                    <span id="item-price" class="invisible"></span>
-                                    <span id="item-max-price" class="invisible"></span>
-                                </h2>
-                                <p class="flex-grow-1 mb-1">Variation: <span id="variation-id"></span></p>
-                                <div class="d-flex align-items-center w-100 mb-1">
-                                    <div class="input-group " style="width:8em">
-                                        <div class="input-group-prepend">
-                                            <button class="btn btn-sm btn-outline-secondary btn-minus" onclick="updateQuantity(false)"><i class="fa fa-minus"></i></button>
-                                        </div>
-                                        <input type="text" id="order-quantity" name="order_quantity" value="1" readonly class="form-control form-control-sm text-center">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-sm btn-outline-secondary btn-plus" onclick="updateQuantity(true)"><i class="fa fa-plus"></i></button>
-                                        </div>
-                                    </div>
-                                    <span class="ms-3"> * ₱ <span id="variation-price"></span></span>
+                    <div class="mx-1">
+                    <h1 class="label-info mt-3"><strong>Contact <span style="color: red;">*</span></strong></h1>
+                        <div class="dropdown-divider my-3"></div>
+                        <div class="form-group">
+                            <input class="form-control mb-2" type="email" name="email" id="email" placeholder="yourmail@gmail.com" required value="<?= isset($email) ? $email : "" ?>">
+                            <input class="form-control mb-2" type="text" name="phone_number" id="phone_number" rows="3" class="phone_number" placeholder="Phone" value="<?= isset($contact) ? $contact : "" ?>" onkeydown="return allowOnlyNumbers(event)" required>
+                        </div>
+                        <h1 class="label-info mt-3"><strong>Delivery</strong></h1>
+                        <div class="dropdown-divider my-3"></div>
+                        <div class="form-group">
+                            <div class="input-form-name">
+                                <div class="fname">
+                                    <input class="form-control" type="text" name="firstname" id="firstname" placeholder="First Name" autofocus value="<?= isset($firstname) ? $firstname : "" ?>" onkeydown="return allowOnlyLetters(event)" required>
+                                </div>
+                                <div class="lname">
+                                    <input class="form-control" type="text" name="lastname" id="lastname" placeholder="Last Name" required value="<?= isset($lastname) ? $lastname : "" ?>" onkeydown="return allowOnlyLetters(event)" required>
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex flex-column mx-1">
-                            <h4 class="flex-grow-1 text-secondary text-end">₱ <span id="variation-view-price"></span></h4>
-                            <h3 class="text-success mb-1 text-nowrap">Total: <span id="cart-total"></span> php</h3>
+                        <div class="d-flex w-100 min-vh-35 mt-3">
+                            <div class="w-50 order-type-container">
+                                <h1 class="label-info mt-2"><strong>Order Type</strong></h1>
+                                <div class="dropdown-divider my-3"></div>
+                                <div class="order-type">
+                                    <div class="my-1">
+                                        <input class="custom-control-input custom-control-input-primary" type="radio" id="customRadio1" name="order_type" value="1" checked>
+                                        <label for="customRadio1" class="custom-label">JRS </label><br>
+                                    </div>
+                                    <div class="my-1">
+                                        <input class="custom-control-input custom-control-input-primary" type="radio" id="customRadio2" name="order_type" value="2">
+                                        <label for="customRadio2" class="custom-label">Lalamove (Shipping fee care of buyer)</label><br>
+                                    </div>
+                                    <div class="my-1">
+                                        <input class="custom-control-input custom-control-input-primary" type="radio" id="customRadio3" name="order_type" value="3">
+                                        <label for="customRadio3" class="custom-label">Pick up (No shipping fee)</label><br>
+                                    </div>
+                                    <div class="my-1">
+                                        <input class="custom-control-input custom-control-input-primary" type="radio" id="customRadio4" name="order_type" value="4">
+                                        <label for="customRadio4" class="custom-label">Meet up (No shipping fee)</label><br>
+                                    </div>
+                                </div>
+                                <div class="place-order form-group text-right">
+                                    <?php if ((int)$total > (int)($all_order_config['value'] ?? 0)) : ?>
+                                        <h1 id="warning-label" class="text-danger">Sorry! You've reached the order limit (<?= isset($all_order_config) ? number_format($all_order_config['value']) : '' ?> php)</h1>
+                                    <?php else : ?>
+                                        <button class="btn btn-flat btn-primary" type="submit" name="submit">
+                                            Place Order
+                                        </button>
+                                    <?php endif; ?>
+                                </div>
+
+                            </div>
+                            <div class="w-50 billing-address-container">
+                                <div class="billing-address">
+                                    <h1 class="label-info mt-2"><strong>Billing Address</strong></h1>
+                                    <div class="dropdown-divider my-3"></div>
+                                    <div class="custom-control custom-radio addresstype">
+                                        <input class="custom-control-input" type="radio" id="default" name="address_type" value="1" checked>
+                                        <label class="custom-control-label" for="default">Same as shipping address</label>
+                                    </div>
+                                    <div class="custom-control custom-radio addresstype">
+                                        <input class="custom-control-input" type="radio" id="diff" name="address_type" value="2">
+                                        <label class="custom-control-label" for="diff">Use a different billing address</label>
+                                    </div>
+                                    <!-- this will show bu default -->
+                                    <div class="default-add">
+                                        <div class="province jnt-holder">
+                                            <span class="custom-control-input custom-control-input-primary">Province</span>
+                                            <?php
+
+                                            // Handle JSON data
+                                            $provinces = json_decode($response1, true);
+                                            $selectedProvinceId = $province;
+
+                                            if ($provinces['data'] && is_array($provinces['data'])) {
+                                                foreach ($provinces['data'] as $option) {
+                                                    $optionId = $option['id'];
+                                                    $optionName = $option['name'];
+
+                                                    if ($optionId === $selectedProvinceId) {
+                                                        $selectedValue = $optionName;
+                                                        break;
+                                                    }
+                                                }
+                                                echo '<input type="text" name="province" id="provinceInput" class="form-control mb-1" value="' . $selectedValue . '" readonly>';
+                                            } else {
+                                                echo 'Failed to fetch or decode data.';
+                                            }
+
+
+                                            echo '<span class="custom-control-input custom-control-input-primary">Cities</span>';
+                                            // Handle JSON data
+                                            $cities = json_decode($response2, true);
+                                            $selectedCityId = $city;
+
+                                            if ($cities['data'] && is_array($cities['data'])) {
+                                                foreach ($cities['data'] as $option) {
+                                                    $optionId = $option['id'];
+                                                    $optionName = $option['name'];
+
+                                                    if ($optionId === $selectedCityId) {
+                                                        $selectedValue = $optionName;
+                                                        break; // Break the loop when the selected value is found
+                                                    }
+                                                }
+                                                // Display the input field with the selected value
+                                                echo '<input type="text" name="city" id="cityInput" class="form-control mb-1" value="' . $selectedValue . '" readonly>';
+                                            } else {
+                                                echo 'Failed to fetch or decode data.';
+                                            }
+
+                                            ?>
+                                            <span class="custom-control-input custom-control-input-primary">Adress Line 1</span>
+                                            <input name="addressline1" id="addressline1" rows="3" class="form-control mb-1 rounded-0" placeholder="Streeet, Blk, Lot, and brgy" value="<?= isset($addressline1) ? $addressline1 : "" ?>" readonly></input>
+                                            <span class="custom-control-input custom-control-input-primary">Adress Line 2</span>
+                                            <input name="addressline2" id="addressline2" rows="3" class="form-control mb-1 rounded-0" placeholder="(Apartment, suite, etc, (optional))" value="<?= isset($addressline2) ? $addressline2 : "" ?>" readonly></input>
+                                            <span class="custom-control-input custom-control-input-primary">Zip code</span>
+                                            <input type="text" name="zipcode" id="zipcode" rows="3" class="form-control mb-1 zipcode" placeholder="Zip Code" value="<?= isset($zipcode) ? $zipcode : "N/A" ?>" onkeydown="return allowOnlyNumbers(event)" required readonly>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- this will show when user select "Use a different billing address" -->
+                                    <div class="diff-add" style="display: none;">
+                                        <div class="province jnt-holder">
+                                            <span class="custom-control-input custom-control-input-primary">Province</span>
+
+                                            <?php
+                                            // Handle JSON data
+                                            $provinces = json_decode($response1, true);
+                                            //$selectedProvinceId = $province;
+
+                                            if ($provinces['data'] && is_array($provinces['data'])) {
+                                                echo '<select name="province2" id="provinces2" class="form-control">';
+                                                echo '<option value="0">-- Select Province --</option>';
+                                                foreach ($provinces['data'] as $option) {
+                                                    $optionId = $option['id'];
+                                                    $optionName = $option['name'];
+
+                                                    //$selected1 = ($optionId === $selectedProvinceId) ? 'selected' : '';
+                                                    echo '<option value="' . $optionId . '">' . $optionName . '</option>';
+                                                }
+                                                echo '</select>';
+                                            } else {
+                                                echo 'Failed to fetch or decode data.';
+                                            }
+                                            ?>
+
+                                            <?php
+                                            // Handle JSON data
+                                            $cities = json_decode($response2, true);
+                                            //$selectedCityId = $city;
+
+                                            if ($cities['data'] && is_array($cities['data'])) {
+                                                echo '<select name="city2" id="cities2" class="form-control" disabled>';
+                                                echo '<option value="0">-- Select City --</option>';
+                                                foreach ($cities['data'] as $option) {
+                                                    $optionId = $option['id'];
+                                                    $optionName = $option['name'];
+
+                                                    //$selected2 = ($optionId === $selectedCityId) ? 'selected' : '';
+                                                    echo '<option value="' . $optionId . '">' . $optionName . '</option>';
+                                                }
+                                                echo '</select>';
+                                            } else {
+                                                echo 'Failed to fetch or decode data.';
+                                            }
+                                            ?>
+
+                                            <input name="different_addressline1" id="different_addressline1" rows="3" class="form-control rounded-0" placeholder="Address Line 1 (Different Address)" value=""></input>
+                                            <input name="different_addressline2" id="different_addressline2" rows="3" class="form-control rounded-0" placeholder="Address Line 2 (Different Address)" value=""></input>
+                                            <input type="text" name="different_zipcode" id="different_zipcode" rows="3" class="form-control zipcode" placeholder="Zip Code (Different Address)" value=""></input>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- this will show when user select "Pick up" -->
+                                <div class="pick-up-holder" style="display: none;">
+                                    <h1 class="label-info mt-2"><strong>Pick-Up Address</strong></h1>
+                                    <div class="dropdown-divider my-3"></div>
+                                    <select name="pickup" id="puAddressDropdown" class="form-control mb-1">
+                                        <option value="BLK 7 LOT 22 PHASE 2 BRGY. BUROL 1, DASMARINAS CITY, CAVITE">BLK 7 LOT 22 PHASE 2 BRGY. BUROL 1, DASMARINAS CITY, CAVITE</option>
+                                        <option value="EVANGELISTA ST. COR ARGUELLES PETRON STATION MAKATI CITY">EVANGELISTA ST. COR ARGUELLES PETRON STATION MAKATI CITY</option>
+                                    </select>
+                                </div>
+
+                                <!-- this will show when user select "Meet up" -->
+                                <div class="meet-up-holder" style="display: none;">
+                                    <h1 class="label-info mt-2"><strong>Meet Up Address</strong></h1>
+                                    <div class="dropdown-divider my-3"></div>
+                                    <select name="meetup" id="muAddressDropdown" class="form-control mb-1">
+                                        <?php
+                                        $getMeetupAddresses = $conn->query("SELECT * FROM `meet_up_address` where active = 1");
+                                        while ($rowAdd = $getMeetupAddresses->fetch_assoc()) :
+                                        ?>
+                                            <option value="<?= $rowAdd['text'] ?>" id="meetUpAddress-<?= $rowAdd['id'] ?>"><?= $rowAdd['text'] ?></option>
+                                        <?php endwhile; ?>
+                                        <option value="mu_other">OTHER</option>
+                                    </select>
+                                    <!-- this will show when user select "Meet up -> Others" -->
+                                    <div class="other-meet-up">
+                                        <input type="text" class="form-control mb-1" placeholder="Enter Meeting Point" name="othermu" />
+                                    </div>
+                                </div>
+                                <div class="date_picker" style="display: none;">
+                                    <div class="d-flex" id="date_picker">
+                                        <input name="meetup_date" id="meetup_datepicker" class="date-time-input form-control mb-1" placeholder="Select a date">
+                                        <input name="meetup_time" id="meetup_timepicker" disabled class="date-time-input form-control mb-1" placeholder="Select a time">
+                                    </div>
+                                    <button type="button" onclick="showAvailability()" class="btn btn-link text-decoration-none px-0 text-primary">Check Calendar</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <?php if (isset($product_order_config)) : ?>
-                    <span id="warning-label" class="text-danger invinsible"><small>You've reached the maximum order limit (<?= number_format($product_order_config['value']) ?> php)</small></span>
-                <?php elseif (isset($all_order_config)) : ?>
-                    <span id="warning-label" class="text-danger invinsible"><small>You've reached the maximum order limit (<?= number_format($all_order_config['value']) ?> php)</small></span>
-                <?php endif; ?>
-                <button type="button" class="btn text-white" style="background: #004399" id="confirm" onclick="saveToCart()">Add to Cart</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="calendar_modal" role='dialog'>
+        <div class="modal-dialog modal-lg modal-dialog-end" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="calendar_div">
+                        <?php
+                        include_once('./calendar.php');
+                        echo getCalendar();
+                        ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-
 <script>
-    $(document).ready(function() {
-        fetch();
-        let availability = 0;
-        let cart_count = 0;
-        $("input:radio:first").attr('checked', true);
-    });
-
-    function handleVariationSelect(variation, variation_price) {
-        if (variation.checked) {
-            $('#add_to_cart').removeAttr("disabled");
-            $('#default').hide("slow");
-            $('#selectedVariation').html(`₱ ${variation_price}`);
-        }
-    }
-
-    function copyShareLink(productId) {
-        // Construct the share link based on the provided product ID.
-        var shareLink = 'https://atvmotoshop.online/?p=products/view_product&id=' + productId;
-
-        // Create a temporary input element to facilitate copying to clipboard.
-        var tempInput = document.createElement('input');
-        tempInput.value = shareLink;
-        document.body.appendChild(tempInput);
-
-        // Select the text in the input element.
-        tempInput.select();
-        tempInput.setSelectionRange(0, 99999); // For mobile devices
-
-        // Copy the text to the clipboard.
-        document.execCommand('copy');
-
-        // Remove the temporary input element from the DOM.
-        document.body.removeChild(tempInput);
-
-        // You can provide feedback to the user that the link has been copied.
-        alert('Link copied to clipboard: ' + shareLink);
-
-        // You can do further processing or use the link as needed.
-        // For example, you can open a share modal or redirect the user to the share link.
-    }
-
-    function currencyToNumber(currency) {
-        if (currency) {
-            return Number(currency.toString().replace(/[$,]/g, ''));
-        }
-        return 0;
-    }
-
-    function updateQuantity(add) {
-        // const variationMaxQuantity = $("input[type='radio'][name='variations']:checked").data('max');
-        // $('#order-quantity').attr('max', variationMaxQuantity);
-        const orderQuantity = $('#order-quantity')
-        const priceVal = $('#item-price').html();
-        const maxPriceVal = $('#item-max-price').html();
-        const currentVal = parseInt(orderQuantity.val());
-        let total = 1;
-        if (add) {
-            const maxVal = parseInt(orderQuantity.attr('max'));
-            if (currentVal >= maxVal) {
-                return;
-            }
-            total = currentVal + 1;
+    function allowOnlyLetters(event) {
+        // Check if the key pressed is a letter
+        if (event.key.match(/[A-Za-z]/)) {
+            return true; // Allow the key press
         } else {
-            if (currentVal <= 1) {
-                return;
-            }
-            total = currentVal - 1;
-        }
-        orderQuantity.val(total);
-        const computedTotal = parseInt(priceVal) * total;
-        const formattedTotal = parseFloat(computedTotal).toLocaleString('en-US', {
-            style: 'decimal',
-            maximumFractionDigits: 2,
-            minimumFractionDigits: 2
-        });
-        $('#cart-total').html(formattedTotal);
-        const maxValue = maxPriceVal ? currencyToNumber(maxPriceVal) : null;
-        const totalValue = currencyToNumber(formattedTotal);
-        if (maxValue) {
-            if (totalValue >= maxValue) {
-                $('#confirm').attr("disabled", true);
-                $('#warning-label').removeClass("invinsible");
-            } else {
-                $('#warning-label').addClass("invinsible");
-                $('#confirm').attr("disabled", false);
-            }
+            return false; // Prevent the key press
         }
     }
 
-    function addToCart() {
-        const variationName = $("input[type='radio'][name='variations']:checked").data('name');
-        const variationPrice = $("input[type='radio'][name='variations']:checked").data('price');
-        const variationMaxPrice = $("input[type='radio'][name='variations']:checked").data('maxprice') || '';
-        const variationMaxQuantity = $("input[type='radio'][name='variations']:checked").data('max');
-        const formattedPrice = parseFloat(variationPrice).toLocaleString('en-US', {
-            style: 'decimal',
-            maximumFractionDigits: 2,
-            minimumFractionDigits: 2
-        });
-        $('#cart_modal').modal('show');
-        $('#variation-id').html(variationName);
-        $('#variation-view-price').html(formattedPrice);
-        $('#variation-price').html(formattedPrice);
-        $('#order-quantity').attr('max', variationMaxQuantity);
-        $('#item-price').html(variationPrice);
-        $('#item-max-price').html(variationMaxPrice);
-        $('#cart-total').html(formattedPrice);
+    function allowOnlyNumbers(event) {
+        // Check if the key pressed is a number or the backspace key
+        if (event.key.match(/[0-9]/) || event.keyCode === 8 /* Backspace */ ) {
+            return true; // Allow the key press
+        } else {
+            return false; // Prevent the key press
+        }
+
     }
 
-    function saveToCart() {
-        const variationId = $("input[type='radio'][name='variations']:checked").val();
-        const orderQuantity = $('#order-quantity').val();
-        if ("<?= $_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2 ?>" == 1) {
-            if (availability > 0) {
-                start_loader();
-                $.ajax({
-                    url: _base_url_ + "classes/Master.php?f=save_to_cart",
-                    method: 'POST',
-                    data: {
-                        product_id: '<?= isset($id) ? $id : "" ?>',
-                        variation_id: variationId,
-                        quantity: orderQuantity
-                    },
-                    dataType: 'json',
-                    error: err => {
-                        console.error(err);
-                        alert_toast("An error occurred", "error");
+    function showAvailability() {
+        $('#calendar_modal').modal('show');
+    }
+    const unavailableDates = JSON.parse(JSON.stringify(<?= json_encode($unavailableDates) ?>));
+    var dates = unavailableDates.flatMap(item => item)
+    $("#meetup_datepicker").datepicker({
+        todayHighlight: true,
+        minDate: 1,
+        dateFormat: 'yy-mm-dd',
+        beforeShowDay: function(date) {
+            var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+            return [dates.indexOf(string) == -1];
+        },
+        onSelect: function(date) {
+            console.log(date)
+            $.ajax({
+                url: _base_url_ + "classes/Master.php?f=retrieve_availability",
+                data: {
+                    date
+                },
+                method: 'POST',
+                type: 'POST',
+                dataType: 'json',
+                error: err => {
+                    console.log(err)
+                    alert_toast("An error occured", 'error');
+                    end_loader();
+                },
+                success: function(resp) {
+                    if (typeof resp == 'object' && resp.status == 'success') {
+                        const unavailableHours = [];
+                        resp.data.forEach((item) => {
+                            const amp = item[0].slice(item[0].length - 2, item[0].length);
+                            const hoursInterval =
+                                parseInt(item[0].slice(0, 2)) + 1 <= 9 ?
+                                `0${parseInt(item[0].slice(0, 2)) + 1}:${item[0].slice(3, 5)} ${amp}` :
+                                `${parseInt(item[0].slice(0, 2)) + 1}:${item[0].slice(3, 5)} ${amp}`;
+                            item.push(hoursInterval);
+                        });
+                        $("#meetup_timepicker").removeAttr('disabled')
+                        $("#meetup_timepicker").timepicker({
+                            minTime: '8am',
+                            maxTime: '6pm',
+                            timeFormat: 'h:i a',
+                            step: 60,
+                            dropdown: true,
+                            scrollbar: true,
+                            disableTimeRanges: resp.data
+                        });
+                    } else {
+                        alert_toast("An error occured", 'error');
                         end_loader();
-                    },
-                    success: function(resp) {
-                        if (resp.status == 'success') {
-                            alert_toast("Product has been added to cart.", 'success');
-                            update_cart_count(resp.cart_count);
-                            const cartCount = resp.cart_count;
-                            // Order quantity - Total Available stock
-                            const avail_stock = availability - orderQuantity;
-                            $('#available_stock').html(avail_stock);
-
-                            // Update the available stock by variation
-                            const var_item_stock = $('#variation_stock_' + variationId).data('total');
-                            const updated_var_item_stock = var_item_stock - orderQuantity;
-                            $('#variation_stock_' + variationId).data('total', updated_var_item_stock);
-                            $('#variation_stock_' + variationId).html(updated_var_item_stock + " qty.");
-
-                            console.log(`variation stock: ${var_item_stock} -> ${updated_var_item_stock}`);
-                            if (updated_var_item_stock < 1 || var_item_stock < 1) {
-                                $('#confirm').prop('disabled', true);
-                            } else {
-                                $('#confirm').removeAttr('disabled');
-                            }
-                            const cartCountSpan = $('#cart_count');
-                            if (cartCount !== 0) {
-                                cartCountSpan.text(cartCount).addClass('badge bg-danger cart-badge').removeClass('hidden');
-                            } else {
-                                cartCountSpan.text('').removeClass('badge bg-danger cart-badge').addClass('hidden');
-                            }
-                        } else if (!!resp.msg) {
-                            alert_toast(resp.msg, 'error');
-                        } else {
-                            alert_toast("An error occurred", "error");
-                        }
-                        fetch();
-                        end_loader();
+                        console.log(resp)
                     }
-                });
-            } else {
-                alert_toast("You have reached the maximum limit for this item", "error");
-            }
-        } else {
-            alert_toast("Please Login First!", 'warning');
+
+                }
+            })
         }
-    }
+    });
+    $(function() {
 
+        let addressTypeVal = 1;
+        $('.pick-up-holder').hide('slow');
+        $('.meet-up-holder').hide('slow');
+        $('.date_picker').hide('slow');
+        $('.other-meet-up').hide('slow');
+        $('.diff-add').hide('slow');
+        $('#totalWithoutSf').hide('slow');
+        $('.billing-address').show('slow');
+        fetchCities();
+        setOtherMeetup();
 
+        function fetchCities() {
+            document.getElementById('provinces2').addEventListener('change', function() {
+                let dropdown = this;
+                var selectedProvinceCode = this.value;
+                selectedProvince = dropdown.options[dropdown.selectedIndex].text;
+                console.log(selectedProvince);
 
-    // function update_cart_count($count){
-    //     $('#cart_count').text($count)
-    // }
-
-    function initialize() {
-        console.log("Remaining Stocks:", availability);
-        console.log("Total User Cart:", cart_count);
-        var isAvailable = (availability > 0 && cart_count < availability);
-        var availableDiv = document.getElementById('available');
-        var unavailableDiv = document.getElementById('unavailable');
-        var limitReached = document.getElementById('limit');
-        //var cartNum = document.getElementById('cart_count');
-
-        if (isAvailable) {
-            availableDiv.style.display = 'block';
-            unavailableDiv.style.display = 'none';
-            limitReached.style.display = 'none';
-        } else {
-            availableDiv.style.display = 'none';
-            unavailableDiv.style.display = 'block';
-            limitReached.style.display = 'block';
-        }
-        update_cart_count(cart_count);
-
-        //document.getElementById('cart_count').textContent = cart_count;
-    }
-
-    function fetch() {
-        $.ajax({
-            url: _base_url_ + "products/fetch_products.php",
-            method: 'GET',
-            data: {
-                id: '<?= isset($id) ? $id : "" ?>'
-            },
-            dataType: 'json',
-            success: function(data) {
-                availability = data.available;
-                cart_count = data.cart_count;
-                initialize();
-                update_cart_count(cart_count);
-            },
-            error: err => {
-                console.log(err);
-                alert_toast("An error occurred", "error");
-            },
-        });
-    }
-
-    function buyNow() {
-        if ("<?= $_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2 ?>" == 1) {
-            if ('<?= $available > 0 ?>' == 1) {
+                // Fetch provinces based on the selected region
                 start_loader();
-                $.ajax({
-                    url: _base_url_ + "classes/Master.php?f=process_immediate_purchase", // Replace with the appropriate URL for immediate purchase
-                    method: 'POST',
-                    data: {
-                        product_id: '<?= isset($id) ? $id : "" ?>',
-                        quantity: 1
-                    },
-                    dataType: 'json',
-                    error: err => {
-                        console.error(err);
-                        alert_toast("An error occurred", "error");
-                        end_loader();
-                    },
-                    success: function(resp) {
-                        if (resp.status == 'success') {
-                            // Handle the success response for immediate purchase
-                            alert_toast("Product has been purchased.", 'success');
-                        } else if (!!resp.msg) {
-                            alert_toast(resp.msg, 'error');
+                fetch('https://ph-locations-api.buonzz.com/v1/cities')
+                    .then(response => response.json())
+                    .then(data => {
+                        var citiesDropdown = document.getElementById('cities2');
+                        citiesDropdown.innerHTML = ''; // Clear previous options
+                        citiesDropdown.removeAttribute('disabled');
+
+                        let filteredCities = data['data'].filter(city => city.province_code === selectedProvinceCode);
+                        console.log(filteredCities);
+
+                        if (filteredCities && Array.isArray(filteredCities)) {
+                            filteredCities.forEach(function(city) {
+                                var option = document.createElement('option');
+                                option.value = city['id'];
+                                option.text = city['name'];
+                                citiesDropdown.appendChild(option);
+                                //fetchSelectedCity();
+                            });
                         } else {
-                            alert_toast("An error occurred", "error");
+                            var option = document.createElement('option');
+                            option.text = 'No cities found';
+                            citiesDropdown.appendChild(option);
                         }
                         end_loader();
-                    }
-                });
-            }
-        } else {
-            alert_toast("Please Login First!", 'warning');
+                    })
+                    .catch(error => {
+                        console.error('Error fetching cities:', error);
+                    });
+            });
         }
-    }
-    $(document).ready(function() {
-        // Open lightbox on image click
-        $('.gallery-item').on('click', function() {
-            var imagePath = $(this).data('image');
-            $('#lightbox-image').attr('src', imagePath);
-            $('#lightbox').fadeIn();
+
+        function setOtherMeetup() {
+            document.getElementById('muAddressDropdown').addEventListener('change', function() {
+                let selectedValue = this.value;
+                if (selectedValue === 'mu_other') {
+                    $('.other-meet-up').show('slow');
+                } else {
+                    $('.other-meet-up').hide('slow');
+                }
+            });
+        }
+        $('[name="order_type"]').change(function() {
+            if ($(this).val() == 1) {
+                $('.jnt-holder').show('slow');
+                $('.pick-up-holder').hide('slow');
+                $('.meet-up-holder').hide('slow');
+                $('.date_picker').hide('slow');
+                $('#date_picker > input').removeAttr('required');
+                $('#totalWithSf').show('slow');
+                $('#totalWithoutSf').hide('slow');
+                $('#sf').show('slow');
+                $('.billing-address').show('slow');
+                $('#zipcode').prop('required', true);
+
+            } else if ($(this).val() == 2) {
+                $('.jnt-holder').hide('slow');
+                $('.pick-up-holder').hide('slow');
+                $('.meet-up-holder').hide('slow');
+                $('.date_picker').hide('slow');
+                $('#date_picker > input').removeAttr('required');
+                $('#totalWithSf').hide('slow');
+                $('#totalWithoutSf').show('slow');
+                $('.billing-address').hide('slow');
+                $('#sf').hide('slow');
+                $('#zipcode').removeAttr('required');
+            } else if ($(this).val() == 3) {
+                $('.jnt-holder').hide('slow');
+                $('.pick-up-holder').show('slow');
+                $('.date_picker').show('slow');
+                $('.date_picker > input').prop('required', true);
+                $('#date_picker').children('input').prop('required', true);
+                $('.meet-up-holder').hide('slow');
+                $('.other-up-holder').hide('slow');
+                $('#totalWithSf').hide('slow');
+                $('#totalWithoutSf').show('slow');
+                $('#sf').hide('slow');
+                $('.billing-address').hide('slow');
+                $('#zipcode').removeAttr('required');
+            } else if ($(this).val() == 4) {
+                $('.jnt-holder').hide('slow');
+                $('.pick-up-holder').hide('slow');
+                $('.meet-up-holder').show('slow');
+                $('.date_picker').show('slow');
+                $('#date_picker').children('input').prop('required', true);
+                $('#totalWithSf').hide('slow');
+                $('#totalWithoutSf').show('slow');
+                $('#sf').hide('slow');
+                $('.billing-address').hide('slow');
+                $('#zipcode').removeAttr('required');
+            } else {
+                $('.jnt-holder').show('slow');
+                $('.pick-up-holder').hide('slow');
+                $('.meet-up-holder').hide('slow');
+                $('.date_picker').hide('slow');
+                $('#date_picker > input').removeAttr('required');
+                $('#totalWithSf').hide('slow');
+                $('#totalWithoutSf').show('slow');
+                $('#sf').hide('slow');
+                $('.billing-address').show('slow');
+                $('#zipcode').removeAttr('required');
+            }
         });
 
-        // Close lightbox on close button click or outside click
-        $('#lightbox, .close').on('click', function() {
-            $('#lightbox').fadeOut();
+        $('[name="address_type"]').change(function() {
+            if ($(this).val() == 1) {
+                addressTypeVal = 1;
+                $('.default-add').show('slow');
+                $('.diff-add').hide('slow');
+            } else {
+                addressTypeVal = 2;
+                $('.default-add').hide('slow');
+                $('.diff-add').show('slow');
+            }
         });
-    });
+
+        $('#place_order').submit(function(e) {
+            e.preventDefault();
+            var _this = $(this);
+            var formData = new FormData($(this)[0]);
+
+            formData.append('address_type', addressTypeVal);
+            $('.err-msg').remove();
+            start_loader();
+            $.ajax({
+                url: _base_url_ + "classes/Master.php?f=place_order",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                dataType: 'json',
+                error: err => {
+                    console.log(err)
+                    alert_toast("An error occured", 'error');
+                    end_loader();
+                },
+                success: function(resp) {
+                    if (typeof resp == 'object' && resp.status == 'success') {
+                        location.replace('./?p=my_orders');
+                    } else if (resp.status == 'failed' && !!resp.msg) {
+                        var el = $('<div>')
+                        el.addClass("alert alert-danger err-msg").text(resp.msg)
+                        _this.prepend(el)
+                        el.show('slow')
+                        $("html, body").animate({
+                            scrollTop: _this.closest('.card').offset().top
+                        }, "fast");
+                        end_loader()
+                    } else {
+                        alert_toast("An error occured", 'error');
+                        end_loader();
+                        console.log(resp)
+                    }
+
+                }
+            })
+        })
+    })
 </script>
