@@ -339,7 +339,7 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
                         </div>
                     </div>
                     <div class="mx-1">
-                        <h1 class="label-info mt-3"><strong>Contact meeeeeeeeeeeeeeeeeeee <span style="color: red;">*</span></strong></h1>
+                        <h1 class="label-info mt-3"><strong>Contact <span style="color: red;">*</span></strong></h1>
                         <div class="dropdown-divider my-3"></div>
                         <div class="form-group">
                             <input class="form-control mb-2" type="email" name="email" id="email" placeholder="yourmail@gmail.com" required value="<?= isset($email) ? $email : "" ?>">
@@ -460,11 +460,11 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
 
                                             ?>
                                             <span class="custom-control-input custom-control-input-primary">Address Line 1</span>
-                                            <input name="addressline1" id="addressline1" rows="3" class="form-control mb-1 rounded-0" placeholder="Streeet, Blk, Lot, and brgy" value="<?= isset($addressline1) ? $addressline1 : "" ?>" required readonly></input>
+                                            <input name="addressline1" id="addressline1" rows="3" class="form-control mb-1 rounded-0" placeholder="Streeet, Blk, Lot, and brgy" value="<?= isset($addressline1) ? $addressline1 : "" ?>"  readonly></input>
                                             <span class="custom-control-input custom-control-input-primary">Address Line 2</span>
-                                            <input name="addressline2" id="addressline2" rows="3" class="form-control mb-1 rounded-0" placeholder="(Apartment, suite, etc, (optional))" value="<?= isset($addressline2) ? $addressline2 : "" ?>" required readonly></input>
+                                            <input name="addressline2" id="addressline2" rows="3" class="form-control mb-1 rounded-0" placeholder="(Apartment, suite, etc, (optional))" value="<?= isset($addressline2) ? $addressline2 : "" ?>"  readonly></input>
                                             <span class="custom-control-input custom-control-input-primary">Zip code</span>
-                                            <input type="text" name="zipcode" id="zipcode" rows="3" class="form-control mb-1 zipcode" placeholder="Zip Code" value="<?= isset($zipcode) ? $zipcode : "N/A" ?>" onkeydown="return allowOnlyNumbers(event)" required readonly></input>
+                                            <input type="text" name="zipcode" id="zipcode" rows="3" class="form-control mb-1 zipcode" placeholder="Zip Code" value="<?= isset($zipcode) ? $zipcode : "N/A" ?>" onkeydown="return allowOnlyNumbers(event)" readonly></input>
 
                                         </div>
                                     </div>
