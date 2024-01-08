@@ -24,7 +24,8 @@ if(isset($_GET['id'])){
             <select name="status" id="status" class="custom-select form-control-sm">
             
     <option value="0" <?= isset($status) && $status == 0 ? 'selected' : '' ?>>Pending</option>
-    <option value="1" <?= isset($status) && $status == 1 ? 'selected' : '' ?>>Reject</option>
+    <option value="1" <?= isset($status) && $status == 1 ? 'selected' : '' ?>>Rejected</option>
+    <option value="2" <?= isset($status) && $status == 2 ? 'selected' : '' ?>>Accepted</option>
    
    
    

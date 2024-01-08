@@ -49,9 +49,11 @@ if (isset($_GET['id'])) {
         // Display the retrieved data
         while ($row = $result->fetch_assoc()) {
             echo '<div class="header-reply">';
-            echo "<h2 style='background-color: #004399; color:white; padding:1%; font-size: 18px;'>Rate from " . htmlspecialchars($row["author_name"], ENT_QUOTES, 'UTF-8') . "</h2> <br>";
+            echo "<h2>Rate from " . htmlspecialchars($row["author_name"], ENT_QUOTES, 'UTF-8') . "</h2> <br>";
             echo "<small style='font-size: 80%;'>" . (isset($row['date_created']) ? date("M d, Y g:ia", strtotime($row['date_created'])) : "N/A") . "</small>" . "</br>";
+            echo "<small>" . htmlspecialchars($row["product_name"], ENT_QUOTES, 'UTF-8') . "</small> <br>";
             echo '</div>';
+           
             echo '<div class="author_rate"> ';
 
             // Use a switch statement to generate star ratings
@@ -128,8 +130,9 @@ if (isset($_GET['id'])) {
                     <input type="hidden" id="appointment_id" name="appointment_id">
                     <select class="form-control" id="status" name="status">
                         <option value="0">Pending</option>
-                        <option value="1">Rejected</option>
-                        <option value="2">Accepted</option>
+                        <option value="1">Reject</option>
+                        <option value="1">Accept</option>
+                       
                       
                     </select>
                 </div>
