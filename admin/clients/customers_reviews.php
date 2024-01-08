@@ -51,9 +51,9 @@
                 <?php if ($status == 0) : ?>
                     <span class="badge badge-secondary px-3 rounded-pill">Pending</span>
                 <?php elseif ($status == 1) : ?>
-                    <span class="badge badge-danger px-3 rounded-pill">Rejected</span>
+                    <span class="badge badge-danger px-3 rounded-pill">Hide</span>
                 <?php else : ?>
-                    <span class="badge badge-success px-3 rounded-pill">Accepted</span>
+                   
                 <?php endif; ?>
             </td>
             <td align="center">
