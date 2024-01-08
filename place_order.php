@@ -734,55 +734,64 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
                 }
             });
         }
-        $('[name="order_type"]').change(function() {
-            if ($(this).val() == 1) {
-                $('.jnt-holder').show('slow');
-                $('.pick-up-holder').hide('slow');
-                $('.meet-up-holder').hide('slow');
-                $('.date_picker').hide('slow');
-                $('#date_picker > input').removeAttr('required');
-                $('#totalWithSf').show('slow');
-                $('#totalWithoutSf').hide('slow');
-                $('#sf').show('slow');
-                $('.billing-address').show('slow');
-                $('#zipcode').prop('required', true);
+        $('[name="order_type"]').change(function () {
+        var orderTypeVal = $(this).val();
 
-            } else if ($(this).val() == 2) {
-                $('.jnt-holder').hide('slow');
-                $('.pick-up-holder').hide('slow');
-                $('.meet-up-holder').hide('slow');
-                $('.date_picker').hide('slow');
-                $('#date_picker > input').removeAttr('required');
-                $('#totalWithSf').hide('slow');
-                $('#totalWithoutSf').show('slow');
-                $('.billing-address').hide('slow');
-                $('#sf').hide('slow');
-                $('#zipcode').removeAttr('required');
-            } else if ($(this).val() == 3) {
-                $('.jnt-holder').hide('slow');
-                $('.pick-up-holder').show('slow');
-                $('.date_picker').show('slow');
-                $('.date_picker > input').prop('required', true);
-                $('#date_picker').children('input').prop('required', true);
-                $('.meet-up-holder').hide('slow');
-                $('.other-up-holder').hide('slow');
-                $('#totalWithSf').hide('slow');
-                $('#totalWithoutSf').show('slow');
-                $('#sf').hide('slow');
-                $('.billing-address').hide('slow');
-                $('#zipcode').removeAttr('required');
-            } else if ($(this).val() == 4) {
-                $('.jnt-holder').hide('slow');
-                $('.pick-up-holder').hide('slow');
-                $('.meet-up-holder').show('slow');
-                $('.date_picker').show('slow');
-                $('#date_picker').children('input').prop('required', true);
-                $('#totalWithSf').hide('slow');
-                $('#totalWithoutSf').show('slow');
-                $('#sf').hide('slow');
-                $('.billing-address').hide('slow');
-                $('#zipcode').removeAttr('required');
-            } else {
+        if (orderTypeVal == 1) {
+            // Code for JRS order type
+            $('.jnt-holder').show('slow');
+            $('.pick-up-holder').hide('slow');
+            $('.meet-up-holder').hide('slow');
+            $('.date_picker').hide('slow');
+            $('#date_picker > input').removeAttr('required');
+            $('#totalWithSf').show('slow');
+            $('#totalWithoutSf').hide('slow');
+            $('#sf').show('slow');
+            $('.billing-address').show('slow');
+            $('#zipcode').prop('required', true);
+
+        } else if (orderTypeVal == 2) {
+            // Code for Lalamove order type
+            $('.jnt-holder').hide('slow');
+            $('.pick-up-holder').hide('slow');
+            $('.meet-up-holder').hide('slow');
+            $('.date_picker').hide('slow');
+            $('#date_picker > input').removeAttr('required');
+            $('#totalWithSf').hide('slow');
+            $('#totalWithoutSf').show('slow');
+            $('.billing-address').hide('slow');
+            $('#sf').hide('slow');
+            $('#zipcode').removeAttr('required');
+
+        } else if (orderTypeVal == 3) {
+            // Code for Pick up order type
+            $('.jnt-holder').hide('slow');
+            $('.pick-up-holder').show('slow');
+            $('.date_picker').show('slow');
+            $('.date_picker > input').prop('required', true);
+            $('#date_picker').children('input').prop('required', true);
+            $('.meet-up-holder').hide('slow');
+            $('.other-up-holder').hide('slow');
+            $('#totalWithSf').hide('slow');
+            $('#totalWithoutSf').show('slow');
+            $('#sf').hide('slow');
+            $('.billing-address').hide('slow');
+            $('#zipcode').removeAttr('required');
+
+        } else if (orderTypeVal == 4) {
+            // Code for Meet up order type
+            $('.jnt-holder').hide('slow');
+            $('.pick-up-holder').hide('slow');
+            $('.meet-up-holder').show('slow');
+            $('.date_picker').show('slow');
+            $('#date_picker').children('input').prop('required', true);
+            $('#totalWithSf').hide('slow');
+            $('#totalWithoutSf').show('slow');
+            $('#sf').hide('slow');
+            $('.billing-address').hide('slow');
+            $('#zipcode').removeAttr('required');
+
+        } else {
                 $('.jnt-holder').show('slow');
                 $('.pick-up-holder').hide('slow');
                 $('.meet-up-holder').hide('slow');
