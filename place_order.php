@@ -339,7 +339,7 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
                         </div>
                     </div>
                     <div class="mx-1">
-                        <h1 class="label-info mt-3"><strong>Contact <span style="color: red;">*</span></strong></h1>
+                        <h1 class="label-info mt-3"><strong>Contact meeeeeeeeeeeeeeeeeeee <span style="color: red;">*</span></strong></h1>
                         <div class="dropdown-divider my-3"></div>
                         <div class="form-group">
                             <input class="form-control mb-2" type="email" name="email" id="email" placeholder="yourmail@gmail.com" required value="<?= isset($email) ? $email : "" ?>">
