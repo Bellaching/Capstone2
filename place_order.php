@@ -1,4 +1,3 @@
-
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 <?php
 $selectedValue = "";
@@ -380,7 +379,6 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
                                     </div>
                                 </div>
                                 <div class="place-order form-group text-right">
-                                  
                                     <?php if (isset($all_order_config)) : ?>
                                         <?php if ((int)$total > (int)($all_order_config['value'])) : ?>
                                             <button class="btn btn-flat btn-primary text-danger-btn" id="warning-label" type="submit" name="submit" disabled>
@@ -465,7 +463,7 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
                                             <span class="custom-control-input custom-control-input-primary">Address Line 2</span>
                                             <input name="addressline2" id="addressline2" rows="3" class="form-control mb-1 rounded-0" placeholder="(Apartment, suite, etc, (optional))" value="<?= isset($addressline2) ? $addressline2 : "" ?>" required readonly></input>
                                             <span class="custom-control-input custom-control-input-primary">Zip code</span>
-                                            <input type="text" name="zipcode" id="zipcode" rows="3" class="form-control mb-1 zipcode" placeholder="Zip Code" value="<?= isset($zipcode) ? $zipcode : "N/A" ?>" required readonly></input>
+                                            <input type="text" name="zipcode" id="zipcode" rows="3" class="form-control mb-1 zipcode" placeholder="Zip Code" value="<?= isset($zipcode) ? $zipcode : "N/A" ?>" onkeydown="return allowOnlyNumbers(event)" required readonly></input>
 
                                         </div>
                                     </div>
