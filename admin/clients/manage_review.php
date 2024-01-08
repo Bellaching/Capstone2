@@ -1,64 +1,23 @@
 <?php
-ob_start(); // Start output buffering
-
-include 'sendemail.php';
-
-// Retrieve data from the database
-$dev_data = array('id'=>'-1','firstname'=>'Developer','lastname'=>'','username'=>'dev_oretnom','password'=>'5da283a2d990e8d8512cf967df5bc0d0','last_login'=>'','date_updated'=>'','date_added'=>'');
-    if(!defined('base_url')) define('base_url','https://atvmotoshop.online/');
-    if(!defined('base_app')) define('base_app', str_replace('\\','/',__DIR__).'/' );
-    if(!defined('dev_data')) define('dev_data',$dev_data);
-    if(!defined('DB_SERVER')) define('DB_SERVER',"localhost");
-    if(!defined('DB_USERNAME')) define('DB_USERNAME',"u738394287_arnoldtv");
-    if(!defined('DB_PASSWORD')) define('DB_PASSWORD',"4N8cIt=&qM#c");
-    if(!defined('DB_NAME')) define('DB_NAME',"u738394287_arnoldtv");
-    
-    // Create a new mysqli connection
-    $conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if (isset($_GET['id'])) {
+    $qry = $conn->query("SELECT * FROM `product_reviews` where id = '{$_GET['id']}'");
+    if ($qry->num_rows > 0) {
+        foreach ($qry->fetch_array() as $k => $v) {
+            if (!is_numeric($k))
+                $$k = $v;
+        }
+    }
 }
-
-if (isset($_POST['submit'])) {
-    // Form is submitted, update the status to 1 (Done)
-    $inquiryId = $_GET['id'];
-    $updateQuery = "UPDATE product_reviews SET status = 1 WHERE id = '$inquiryId'";
-    $conn->query($updateQuery);
-    // You may want to add some error handling here
-
-    // After updating, you can redirect the user or display a success message
-    if (!headers_sent()) {
-      header("Location: ../inquiries.php?email=" . $email);
-      exit();
-  } else {
-      echo '<div class="alert-sent">Already sent</div>';
-  }
-}
-
-// Rest of your code...
-
-ob_end_flush(); // Send the output buffer and release the output buffer
 ?>
 
 
 
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title></title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <link rel="stylesheet" href="contact.css">
-  <script src="https://kit.fontawesome.com/8714a42433.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
-</head>
-<style>
 
 
 
-</style>
+
+
+
 
 <body class="Contactus">
 
@@ -68,7 +27,7 @@ ob_end_flush(); // Send the output buffer and release the output buffer
         <h3 class="card-title"><b>Review Details</b></h3>
         <div class="card-tools">
             <button class="btn btn-primary btn-flat btn-sm"  type="button"  id="update_status">  <i class="fa fa-edit"></i> Update Status</button>
-          
+            <button class="btn btn-danger btn-flat btn-sm" type="button" id="delete_review"><i class="fa fa-trash"></i> Delete</button>
             <a class="btn btn-default btn-flat border btn-sm" href="<?php echo base_url ?>admin/?page=clients/customers_reviews"><i class="fa fa-angle-left"></i> Back to List</a>
         </div>
     </div>
@@ -205,7 +164,9 @@ $(function() {
             uni_modal("Update Review Status", "clients/updateReview.php?id=<?= isset($id) ? $id : '' ?>?client_id=<?= isset($client_id) ? $client_id : '' ?>")
         })
       
-      
+        $('#delete_review').click(function(){
+            _conf("Are you sure to delete this order permanently?","delete_review",[])
+        })
     })
 
   function allowOnlyLetters(event) {
@@ -216,6 +177,31 @@ $(function() {
       return false; // Prevent the key press
     }
   }
+
+  function delete_review(){
+        start_loader();
+        $.ajax({
+            url:_base_url_+"classes/Master.php?f=delete_review",
+            data:{id : "<?= isset($id) ? $id : '' ?>"},
+            method:'POST',
+            dataType:'json',
+            error:err=>{
+                console.error(err)
+                alert_toast('An error occurred.','error')
+                end_loader()
+            },
+            success:function(resp){
+                if(resp.status == 'success'){
+                    location.replace('./?page=clients/customers_reviews')
+                }else if(!!resp.msg){
+                    alert_toast(resp.msg,'error')
+                }else{
+                    alert_toast('An error occurred.','error')
+                }
+                end_loader();
+            }
+        })
+    }
 
   $(document).ready(function() {
         $('.summernote').summernote({

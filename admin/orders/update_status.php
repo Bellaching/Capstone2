@@ -39,7 +39,8 @@ if(isset($_GET['id'])){
     </form>
 </div>
 
-<script>$(function(){
+<script>
+$(function(){
     var statusSelect = $('#status');
     
     // Initial check to disable options based on the current status

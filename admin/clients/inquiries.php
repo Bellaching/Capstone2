@@ -66,7 +66,7 @@
 				                  <div class="dropdown-menu" role="menu">
 				                    <a class="dropdown-item" href="?page=clients/messageform&id=<?php echo $row['id'] ?>"><span class="fa fa-edit text-primary"></span> Reply</a>
 				                    <div class="dropdown-divider"></div>
-				                    <a class="dropdown-item delete_data" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>"><span class="fa fa-trash text-danger"></span> Delete</a>
+				                    <a class="dropdown-item delete_message" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>"><span class="fa fa-trash text-danger"></span> Delete</a>
 				                  </div>
 							</td>
 						</tr>
@@ -79,12 +79,12 @@
 </div>
 <script>
 	$(document).ready(function(){
-		$('.delete_data').click(function(){
+		$('.delete_message').click(function(){
 			_conf("Are you sure to delete this inquiry permanently?","delete_message",[$(this).attr('data-id')])
 		})
 		$('.table').dataTable();
 	})
-	function delete_service($id){
+	function delete_message($id){
 		start_loader();
 		$.ajax({
 			url:_base_url_+"classes/Master.php?f=delete_message",

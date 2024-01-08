@@ -440,71 +440,76 @@ if ($variations->num_rows === 1) {
 
 
         <div class="container my-5">
-            <div class="product-review">
-                <?php
-                $productReviews = $conn->query(
-                    "SELECT pr.author_rate, pr.author_comment, pr.date_created, pr.author_name, pv.variation_name FROM `product_reviews` pr
-                    inner join `product_variations` pv on pr.variation_id = pv.id
-                where pr.product_id =  $id order by unix_timestamp(pr.date_created) desc;
-                "
-                );
-                while ($review = $productReviews->fetch_assoc()) :
-                ?>
-                    <div class="review-section mb-3 border rounded p-3">
-                        <figure class="mb-1">
-                            <blockquote class="blockquote">
-                                <p><?= ucfirst($review['author_name']) ?></p>
-                            </blockquote>
-                            <figcaption class="blockquote-footer mb-1">
-                                <?= date("Y-m-d h:i:s A", strtotime($review['date_created'])) ?> | Variation: <?= $review['variation_name'] ?>
-                            </figcaption>
-                        </figure>
-                        <div class="review-details">
-                            <?php switch (strval($review['author_rate'])):
-                                case "1": ?>
-                                    <i class="fa fa-star checked"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                <?php break;
-                                case "2": ?>
-                                    <i class="fa fa-star checked"></i>
-                                    <i class="fa fa-star checked"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                <?php break;
-                                case "3": ?>
-                                    <i class="fa fa-star checked"></i>
-                                    <i class="fa fa-star checked"></i>
-                                    <i class="fa fa-star checked"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                <?php break;
-                                case "4": ?>
-                                    <i class="fa fa-star checked"></i>
-                                    <i class="fa fa-star checked"></i>
-                                    <i class="fa fa-star checked"></i>
-                                    <i class="fa fa-star checked"></i>
-                                    <i class="fa fa-star-o"></i>
-                                <?php break;
-                                case "5": ?>
-                                    <i class="fa fa-star checked"></i>
-                                    <i class="fa fa-star checked"></i>
-                                    <i class="fa fa-star checked"></i>
-                                    <i class="fa fa-star checked"></i>
-                                    <i class="fa fa-star checked"></i>
-                                <?php break;
-                                default: ?>
-                            <?php endswitch; ?>
-                            <p class="reviewer-comments mt-3"><?= ucfirst($review['author_comment']) ?></p>
-                        </div>
-                    </div>
-                <?php endwhile; ?>
+    <div class="product-review">
+        <?php
+        $productReviews = $conn->query(
+            "SELECT pr.author_rate, pr.author_comment, pr.date_created, pr.author_name, pv.variation_name, pr.status FROM `product_reviews` pr
+            inner join `product_variations` pv on pr.variation_id = pv.id
+            where pr.product_id =  $id order by unix_timestamp(pr.date_created) desc;
+            "
+        );
+        while ($review = $productReviews->fetch_assoc()) :
+            // Check if the status is 1 (rejected), and if so, skip rendering the review
+            if ($review['status'] == 1) {
+                continue;
+            }
+        ?>
+            <div class="review-section mb-3 border rounded p-3">
+                <figure class="mb-1">
+                    <blockquote class="blockquote">
+                        <p><?= ucfirst($review['author_name']) ?></p>
+                    </blockquote>
+                    <figcaption class="blockquote-footer mb-1">
+                        <?= date("Y-m-d h:i:s A", strtotime($review['date_created'])) ?> | Variation: <?= $review['variation_name'] ?>
+                    </figcaption>
+                </figure>
+                <div class="review-details">
+                    <?php switch (strval($review['author_rate'])) :
+                        case "1": ?>
+                            <i class="fa fa-star checked"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <?php break;
+                        case "2": ?>
+                            <i class="fa fa-star checked"></i>
+                            <i class="fa fa-star checked"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <?php break;
+                        case "3": ?>
+                            <i class="fa fa-star checked"></i>
+                            <i class="fa fa-star checked"></i>
+                            <i class="fa fa-star checked"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <?php break;
+                        case "4": ?>
+                            <i class="fa fa-star checked"></i>
+                            <i class="fa fa-star checked"></i>
+                            <i class="fa fa-star checked"></i>
+                            <i class="fa fa-star checked"></i>
+                            <i class="fa fa-star-o"></i>
+                            <?php break;
+                        case "5": ?>
+                            <i class="fa fa-star checked"></i>
+                            <i class="fa fa-star checked"></i>
+                            <i class="fa fa-star checked"></i>
+                            <i class="fa fa-star checked"></i>
+                            <i class="fa fa-star checked"></i>
+                            <?php break;
+                        default: ?>
+                            <!-- Handle other cases if needed -->
+                    <?php endswitch; ?>
+                    <p class="reviewer-comments mt-3"><?= ucfirst($review['author_comment']) ?></p>
+                </div>
             </div>
-        </div>
+        <?php endwhile; ?>
     </div>
+</div>
+
 </div>
 
 <div class="modal fade" id="cart_modal" role='dialog'>

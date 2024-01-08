@@ -1084,10 +1084,11 @@ class Master extends DBConnection
 
 	function update_review_status(){
 		extract($_POST);
-		$update = $this->conn->query("UPDATE `product_reviews` set `status` = '{$status}' where id = '{$id}'");
-		if($update){
+		
+		$update1 = $this->conn->query("UPDATE `product_reviews` set `status` = '{$status}' where id = '{$id}'");
+		if($update1){
 			$resp['status'] ='success';
-			$resp['msg'] = " Review's status has been updated successfully.";
+			$resp['msg'] = "Review's status has been updated successfully.";
 		}else{
 			$resp['error'] = $this->conn->error;
 			$resp['status'] ='failed';
@@ -1108,6 +1109,42 @@ class Master extends DBConnection
 			$resp['error'] = $this->conn->error;
 			$resp['status'] = 'failed';
 			$resp['msg'] = " Order's status has failed to delete.";
+		}
+		if ($resp['status'] == 'success')
+			$this->settings->set_flashdata('success', $resp['msg']);
+		return json_encode($resp);
+	}
+
+	function delete_message()
+	{
+		extract($_POST);
+		$delete = $this->conn->query("DELETE FROM `order_list` where id = '{$id}'");
+		if ($delete) {
+			$resp['status'] = 'success';
+			$resp['msg'] = " Order's status has been deleted successfully.";
+		} else {
+			$resp['error'] = $this->conn->error;
+			$resp['status'] = 'failed';
+			$resp['msg'] = " Order's status has failed to delete.";
+		}
+		if ($resp['status'] == 'success')
+			$this->settings->set_flashdata('success', $resp['msg']);
+		return json_encode($resp);
+	}
+
+
+	function delete_review()
+	{
+		extract($_POST);
+		$del = $this->conn->query("UPDATE `product_reviews` set delete_flag = 1 where id = '{$id}'");
+		
+		if ($del) {
+			$resp['status'] = 'success';
+			$resp['msg'] = " Review's status has been deleted successfully.";
+		} else {
+			$resp['error'] = $this->conn->error;
+			$resp['status'] = 'failed';
+			$resp['msg'] = " Review's status has failed to delete.";
 		}
 		if ($resp['status'] == 'success')
 			$this->settings->set_flashdata('success', $resp['msg']);
@@ -1456,6 +1493,12 @@ switch ($action) {
 		break;
 	case 'delete_order':
 		echo $Master->delete_order();
+		break;
+	case 'delete_message':
+		echo $Master->delete_message();
+		break;
+	case 'delete_review':
+		echo $Master->delete_review();
 		break;
 	case 'submit_review':
 		echo $Master->submit_review();
