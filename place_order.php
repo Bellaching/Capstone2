@@ -414,50 +414,7 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
                                     <div class="default-add">
                                         <div class="province jnt-holder">
                                             <span class="custom-control-input custom-control-input-primary">Province</span>
-                                            <?php
-
-                                            // Handle JSON data
-                                            $provinces = json_decode($response1, true);
-                                            $selectedProvinceId = $province;
-
-                                            if ($provinces['data'] && is_array($provinces['data'])) {
-                                                foreach ($provinces['data'] as $option) {
-                                                    $optionId = $option['id'];
-                                                    $optionName = $option['name'];
-
-                                                    if ($optionId === $selectedProvinceId) {
-                                                        $selectedValue = $optionName;
-                                                        break;
-                                                    }
-                                                }
-                                                echo '<input type="text" name="province" id="provinceInput" class="form-control mb-1" value="' . $selectedValue . '" required  readonly>';
-                                            } else {
-                                                echo 'Failed to fetch or decode data.';
-                                            }
-
-
-                                            echo '<span class="custom-control-input custom-control-input-primary">Cities</span>';
-                                            // Handle JSON data
-                                            $cities = json_decode($response2, true);
-                                            $selectedCityId = $city;
-
-                                            if ($cities['data'] && is_array($cities['data'])) {
-                                                foreach ($cities['data'] as $option) {
-                                                    $optionId = $option['id'];
-                                                    $optionName = $option['name'];
-
-                                                    if ($optionId === $selectedCityId) {
-                                                        $selectedValue = $optionName;
-                                                        break; // Break the loop when the selected value is found
-                                                    }
-                                                }
-                                                // Display the input field with the selected value
-                                                echo '<input type="text" name="city" id="cityInput" class="form-control mb-1" value="' . $selectedValue . '" required  readonly>';
-                                            } else {
-                                                echo 'Failed to fetch or decode data.';
-                                            }
-
-                                            ?>
+                                         
                                             <span class="custom-control-input custom-control-input-primary">Address Line 1</span>
                                             <input name="addressline1" id="addressline1" rows="3" class="form-control mb-1 rounded-0" placeholder="Streeet, Blk, Lot, and brgy" value="<?= isset($addressline1) ? $addressline1 : "" ?>" required readonly></input>
                                             <span class="custom-control-input custom-control-input-primary">Address Line 2</span>
