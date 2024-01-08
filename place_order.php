@@ -1,3 +1,4 @@
+@ -1,850 +1,854 @@
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 <?php
 $selectedValue = "";
@@ -379,6 +380,7 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
                                     </div>
                                 </div>
                                 <div class="place-order form-group text-right">
+                                  
                                     <?php if (isset($all_order_config)) : ?>
                                         <?php if ((int)$total > (int)($all_order_config['value'])) : ?>
                                             <button class="btn btn-flat btn-primary text-danger-btn" id="warning-label" type="submit" name="submit" disabled>
@@ -517,8 +519,7 @@ if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2) {
 
 <input name="different_addressline1" id="different_addressline1" rows="3" class="form-control rounded-0" placeholder="Address Line 1 (Different Address)" value="" ></input>
 <input name="different_addressline2" id="different_addressline2" rows="3" class="form-control rounded-0" placeholder="Address Line 2 (Different Address)" value="" ></input>
-
-<input type="text" name="different_zipcode" id="different_zipcode" rows="3" class="form-control zipcode" placeholder="Zip Code (Different Address)" value="" maxlength="4"></input>
+<input type="text" name="different_zipcode" id="different_zipcode" rows="3" class="form-control zipcode" placeholder="Zip Code (Different Address)" value=""></input>
 
                                         </div>
 
